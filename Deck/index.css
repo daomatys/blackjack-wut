@@ -1,0 +1,16 @@
+.deck {
+
+}
+
+.deck__veiled {
+  position: absolute;
+  right: 20px;
+}
+
+.deck__top {
+  position: absolute;
+  right: 19px;
+  width: 120px;
+  heigth: 184px;
+  opacity: 0.01;
+}
