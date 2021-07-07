@@ -4,12 +4,10 @@ export default class Card {
     this.card = card;
     
     this.elem = document.createElement('div');
-    
     this.elem.classList.add('card');
-    this.elem.ondragstart = () => false;
     this.elem.insertAdjacentHTML('afterbegin', this.layout());
     
-    this.elem.addEventListener('pointerdown', this.onPointerDown);
+    this.events();
   }
   
   layout() {
@@ -23,13 +21,8 @@ export default class Card {
     `;
   }
   
-  onPointerDown() {
-    document.querySelector('.card__title').style.opacity = 1;
-    document.addEventListener('pointerup', this.onPointerUp);
-  }
-  
-  onPointerUp() {
-    document.querySelector('.card__title').style.opacity = 0;
-    document.removeEventListener('pointerup', this.onPointerUp);
+  events() {
+    this.elem.onclick = () => this.elem.querySelector('.card__title').classList.toggle('visible');
+    this.elem.ondragstart = () => false;
   }
 }

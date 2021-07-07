@@ -1,7 +1,5 @@
 .card {
   position: absolute;
-  left: 20px;
-  top: 20px;
   width: 120px;
   height: 183px;
   text-decoration: none;
@@ -17,4 +15,12 @@
   position: fixed;
   z-index: 20;
   opacity: 0;
+}
+
+.visible {
+  opacity: 1;
+}
+
+img {
+  width: 120px;
 }

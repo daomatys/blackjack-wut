@@ -5,37 +5,40 @@ export default class Table {
 
   constructor() {
     this.deck = new Deck();
-    this.deckCards = [];
     
-    this.createCards();
     this.render();
+    this.eventListeners();
   }
   
-  createCards() {
-    // (C)lubs (D)iamonds (H)earts (S)pades (4)
-    // 2 3 4 5 6 7 8 9 10 J Q K A (13)
-    
-    const ranks = [ 'A', 2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K' ];
-    const suits = [ 'C', 'D', 'H', 'S' ];
-    
-    for (let suit of suits) {
-      for (let rank of ranks) {
-        this.deckCards.push({
-          rank: rank,
-          suit: suit,
-          drawn: false
-        });
-      }
-    }
-  }
+  getRandomInt = num => Math.floor( Math.random() * Math.floor( num ) );
+  
+  incrust = ( block, suffix ) => document.querySelector(`[data-${ suffix }-holder]`).append( block.elem );
   
   render() {
-    const incrust = ( block, suffix ) => {
-      document
-        .querySelector(`[data-${ suffix }-holder]`)
-        .append( block.elem );
-    }
-    incrust( this.deck, 'deck' );
+    this.incrust( this.deck, 'deck' );
+  }
+  
+  setNewPlayerCard( newCardCoords ) {
+    let i = this.getRandomInt( this.deck.cards.length );
+    
+    while ( this.deck.cards[i].drawn === true ) 
+      i = this.getRandomInt( this.deck.cards.length );
+    
+    this.deck.cards[i].drawn = true;
+    
+    const newCard = new Card( this.deck.cards[i] );
+    
+    this.incrust( newCard, 'playahand' );
+    
+    newCard.elem.style.left = newCardCoords.left;
+    newCard.elem.style.top = newCardCoords.top;
+  }
+  
+  eventListeners() {
+    
+    this.deck
+      .elem
+      .addEventListener('card-placed', ({ detail: data }) => this.setNewPlayerCard( data ));
   }
   
 }
