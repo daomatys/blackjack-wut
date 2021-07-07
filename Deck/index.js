@@ -9,6 +9,8 @@ export default class Deck {
       this.layoutHands() + 
       this.layoutDeck()
     );
+    this.playerCardsCount = 0;
+    
     this.defineDeckLocation();
     this.drawTopCard();
   }
@@ -55,8 +57,8 @@ export default class Deck {
     
     this.deckSub('top').style.opacity = 1;
     
-    this.playahand = document.querySelector('.hand__playa')
-    this.playahand.style.opacity = 1;
+    this.playerCards = document.querySelector('.hand__playa')
+    this.playerCards.style.opacity = 1;
     
     this.shiftX = event.clientX - this.deckSub('top').getBoundingClientRect().left;
     this.shiftY = event.clientY - this.deckSub('top').getBoundingClientRect().top;
@@ -75,9 +77,24 @@ export default class Deck {
   }
   
   onPointerUp = event => {
-    this.playahand.style.opacity = 0;
+    this.playerCards.style.opacity = 0;
     
     document.removeEventListener('pointermove', this.onPointerMove);
     document.removeEventListener('pointerup', this.onPointerUp);
+    
+    this.deckSub('top').hidden = true;
+    const elementUnderCard = document.elementFromPoint(event.clientX, event.clientY);
+    this.deckSub('top').hidden = false;
+    
+    if ( elementUnderCard.closest('.hand__playa') ) {
+      Object.assign( this.deckSub('top').style, {
+        left: '',
+        right: '49px',
+        top: document.documentElement.clientHeight / 2 - 100 + 'px',
+        opacity: 0
+      });
+      this.playerCardsCount++;
+      this.playerCards.style.left = 60 * this.playerCardsCount + 'px';
+    }
   }
 }
