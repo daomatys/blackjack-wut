@@ -57,8 +57,8 @@ export default class Deck {
     
     this.deckSub('top').style.opacity = 1;
     
-    this.playerCards = document.querySelector('.hand__playa')
-    this.playerCards.style.opacity = 1;
+    this.playerCardsStorage = document.querySelector('.hand__playa')
+    this.playerCardsStorage.style.opacity = 1;
     
     this.shiftX = event.clientX - this.deckSub('top').getBoundingClientRect().left;
     this.shiftY = event.clientY - this.deckSub('top').getBoundingClientRect().top;
@@ -77,7 +77,7 @@ export default class Deck {
   }
   
   onPointerUp = event => {
-    this.playerCards.style.opacity = 0;
+    this.playerCardsStorage.style.opacity = 0;
     
     document.removeEventListener('pointermove', this.onPointerMove);
     document.removeEventListener('pointerup', this.onPointerUp);
@@ -86,15 +86,30 @@ export default class Deck {
     const elementUnderCard = document.elementFromPoint(event.clientX, event.clientY);
     this.deckSub('top').hidden = false;
     
-    if ( elementUnderCard.closest('.hand__playa') ) {
-      Object.assign( this.deckSub('top').style, {
-        left: '',
-        right: '49px',
-        top: document.documentElement.clientHeight / 2 - 100 + 'px',
-        opacity: 0
-      });
+    if ( elementUnderCard.closest('.hand__playa') ) this.cardPlaced();
+  }
+  
+  cardPlaced() {
+    Object.assign( this.deckSub('top').style, {
+      left: '',
+      right: '49px',
+      top: document.documentElement.clientHeight / 2 - 100 + 'px',
+      opacity: 0
+    });
+    if ( this.playerCardsCount < 8 ) {
       this.playerCardsCount++;
-      this.playerCards.style.left = 60 * this.playerCardsCount + 'px';
+      this.playerCardsStorage.style.left = 60 * this.playerCardsCount + 'px';
+    } else {
+      this.playerCardsStorage.remove();
+      this.deckSub('top').remove();
     }
+    this.dispatchCustomEvent();
+  }
+  
+  dispatchCustomEvent() {
+    this.elem.dispatchEvent( new CustomEvent('card-placed', {
+      detail: this.value,
+      bubbles: true
+    }));
   }
 }
