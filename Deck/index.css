@@ -1,16 +1,26 @@
 .deck {
-
+  width: 120px;
+  heigth: 184px;
 }
 
 .deck__veiled {
   position: absolute;
-  right: 20px;
+  right: 50px;
 }
 
 .deck__top {
   position: absolute;
-  right: 19px;
+  right: 49px;
   width: 120px;
   heigth: 184px;
-  opacity: 0.01;
+  opacity: 0;
+}
+
+.hand__playa{
+  position: fixed;
+  bottom: 20px;
+  left: 40px;
+  width: 120px;
+  heigth: 190px;
+  opacity: 0;
 }
