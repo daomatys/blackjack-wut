@@ -30,15 +30,24 @@ export default class Table {
     
     this.incrust( newCard, 'playahand' );
     
-    newCard.elem.style.left = newCardCoords.left;
-    newCard.elem.style.top = newCardCoords.top;
+    Object.assign( newCard.elem.style, {
+      left: newCardCoords.left,
+      top: newCardCoords.top,
+      transform: 
+        `translate(
+          ${ this.deck.handSub('playa').getBoundingClientRect().left - parseInt( newCardCoords.left, 10 )  + 'px' },
+          ${ this.deck.handSub('playa').getBoundingClientRect().top - parseInt( newCardCoords.top, 10 ) + 'px' }
+        )`
+    });
   }
   
   eventListeners() {
     
     this.deck
       .elem
-      .addEventListener('card-placed', ({ detail: data }) => this.setNewPlayerCard( data ));
+      .addEventListener(
+        'card-placed', 
+        ({ detail: data }) => this.setNewPlayerCard( data )
+      );
   }
-  
 }
