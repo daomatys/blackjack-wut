@@ -22,7 +22,7 @@ export default class Card {
   }
   
   events() {
-    this.elem.onclick = () => this.elem.querySelector('.card__title').classList.toggle('visible');
     this.elem.ondragstart = () => false;
+    this.elem.onclick = () => this.elem.querySelector('.card__title').classList.toggle('visible');
   }
 }

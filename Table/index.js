@@ -18,6 +18,15 @@ export default class Table {
     this.incrust( this.deck, 'deck' );
   }
   
+  eventListeners() { 
+    this.deck
+      .elem
+      .addEventListener(
+        'card-placed', 
+        ({ detail: data }) => this.setNewPlayerCard( data )
+      );
+  }
+  
   setNewPlayerCard( newCardCoords ) {
     let i = this.getRandomInt( this.deck.cards.length );
     
@@ -35,19 +44,9 @@ export default class Table {
       top: newCardCoords.top,
       transform: 
         `translate(
-          ${ this.deck.handSub('playa').getBoundingClientRect().left - parseInt( newCardCoords.left, 10 )  + 'px' },
+          ${ this.deck.handSub('playa').getBoundingClientRect().left - parseInt( newCardCoords.left, 10 ) + 'px' },
           ${ this.deck.handSub('playa').getBoundingClientRect().top - parseInt( newCardCoords.top, 10 ) + 'px' }
         )`
     });
-  }
-  
-  eventListeners() {
-    
-    this.deck
-      .elem
-      .addEventListener(
-        'card-placed', 
-        ({ detail: data }) => this.setNewPlayerCard( data )
-      );
   }
 }
