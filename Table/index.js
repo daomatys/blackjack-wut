@@ -10,10 +10,6 @@ export default class Table {
     this.eventListeners();
   }
   
-  getRandomInt = num => Math.floor( Math.random() * Math.floor( num ) );
-  
-  incrust = ( block, suffix ) => document.querySelector(`[data-${ suffix }-holder]`).append( block.elem );
-  
   render() {
     this.incrust( this.deck, 'deck' );
   }
@@ -49,4 +45,9 @@ export default class Table {
         )`
     });
   }
+  
+  getRandomInt = num => Math.floor( Math.random() * Math.floor( num ) );
+  
+  incrust = ( block, suffix ) => document.querySelector(`[data-${ suffix }-holder]`).append( block.elem );
+  
 }

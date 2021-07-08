@@ -17,10 +17,10 @@ export default class Deck {
     return `
       <div class="deck">
         <div class="deck__veiled">
-          <img src="/assets/cards/back_red_deck.png" width="126px">
+          <img src="/assets/cards/back_red_deck.png">
         </div>
         <div class="deck__top">
-          <img src="/assets/cards/back_red.png" width="120px">
+          <img src="/assets/cards/back_red.png">
         </div>
       </div>`;
   }
@@ -30,7 +30,7 @@ export default class Deck {
       <div class="hand">
         <div class="hand__robot"></div>
         <div class="hand__playa">
-          <img src="/assets/cards/glowing_frame.png" width="120px">
+          <img src="/assets/cards/glowing_frame.png">
         </div>
       </div>`;
   }
