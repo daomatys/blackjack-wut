@@ -37,14 +37,13 @@ export default class Table {
   }
   
   getNewCard() {
-    let i = this.getRandomInt( this.deck.cards.length );
+    const i = this.getRandomInt( this.deck.cards.length );
     
-    while ( this.deck.cards[i].drawn === true ) 
-      i = this.getRandomInt( this.deck.cards.length );
+    const card = new Card( this.deck.cards[i] );
     
-    this.deck.cards[i].drawn = true;
+    this.deck.cards.splice(i, 1);
     
-    return new Card( this.deck.cards[i] );
+    return card;
   }
   
   setNewPlayerCard( cardCoords ) {
@@ -64,6 +63,7 @@ export default class Table {
     card.elem.onclick = () => card.elem.querySelector('.card__title').classList.toggle('visible');
     
     this.handPlayerValue += this.getCardValue( card.rank, this.handPlayerValue );
+    console.log(this.handPlayerValue)
   }
   
   setNewDealerCard() {
@@ -83,13 +83,17 @@ export default class Table {
     if ( this.dealerCardsCount++ === 0 ) card.elem.querySelector('.card__title').classList.add('visible');
     
     this.handDealerValue += this.getCardValue( card.rank, this.handDealerValue );
+    console.log(this.handDealerValue)
   }
   
   getCardValue( rank, currentValue ) {
     if ( typeof(rank) === 'number' ) return rank;
+    
+    if ( rank === 'A' ) {
       
-    if ( rank === 'A' ) return currentValue < 22 ? 11 : 1 ;
-      
+      return currentValue + 11 < 22 ? 11 : 1 ;
+    }
+    
     return 10;
   }
   
@@ -98,5 +102,4 @@ export default class Table {
   getRandomInt = num => Math.floor( Math.random() * Math.floor( num ) );
   
   incrust = ( block, suffix ) => document.querySelector(`[data-${ suffix }-holder]`).append( block );
-  
 }
