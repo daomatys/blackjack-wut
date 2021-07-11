@@ -58,10 +58,9 @@ export default class Table {
         translate(
           ${ 60 * ( this.deck.playerCardsCount + 1 ) - parseInt( cardCoords.left, 10 ) + 'px' },
           ${ document.querySelector('.hand__player').getBoundingClientRect().top - parseInt( cardCoords.top, 10 ) + 9 + 'px' }
-        )`
+        )
+        rotateY(-180deg)`
     });
-    card.elem.onclick = () => card.elem.querySelector('.card__title').classList.toggle('visible');
-    
     this.handPlayerValue += this.getCardValue( card.rank, this.handPlayerValue );
     console.log(this.handPlayerValue)
   }
@@ -80,7 +79,7 @@ export default class Table {
           ${ this.getRect('.hand__dealer').top - this.deck.deckSub('veiled').getBoundingClientRect().top + 16 + 'px' }
         )`
     });
-    if ( this.dealerCardsCount++ === 0 ) card.elem.querySelector('.card__title').classList.add('visible');
+    if ( this.dealerCardsCount++ === 0 ) card.elem.style.transform += 'rotateY(-180deg)';
     
     this.handDealerValue += this.getCardValue( card.rank, this.handDealerValue );
     console.log(this.handDealerValue)
@@ -89,10 +88,7 @@ export default class Table {
   getCardValue( rank, currentValue ) {
     if ( typeof(rank) === 'number' ) return rank;
     
-    if ( rank === 'A' ) {
-      
-      return currentValue + 11 < 22 ? 11 : 1 ;
-    }
+    if ( rank === 'A' ) return currentValue + 11 < 22 ? 11 : 1 ;
     
     return 10;
   }
