@@ -9,12 +9,17 @@ export default class Table {
     this.render();
   }
   
-  async render() {
+  render() {
+    document
+      .querySelectorAll('.hand')
+      .forEach(item => item.ondragstart = () => false);
+    
     this.dealerCardsCount = 0;
     
     this.incrust( this.deck.elem, 'deck' );
-    await window.setTimeout( this.setNewDealerCard(), 1000 );
-    await window.setTimeout( this.setNewDealerCard(), 1000 );
+    
+    this.setNewDealerCard()
+    this.setNewDealerCard()
     
     this.eventListeners();
   }
@@ -71,6 +76,10 @@ export default class Table {
         )`
     });
     if ( this.dealerCardsCount++ === 0 ) card.elem.querySelector('.card__title').classList.add('visible');
+  }
+  
+  checkHandValues() {
+    
   }
   
   getRect = sel => document.querySelector( sel ).getBoundingClientRect()

@@ -13,12 +13,10 @@
 
 .card__back {
   position: fixed;
-  z-index: 19;
 }
 
 .card__title {
   position: fixed;
-  z-index: 20;
   opacity: 0;
 }
 
