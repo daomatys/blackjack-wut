@@ -6,15 +6,18 @@ export default class Table {
   constructor() {
     this.deck = new Deck();
     
-    this.render();
+    this.gameInit();
   }
   
-  render() {
+  gameInit() {
     document
       .querySelectorAll('.hand')
       .forEach(item => item.ondragstart = () => false);
     
     this.dealerCardsCount = 0;
+    
+    this.handDealerValue = 0;
+    this.handPlayerValue = 0;
     
     this.incrust( this.deck.elem, 'deck' );
     
@@ -59,6 +62,8 @@ export default class Table {
         )`
     });
     card.elem.onclick = () => card.elem.querySelector('.card__title').classList.toggle('visible');
+    
+    this.handPlayerValue += this.getCardValue( card.rank, this.handPlayerValue );
   }
   
   setNewDealerCard() {
@@ -76,10 +81,16 @@ export default class Table {
         )`
     });
     if ( this.dealerCardsCount++ === 0 ) card.elem.querySelector('.card__title').classList.add('visible');
+    
+    this.handDealerValue += this.getCardValue( card.rank, this.handDealerValue );
   }
   
-  checkHandValues() {
-    
+  getCardValue( rank, currentValue ) {
+    if ( typeof(rank) === 'number' ) return rank;
+      
+    if ( rank === 'A' ) return currentValue < 22 ? 11 : 1 ;
+      
+    return 10;
   }
   
   getRect = sel => document.querySelector( sel ).getBoundingClientRect()

@@ -3,6 +3,8 @@ export default class Card {
   constructor(card) {
     this.card = card;
     
+    this.rank = card.rank;
+    
     this.elem = document.createElement('div');
     this.elem.classList.add('card');
     this.elem.insertAdjacentHTML('afterbegin', this.layout());
