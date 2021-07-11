@@ -3,47 +3,33 @@ export default class Deck {
   constructor() {
     this.elem = document.createElement('div');
     this.elem.classList.add('deck');
-    this.elem.insertAdjacentHTML('afterbegin', this.layoutHands() + this.layoutDeck());
+    this.elem.insertAdjacentHTML('afterbegin', this.layoutDeck());
     
     this.playerCardsCount = 0;
     
     this.deckFill();
-    this.deckLocation();
+    this.deckInitLocation();
     
     this.drawTopCard();
   }
   
   layoutDeck() {
     return `
-      <div class="deck">
-        <div class="deck__veiled">
-          <img src="/assets/cards/back_red_deck.png">
-        </div>
-        <div class="deck__top">
-          <img src="/assets/cards/back_red.png">
-        </div>
-      </div>`;
-  }
-  
-  layoutHands() {
-    return `
-      <div class="hand">
-        <div class="hand__robot"></div>
-        <div class="hand__playa">
-          <img src="/assets/cards/glowing_frame.png">
-        </div>
+      <div class="deck__veiled">
+        <img src="/assets/cards/back_red_deck.png">
+      </div>
+      <div class="deck__top">
+        <img src="/assets/cards/back_red.png">
       </div>`;
   }
   
   deckSub = suffix => this.elem.querySelector(`.deck__${ suffix }`);
   
-  handSub = suffix => this.elem.querySelector(`.hand__${ suffix }`);
-  
   deckFill() {
     this.cards = [];
     
     // (C)lubs (D)iamonds (H)earts (S)pades (4)
-    // 2 3 4 5 6 7 8 9 10 J Q K A (13)
+    // A 2 3 4 5 6 7 8 9 10 J Q K (13)
     
     const ranks = [ 'A', 2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K' ];
     const suits = [ 'C', 'D', 'H', 'S' ];
@@ -53,17 +39,33 @@ export default class Deck {
         this.cards.push({
           rank: rank,
           suit: suit,
-          drawn: false
         });
       }
     }
   }
   
-  deckLocation() {
-    const top = document.documentElement.clientHeight / 2 - 100;
+  deckInitVeiled() {
+    Object.assign( this.deckSub('veiled').style, {
+      top: this.clientCenterHeight - 96 + 'px',
+      right: this.clientCenterWidth - 69 + 'px'
+    });
+  }
+  
+  deckInitTop() {
+    Object.assign( this.deckSub('top').style, {
+      top: this.clientCenterHeight - 97 + 'px',
+      left: '',
+      right: this.clientCenterWidth - 70 + 'px',
+      opacity: 0
+    });
+  }
+  
+  deckInitLocation() {
+    this.clientCenterHeight = document.documentElement.clientHeight / 2;
+    this.clientCenterWidth = document.documentElement.clientWidth / 2;
     
-    this.deckSub('veiled').style.top = top + 'px';
-    this.deckSub('top').style.top = top - 1 + 'px';
+    this.deckInitVeiled();
+    this.deckInitTop();
   }
   
   drawTopCard() {
@@ -76,7 +78,6 @@ export default class Deck {
     event.preventDefault();
     
     this.deckSub('top').style.opacity = 1;
-    this.handSub('playa').style.opacity = 1;
     
     this.shiftX = event.clientX - this.deckSub('top').getBoundingClientRect().left;
     this.shiftY = event.clientY - this.deckSub('top').getBoundingClientRect().top;
@@ -95,8 +96,6 @@ export default class Deck {
   }
   
   onPointerUp = event => {
-    this.handSub('playa').style.opacity = 0;
-    
     document.removeEventListener('pointermove', this.onPointerMove);
     document.removeEventListener('pointerup', this.onPointerUp);
     
@@ -104,26 +103,17 @@ export default class Deck {
     const elementBelow = document.elementFromPoint(event.clientX, event.clientY);
     this.deckSub('top').hidden = false;
     
-    if ( elementBelow.closest('.hand__playa') ) this.cardPlaced();
+    if ( elementBelow.closest('.hand__player') ) this.cardPlaced();
   }
   
   cardPlaced() {
     this.dispatchCustomEvent();
     
-    Object.assign( this.deckSub('top').style, {
-      left: '',
-      right: '49px',
-      top: document.documentElement.clientHeight / 2 - 100 + 'px',
-      opacity: 0
-    });
+    this.deckInitTop();
     
-    if ( 1 + this.playerCardsCount < 8 ) {
-      this.playerCardsCount++;
-      this.handSub('playa').style.left = 60 * ( this.playerCardsCount + 1 ) + 'px';
-    } else {
-      this.handSub('playa').remove();
-      this.deckSub('top').remove();
-    }
+    this.playerCardsCount > 6
+      ? this.deckSub('top').remove()
+      : this.playerCardsCount++;
   }
   
   dispatchCustomEvent() {

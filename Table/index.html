@@ -5,17 +5,25 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   
-  <title>CARD</title>
+  <title>TABLE</title>
   
   <link rel="stylesheet" href="./all.css">
 </head>
 
 <body>
-  <div class="container" data-robothand-holder></div>
+  <div data-hand-dealer-holder>
+    <div class="hand__dealer">
+      <img src="/assets/hand_zone.png">
+    </div>
+  </div>
   
-  <div class="container" data-deck-holder></div>
+  <div data-deck-holder></div>
   
-  <div class="container" data-playahand-holder></div>
+  <div data-hand-player-holder>
+    <div class="hand__player">
+      <img src="/assets/hand_zone.png">
+    </div>
+  </div>
   
   <script type="module">
     import Table from './index.js';

@@ -7,7 +7,7 @@ export default class Card {
     this.elem.classList.add('card');
     this.elem.insertAdjacentHTML('afterbegin', this.layout());
     
-    this.events();
+    this.elem.ondragstart = () => false;
   }
   
   layout() {
@@ -19,10 +19,5 @@ export default class Card {
         <img src="/assets/cards/${ this.card.rank + this.card.suit }.png">
       </div>
     `;
-  }
-  
-  events() {
-    this.elem.ondragstart = () => false;
-    this.elem.onclick = () => this.elem.querySelector('.card__title').classList.toggle('visible');
   }
 }

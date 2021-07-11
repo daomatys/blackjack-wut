@@ -1,11 +1,10 @@
 .deck {
   width: 120px;
-  heigth: 184px;
+  height: 184px;
 }
 
 .deck__veiled {
   position: absolute;
-  right: 50px;
 }
 
 .deck__veiled img {
@@ -14,25 +13,25 @@
 
 .deck__top {
   position: absolute;
-  right: 49px;
   width: 120px;
-  heigth: 184px;
-  opacity: 0;
+  z-index: 30;
 }
 
 .deck__top img {
   width: 120px;
 }
 
-.hand img {
-  width: 120px;
+
+.hand__dealer{
+  position: absolute;
+  top: 20px;
+  right: 53px;
+  transform: rotate(0.5turn);
 }
 
-.hand__playa{
-  position: fixed;
+.hand__player{
+  position: absolute;
   bottom: 20px;
-  left: 60px;
-  width: 120px;
-  heigth: 190px;
-  opacity: 0;
+  left: 53px;
 }
+
