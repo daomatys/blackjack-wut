@@ -1,0 +1,5 @@
+body {
+  background-image: url("/assets/table_texture.png");
+  user-select: none;
+  overflow: hidden;
+}
