@@ -1,9 +1,8 @@
 export default class Card {
   
   constructor(card) {
-    this.card = card;
-    
     this.rank = card.rank;
+    this.suit = card.suit;
     
     this.elem = document.createElement('div');
     this.elem.classList.add('card');
@@ -15,7 +14,7 @@ export default class Card {
   layout() {
     return `
       <div class="card__title">
-        <img src="/assets/cards/${ this.card.rank + this.card.suit }.png">
+        <img src="/assets/cards/${ this.rank + this.suit }.png">
       </div>
       <div class="card__back">
         <img src="/assets/cards/back_red.png">

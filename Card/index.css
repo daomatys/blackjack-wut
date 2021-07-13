@@ -1,7 +1,7 @@
 .card {
   position: absolute;
   width: 120px;
-  height: 183px;
+  height: 184px;
   z-index: 18;
   text-decoration: none;
   transition: all 0.6s ease;

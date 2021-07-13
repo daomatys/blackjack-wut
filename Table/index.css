@@ -1,25 +1,50 @@
 html {
   user-select: none;
   overflow: hidden;
-}
-
-body {
-  background-image: url("/assets/table_texture.png");
   margin: 0;
 }
 
+body {
+  position: relative;
+  background-image: url("/assets/table_texture.png");
+  box-sizing: border-box;
+  margin: 0;
+}
+
+html, body {
+  height: 100%;
+}
+
 .hand {
-  position: absolute;
+  position: fixed;
+  width: 554px;
   height: 202px;
 }
 
-#zone-dealer{
+.holder {
+  position: absolute;
+  left: 7px;
+  top: 9px;
+  height: 184px;
+  width: 540px;
+}
+
+[data-zone-dealer] {
   top: 20px;
   right: 53px;
   transform: rotate(0.5turn);
 }
 
-#zone-player{
+[data-zone-player] {
   bottom: 20px;
   left: 53px;
+}
+
+[data-zone-deck] {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 135px;
+  height: 200px;
 }

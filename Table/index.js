@@ -15,7 +15,7 @@ export default class Table {
     this.playerCardsCount = 0;
     this.playerCardsValue = 0;
     
-    this.incrust( this.deck.elem, 'deck' );
+    document.querySelector('[data-zone-deck]').append( this.deck.elem );
     
     this.setNewCard();
     
@@ -32,26 +32,26 @@ export default class Table {
   }
   
   setNewDraggedCard( data ) {
-    const card = data.card;
+    document.querySelector('.hand__player').append( data.card.elem );
+    
+    this.playerCardsCount < 7
+      ? this.playerCardsCount++
+      : this.deck.sub('top').removeEventListener('pointerdown', this.deck.onPointerDown);
   }
   
   setNewCard() {
     const card = this.deck.topCardData();
     
-    this.playerCardsCount > 6
-      ? this.sub('top').remove()
-      : this.playerCardsCount++;
   }
   
-  getCardValue( rank, currentValue ) {
-    if ( typeof(rank) === 'number' ) return rank;
+  getCardValue( card, currentValue ) {
+    if ( typeof( card.rank ) === 'number' ) return card.rank;
     
-    if ( rank === 'A' ) return currentValue + 11 < 22 ? 11 : 1 ;
+    if ( card.rank === 'A' ) return currentValue + 11 < 22 ? 11 : 1 ;
     
     return 10;
   }
   
-  getRect = sel => document.querySelector( sel ).getBoundingClientRect()
+  getRect = sel => document.querySelector( sel ).getBoundingClientRect();
   
-  incrust = ( block, suffix ) => document.querySelector(`#zone-${ suffix }`).append( block );
 }

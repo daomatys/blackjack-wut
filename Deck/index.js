@@ -40,16 +40,16 @@ export default class Deck {
   }
   
   topCardDrawEvents() {
-    this.sub('top').addEventListener('pointerdown', this.onPointerDown);
+    this.elem.querySelector('.deck__top').addEventListener('pointerdown', this.onPointerDown);
   }
   
   onPointerDown = event => {
     event.preventDefault();
     
-    this.sub('top').style.opacity = 1;
-    
     this.shiftX = event.clientX - this.sub('top').getBoundingClientRect().left;
     this.shiftY = event.clientY - this.sub('top').getBoundingClientRect().top;
+    
+    document.body.append( this.sub('top') );
     
     document.addEventListener('pointermove', this.onPointerMove);
     document.addEventListener('pointerup', this.onPointerUp);
@@ -59,6 +59,7 @@ export default class Deck {
     event.preventDefault();
     
     Object.assign( this.sub('top').style, {
+      opacity: 1,
       top: event.pageY - this.shiftY + 'px',
       left: event.pageX - this.shiftX + 'px',
     });
@@ -69,10 +70,10 @@ export default class Deck {
     document.removeEventListener('pointerup', this.onPointerUp);
     
     this.sub('top').hidden = true;
-    const elementBelow = document.elementFromPoint(event.clientX, event.clientY);
+    const elementBelow = document.elementFromPoint( event.clientX, event.clientY );
     this.sub('top').hidden = false;
     
-    if ( elementBelow.closest('#zone-player') ) this.topCardPlaced();
+    if ( elementBelow.closest('[data-zone-player]') ) this.topCardPlaced();
   }
   
   topCardPlaced() {
@@ -84,6 +85,8 @@ export default class Deck {
       },
       bubbles: true
     }));
+    
+    this.elem.append( this.sub('top') );
     
     this.sub('top').style = 'opacity: 0';
   }
@@ -98,5 +101,5 @@ export default class Deck {
     return card;
   }
   
-  sub = suffix => this.elem.querySelector(`.deck__${ suffix }`);
+  sub = suffix => document.querySelector(`.deck__${ suffix }`);
 }
