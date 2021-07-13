@@ -1,5 +1,25 @@
-body {
-  background-image: url("/assets/table_texture.png");
+html {
   user-select: none;
   overflow: hidden;
+}
+
+body {
+  background-image: url("/assets/table_texture.png");
+  margin: 0;
+}
+
+.hand {
+  position: absolute;
+  height: 202px;
+}
+
+#zone-dealer{
+  top: 20px;
+  right: 53px;
+  transform: rotate(0.5turn);
+}
+
+#zone-player{
+  bottom: 20px;
+  left: 53px;
 }

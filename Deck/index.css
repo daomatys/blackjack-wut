@@ -15,23 +15,9 @@
   position: absolute;
   width: 120px;
   z-index: 30;
+  opacity: 0;
 }
 
 .deck__top img {
   width: 120px;
 }
-
-
-.hand__dealer{
-  position: absolute;
-  top: 20px;
-  right: 53px;
-  transform: rotate(0.5turn);
-}
-
-.hand__player{
-  position: absolute;
-  bottom: 20px;
-  left: 53px;
-}
-

@@ -11,19 +11,19 @@
 </head>
 
 <body>
-  <div class="hand" data-hand-dealer-holder>
-    <div class="hand__dealer">
-      <img src="/assets/hand_zone.png">
-    </div>
+  <div class="hand" id="zone-dealer">
+    <img src="/assets/zone_hand.png">
+    <div class="hand__dealer"></div>
   </div>
   
-  <div class="hand" data-hand-player-holder>
-    <div class="hand__player">
-      <img src="/assets/hand_zone.png">
-    </div>
+  <div class="hand" id="zone-player">
+    <img src="/assets/zone_hand.png">
+    <div class="hand__player"></div>
   </div>
   
-  <div data-deck-holder></div>
+  <div id="zone-deck">
+    <img src="/assets/zone_deck.png">
+  </div>
   
   <script type="module">
     import Table from './index.js';

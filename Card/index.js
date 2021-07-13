@@ -19,7 +19,6 @@ export default class Card {
       </div>
       <div class="card__back">
         <img src="/assets/cards/back_red.png">
-      </div>
-    `;
+      </div>`;
   }
 }
