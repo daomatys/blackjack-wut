@@ -1,13 +1,14 @@
 .deck {
   position: fixed;
-  left: 8px;
-  top: 2px;
-  width: 120px;
-  height: 184px;
+  top: 0px;
+  width: 135px;
+  height: 200px;
 }
 
 .deck__veiled {
   position: fixed;
+  top: 2px;
+  right: 1px;
 }
 
 .deck__veiled img {
@@ -16,6 +17,8 @@
 
 .deck__top {
   position: fixed;
+  top: 1px;
+  right: 1px;
   width: 120px;
   height: 184px;
   z-index: 30;
