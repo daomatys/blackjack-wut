@@ -41,7 +41,7 @@ export default class Table {
       top: ( parseInt( data.top ) - this.getRect('.hand__player').top + 1 + 'px' )
     });
     
-    const shiftX = - parseInt( cardStyle.left, 10 ) + 60 * this.playerCardsCount + 'px' ;
+    const shiftX = - parseInt( cardStyle.left, 10 ) + this.playerCardsCount * 60 + 'px' ;
     const shiftY = - parseInt( cardStyle.top, 10 ) + 'px'
     
     cardStyle.transform = `
