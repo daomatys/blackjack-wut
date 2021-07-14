@@ -34,6 +34,15 @@ export default class Table {
   setNewDraggedCard( data ) {
     document.querySelector('.hand__player').append( data.card.elem );
     
+    const x = this.getRect('.hand__player').left * ( this.playerCardsCount + 1 ) - parseInt( data.left, 10 ) + 'px' ;
+    
+    Object.assign( data.card.elem.style, {
+      left: ( parseInt( data.left ) - this.getRect('.hand__player').left + 1 + 'px' ),
+      top: ( parseInt( data.top ) - this.getRect('.hand__player').top + 1 + 'px' ),
+    });
+    
+    console.log(x)
+    
     this.playerCardsCount < 7
       ? this.playerCardsCount++
       : this.deck.sub('top').removeEventListener('pointerdown', this.deck.onPointerDown);

@@ -16,7 +16,7 @@
 }
 
 .deck__top {
-  position: fixed;
+  position: absolute;
   top: 1px;
   right: 1px;
   width: 120px;

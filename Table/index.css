@@ -20,7 +20,7 @@ img {
 }
 
 .hand {
-  position: fixed;
+  position: absolute;
   width: 554px;
   height: 202px;
 }
