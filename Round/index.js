@@ -16,8 +16,6 @@ export default class Round {
     this.playerCardsValue = 0;
     
     this.initListeners();
-    
-    this.firstAutodraw();
   }
   
   initListeners() {
@@ -53,12 +51,16 @@ export default class Round {
     
     this.cardAnimation( cardStyle, shiftX, shiftY, false );
     
+    this.playerCardsCount < 2
+      ? this.setNewDealerCard()
+      : null;
+    
     this.playerCardsCount < 7
       ? this.playerCardsCount++
       : this.deck.sub('top').removeEventListener('pointerdown', this.deck.onPointerDown);
   }
   
-  setNewDealerCard( ) {
+  setNewDealerCard() {
     const card = this.deck.topCardData();
     
     document.querySelector(`.hand__dealer`).append( card.elem );
@@ -90,7 +92,4 @@ export default class Round {
   
   getRect = sel => document.querySelector( sel ).getBoundingClientRect();
   
-  firstAutodraw() {
-    for (let i = 0; i < 2; i++) this.setNewDealerCard();
-  }
 }

@@ -52,3 +52,12 @@ img {
   width: 135px;
   height: 200px;
 }
+
+[data-panel] {
+  position: absolute;
+  right: 30px;
+  bottom: 0px;
+  margin: 0;
+  padding: 0;
+  height: 116px;
+}
