@@ -4,7 +4,7 @@
   height: 184px;
   z-index: 18;
   text-decoration: none;
-  transition: all .7s ease;
+  transition: all .8s ease;
   transform: perspective(500px);
   transform-style: preserve-3d;
 }

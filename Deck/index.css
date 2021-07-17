@@ -1,27 +1,28 @@
 .deck {
-  position: fixed;
+  position: absolute;
   top: 0px;
   width: 135px;
   height: 200px;
 }
 
 .deck__veiled {
-  position: fixed;
+  position: absolute;
   top: 2px;
   right: 1px;
 }
 
 .deck__veiled img {
   width: 126px;
+  z-index: 17;
 }
 
 .deck__top {
   position: absolute;
+  z-index: 18;
   top: 1px;
   right: 1px;
   width: 120px;
   height: 184px;
-  z-index: 30;
   opacity: 0;
 }
 

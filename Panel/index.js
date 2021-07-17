@@ -46,16 +46,13 @@ export default class Panel {
   onClick = ({target}) => { if ( target.closest('button') ) buttonProcesses( target.closest('button') ); }
 
   buttonProcesses( aim ) {
-    if ( aim.dataset.check ) this.check();
+    if ( aim.dataset.check ) this.elem.dispatchEvent( new CustomEvent('check', { bubbles: true } ) );
     
-    if ( aim.dataset.doubled ) this.doubled();
+    if ( aim.dataset.doubled ) this.elem.dispatchEvent( new CustomEvent('doubled', { bubbles: true } ) );
     
-    if ( aim.dataset.split ) this.split();
+    if ( aim.dataset.split ) this.elem.dispatchEvent( new CustomEvent('split', { bubbles: true } ) );
     
-    if ( aim.dataset.hover ) this.hover();
+    if ( aim.dataset.hover ) this.elem.dispatchEvent( new CustomEvent('hover', { bubbles: true } ) );
   }
   
-  check() {
-    
-  }
 }

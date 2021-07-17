@@ -9,8 +9,6 @@ export default class Round {
   }
   
   initRound() {
-    this.clearListeners();
-    
     this.dealerCardsCount = 0;
     this.dealerCardsValue = 0;
     
@@ -22,22 +20,15 @@ export default class Round {
     this.firstAutodraw();
   }
   
-  clearListeners() {
-    this.deck
-      .elem
-      .removeEventListener(
-        'card-placed',
-        ({ detail: data }) => this.setNewPlayerCard( data )
-      );
-  }
-  
   initListeners() {
-    this.deck
-      .elem
-      .addEventListener(
-        'card-placed',
-        ({ detail: data }) => this.setNewPlayerCard( data )
-      );
+    this.deck.elem.addEventListener(
+      'card-placed',
+      ({ detail: data }) => this.setNewPlayerCard( data )
+    );
+    document.body.addEventListener('check', this.panelButtonCheck);
+    document.body.addEventListener('doubled', this.panelButtonDoubled);
+    document.body.addEventListener('split', this.panelButtonSplit);
+    document.body.addEventListener('hover', this.panelButtonHover);
   }
   
   cardAnimation( cardStyle, shiftX, shiftY, noturn ) {
@@ -57,8 +48,8 @@ export default class Round {
       top: parseInt( data.top ) - this.getRect('.hand__player').top + 1 + 'px'
     });
     
-    const shiftX = - parseInt( cardStyle.left, 10 ) + this.playerCardsCount * 60 + 'px';
-    const shiftY = - parseInt( cardStyle.top, 10 ) + 'px';
+    const shiftX = -parseInt( cardStyle.left, 10 ) + this.playerCardsCount * 60 + 'px';
+    const shiftY = -parseInt( cardStyle.top, 10 ) + 'px';
     
     this.cardAnimation( cardStyle, shiftX, shiftY, false );
     
@@ -81,8 +72,8 @@ export default class Round {
       top: cardStyleTop
     });
     
-    const shiftX = - parseInt( cardStyleRight, 10 ) + this.dealerCardsCount * 60 + 'px';
-    const shiftY = - parseInt( cardStyleTop, 10 ) + 'px';
+    const shiftX = -parseInt( cardStyleRight, 10 ) + this.dealerCardsCount * 60 + 'px';
+    const shiftY = -parseInt( cardStyleTop, 10 ) + 'px';
     
     this.cardAnimation( cardStyle, shiftX, shiftY, this.dealerCardsCount === 0 ? false : true );
     
