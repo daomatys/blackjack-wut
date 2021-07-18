@@ -5,7 +5,7 @@ export default class Panel {
     this.elem.classList.add('panel');
     this.elem.insertAdjacentHTML('afterbegin', this.layout());
     
-    this.elem.addEventListener('click', this.onClick);
+    this.elem.addEventListener('pointerdown', this.onPointerDown);
   }
   
   layout() {
@@ -14,11 +14,8 @@ export default class Panel {
     
     const layoutPanelButtons = buttons
       .map( suffix => `
-        <div class="panel__button-${ suffix }>
-          <button type="button" data-${ suffix }>
-            <img src="/assets/buttons/button_${ suffix }_on.png">
-            <img src="/assets/buttons/button_${ suffix }_off.png">
-          </button>
+        <div class="clicker ${ suffix }">
+          <img src="/assets/buttons/button_${ suffix }_off.png">
         </div>`)
       .join('');
       
@@ -32,31 +29,62 @@ export default class Panel {
       .join('');
     
     return `
-      <img src="/assets/panel.png">
-      
       <div class="panel__buttons">
       ${ layoutPanelButtons }
       </div>
       
-      <div class="panel__chip-machine>
+      <div class="panel__chip-machine">
       ${ layoutChipMachine }
       </div>`;
   }
   
-  onClick = ({target}) => { if ( target.closest('button') ) buttonProcesses( target.closest('button') ); }
+  onPointerDown = ({target}) => {
+    const aim = target.closest('.clicker');
+    
+    if ( aim ) this.buttonProcesses( aim ); 
+  }
 
   buttonProcesses( aim ) {
-    if ( aim.dataset.check ) this.elem.dispatchEvent( new CustomEvent('check', { bubbles: true } ) );
-    
-    if ( aim.dataset.doubled ) this.elem.dispatchEvent( new CustomEvent('doubled', { bubbles: true } ) );
-    
-    if ( aim.dataset.split ) this.elem.dispatchEvent( new CustomEvent('split', { bubbles: true } ) );
-    
-    if ( aim.dataset.hover ) this.elem.dispatchEvent( new CustomEvent('hover', { bubbles: true } ) );
+    if ( aim.classList.contains('check') ) this.check( aim );
+    if ( aim.classList.contains('doubled') ) this.doubled( aim );
+    if ( aim.classList.contains('split') ) this.split( aim );
+    if ( aim.classList.contains('hover') ) this.hover( aim );
   }
   
-  buttonConditions() {
+  check( aim ) {
+    this.setCommonBehavior( aim, 'check' );
     
+    this.elem.dispatchEvent( new CustomEvent('check', { bubbles: true }) );
+  }
+  
+  doubled( aim ) {
+    this.setCommonBehavior( aim, 'doubled' );
+    
+    this.elem.dispatchEvent( new CustomEvent('doubled', { bubbles: true }) );
+  }
+  
+  split( aim ) {
+    this.setToggleBehavior( aim, 'split' );
+    
+    this.elem.dispatchEvent( new CustomEvent('split', { bubbles: true }) );
+  }
+  
+  hover( aim ) {
+    this.setToggleBehavior( aim, 'hover' );
+    
+    this.elem.dispatchEvent( new CustomEvent('hover', { bubbles: true }) );
+  }
+  
+  setCommonBehavior( btn, suffix ) {
+    btn.onpointerdown = () => btn.firstChild.src = "/assets/buttons/button_${ suffix }_on";
+    btn.onpointerup = () => btn.firstChild.src = "/assets/buttons/button_${ suffix }_off";
+  }
+  
+  setToggleBehavior( btn, suffix ) {
+    btn.onclick = () => btn.firstChild.src = 
+      btn.firstChild.src === "/assets/buttons/button_${ suffix }_on"
+        ? "/assets/buttons/button_${ suffix }_off"
+        : "/assets/buttons/button_${ suffix }_on";
   }
   
 }

@@ -15,9 +15,9 @@ export default class Round {
     this.playerCardsCount = 0;
     this.playerCardsValue = 0;
     
-    this.initListeners();
+    this.splitModeState = false;
     
-    this.splitLeverState = false;
+    this.initListeners();
   }
   
   initListeners() {
@@ -29,13 +29,6 @@ export default class Round {
     document.body.addEventListener('doubled', this.panelButtonDoubled);
     document.body.addEventListener('split', this.panelButtonSplit);
     document.body.addEventListener('hover', this.panelButtonHover);
-  }
-  
-  cardMovement( cardStyle, shiftX, shiftY ) {
-    cardStyle.transform = `
-      translate( ${ shiftX }, ${ shiftY } )
-      rotateY( -0.5turn )
-    `;
   }
   
   modeSplit( data ) {
@@ -54,7 +47,7 @@ export default class Round {
     const shiftX = -parseInt( cardStyle.left, 10 ) + this.playerCardsCount * 60 + 'px';
     const shiftY = -parseInt( cardStyle.top, 10 ) + 'px';
     
-    this.cardMovement( cardStyle, shiftX, shiftY );
+    this.newCardMovement( cardStyle, shiftX, shiftY );
     
     this.playerCardsCount < 1
       ? this.newCardForDealer()
@@ -66,7 +59,7 @@ export default class Round {
   }
   
   newCardForPlayer( data ) {
-    this.splitLeverState
+    this.splitModeState
       ? this.modeSplit( data )
       : this.modeNormal( data )
   }
@@ -87,9 +80,16 @@ export default class Round {
     const shiftX = -parseInt( cardStyleRight, 10 ) + this.dealerCardsCount * 60 + 'px';
     const shiftY = -parseInt( cardStyleTop, 10 ) + 'px';
     
-    this.cardMovement( cardStyle, shiftX, shiftY );
+    this.newCardMovement( cardStyle, shiftX, shiftY );
     
     if ( this.dealerCardsCount < 7 ) this.dealerCardsCount++;
+  }
+  
+  newCardMovement( cardStyle, shiftX, shiftY ) {
+    cardStyle.transform = `
+      translate( ${ shiftX }, ${ shiftY } )
+      rotateY( -0.5turn )
+    `;
   }
   
   getCardValue( card, currentValue ) {
@@ -114,7 +114,7 @@ export default class Round {
   }
   
   panelButtonSplit() {
-    this.splitLeverState = true;
+    this.splitModeState = true;
     
     const subHands = `
       <div class="subhand subhand__left"></div>
@@ -122,14 +122,24 @@ export default class Round {
     
     const hand = document.querySelector('.hand__player');
     
-    hand.append( subHands );
+    hand.insertAdjacentHTML('afterbegin', subHands);
     
-    hand.querySelector('.subhand__left').append( hand.firstChild );
+    const cardSplitted = { 
+      left: hand.lastChild.getBoundingClientRect().left, 
+      top: hand.lastChild.getBoundingClientRect().top 
+    };
     hand.querySelector('.subhand__right').append( hand.lastChild );
+    hand.querySelector('.subhand__left').append( hand.lastChild );
     
-    const leftCard = hand.querySelector('.subhand__left').firstChild;
-    const rightCard = hand.querySelector('.subhand__right').firstChild;
+    const rightCard = hand.querySelector('.subhand__right').lastChild;
     
+    Object.assign(rightCard.style, {
+      left: cardSplitted.left,
+      top: cardSplitted.top
+    });
+    
+    const shiftX = 'px';
+    const shiftY = 'px';
     
   }
   
