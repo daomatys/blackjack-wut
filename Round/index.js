@@ -29,10 +29,10 @@ export default class Round {
     document.body.addEventListener('hover', this.panelButtonHover);
   }
   
-  cardAnimation( cardStyle, shiftX, shiftY, noturn ) {
+  cardAnimation( cardStyle, shiftX, shiftY ) {
     cardStyle.transform = `
       translate( ${ shiftX }, ${ shiftY } )
-      ${ !noturn ? 'rotateY( -0.5turn )' : '' }
+      rotateY( -0.5turn )
     `;
   }
   
@@ -42,14 +42,13 @@ export default class Round {
     const cardStyle = data.card.elem.style;
     
     Object.assign( cardStyle, {
-      left: parseInt( data.left ) - this.getRect('.hand__player').left + 1 + 'px',
-      top: parseInt( data.top ) - this.getRect('.hand__player').top + 1 + 'px'
+      left: parseInt( data.left, 10 ) - this.getRect('.hand__player').left + 1 + 'px',
+      top: parseInt( data.top, 10 ) - this.getRect('.hand__player').top + 1 + 'px'
     });
-    
     const shiftX = -parseInt( cardStyle.left, 10 ) + this.playerCardsCount * 60 + 'px';
     const shiftY = -parseInt( cardStyle.top, 10 ) + 'px';
     
-    this.cardAnimation( cardStyle, shiftX, shiftY, false );
+    this.cardAnimation( cardStyle, shiftX, shiftY );
     
     this.playerCardsCount < 2
       ? this.setNewDealerCard()
@@ -73,11 +72,10 @@ export default class Round {
       left: cardStyleRight,
       top: cardStyleTop
     });
-    
     const shiftX = -parseInt( cardStyleRight, 10 ) + this.dealerCardsCount * 60 + 'px';
     const shiftY = -parseInt( cardStyleTop, 10 ) + 'px';
     
-    this.cardAnimation( cardStyle, shiftX, shiftY, this.dealerCardsCount === 0 ? false : true );
+    this.cardAnimation( cardStyle, shiftX, shiftY );
     
     if ( this.dealerCardsCount < 7 ) this.dealerCardsCount++;
   }
@@ -88,6 +86,37 @@ export default class Round {
     if ( card.rank === 'A' ) return currentValue + 11 < 22 ? 11 : 1 ;
     
     return 10;
+  }
+  
+  
+  panelButtonHover() {
+    const cards = document.querySelector('.hand__player').children;
+    
+    console.log(cards)
+    
+    const onHover = ( card ) => {
+      card.style.transform = 'rotateY( -0.5turn )';
+      card.removeEventListener('pointerover', onHover( card ));
+    }
+    for (let card of cards) card.addEventListener('pointerover', onHover( card ));
+  }
+  
+  panelButtonSplit() {
+    const subHands = `
+      <div class="subhand subhand__left"></div>
+      <div class="subhand subhand__right"></div>`;
+    
+    const hand = document.querySelector('.hand__player');
+    
+    hand.append( subHands );
+    
+    hand.querySelector('.subhand__left').append( hand.firstChild );
+    hand.querySelector('.subhand__right').append( hand.lastChild );
+    
+    const leftCard = hand.querySelector('.subhand__left').firstChild;
+    const rightCard = hand.querySelector('.subhand__right').firstChild;
+    
+    
   }
   
   getRect = sel => document.querySelector( sel ).getBoundingClientRect();

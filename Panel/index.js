@@ -55,4 +55,8 @@ export default class Panel {
     if ( aim.dataset.hover ) this.elem.dispatchEvent( new CustomEvent('hover', { bubbles: true } ) );
   }
   
+  buttonConditions() {
+    
+  }
+  
 }

@@ -73,15 +73,16 @@ export default class Deck {
     const elementBelow = document.elementFromPoint( event.clientX, event.clientY );
     this.sub('top').hidden = false;
     
-    if ( elementBelow.closest('.hand__player') ) this.topCardPlaced();
+    if ( elementBelow.closest('.hand__player') ) this.topCardPlaced( elementBelow );
   }
   
-  topCardPlaced() {
+  topCardPlaced( elementBelow ) {
     this.elem.dispatchEvent( new CustomEvent('card-placed', {
       detail: {
         left: this.sub('top').style.left,
         top: this.sub('top').style.top,
-        card: this.topCardData()
+        card: this.topCardData(),
+        below: elementBelow
       },
       bubbles: true
     }));
