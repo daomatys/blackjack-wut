@@ -16,12 +16,14 @@ export default class Round {
     this.playerCardsValue = 0;
     
     this.initListeners();
+    
+    this.splitLeverState = false;
   }
   
   initListeners() {
     this.deck.elem.addEventListener(
       'card-placed',
-      ({ detail: data }) => this.setNewPlayerCard( data )
+      ({ detail: data }) => this.newCardForPlayer( data )
     );
     document.body.addEventListener('check', this.panelButtonCheck);
     document.body.addEventListener('doubled', this.panelButtonDoubled);
@@ -36,7 +38,11 @@ export default class Round {
     `;
   }
   
-  setNewPlayerCard( data ) {
+  modeSplit( data ) {
+    
+  }
+  
+  modeNormal( data ) {
     document.querySelector('.hand__player').append( data.card.elem );
     
     const cardStyle = data.card.elem.style;
@@ -51,7 +57,7 @@ export default class Round {
     this.cardMovement( cardStyle, shiftX, shiftY );
     
     this.playerCardsCount < 1
-      ? this.setNewDealerCard()
+      ? this.newCardForDealer()
       : null;
     
     this.playerCardsCount < 7
@@ -59,7 +65,13 @@ export default class Round {
       : this.deck.sub('top').removeEventListener('pointerdown', this.deck.onPointerDown);
   }
   
-  setNewDealerCard() {
+  newCardForPlayer( data ) {
+    this.splitLeverState
+      ? this.modeSplit( data )
+      : this.modeNormal( data )
+  }
+  
+  newCardForDealer() {
     const card = this.deck.topCardData();
     
     document.querySelector(`.hand__dealer`).append( card.elem );
@@ -102,6 +114,8 @@ export default class Round {
   }
   
   panelButtonSplit() {
+    this.splitLeverState = true;
+    
     const subHands = `
       <div class="subhand subhand__left"></div>
       <div class="subhand subhand__right"></div>`;
