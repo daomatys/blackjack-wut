@@ -73,7 +73,7 @@ export default class Deck {
     const elementBelow = document.elementFromPoint( event.clientX, event.clientY );
     this.sub('top').hidden = false;
     
-    if ( elementBelow.closest('.hand__player') ) this.topCardPlaced( elementBelow );
+    if ( elementBelow.closest('[data-zone-player]') ) this.topCardPlaced( elementBelow );
   }
   
   topCardPlaced( elementBelow ) {

@@ -29,7 +29,7 @@ export default class Round {
     document.body.addEventListener('hover', this.panelButtonHover);
   }
   
-  cardAnimation( cardStyle, shiftX, shiftY ) {
+  cardMovement( cardStyle, shiftX, shiftY ) {
     cardStyle.transform = `
       translate( ${ shiftX }, ${ shiftY } )
       rotateY( -0.5turn )
@@ -48,9 +48,9 @@ export default class Round {
     const shiftX = -parseInt( cardStyle.left, 10 ) + this.playerCardsCount * 60 + 'px';
     const shiftY = -parseInt( cardStyle.top, 10 ) + 'px';
     
-    this.cardAnimation( cardStyle, shiftX, shiftY );
+    this.cardMovement( cardStyle, shiftX, shiftY );
     
-    this.playerCardsCount < 2
+    this.playerCardsCount < 1
       ? this.setNewDealerCard()
       : null;
     
@@ -75,7 +75,7 @@ export default class Round {
     const shiftX = -parseInt( cardStyleRight, 10 ) + this.dealerCardsCount * 60 + 'px';
     const shiftY = -parseInt( cardStyleTop, 10 ) + 'px';
     
-    this.cardAnimation( cardStyle, shiftX, shiftY );
+    this.cardMovement( cardStyle, shiftX, shiftY );
     
     if ( this.dealerCardsCount < 7 ) this.dealerCardsCount++;
   }
