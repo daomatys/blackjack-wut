@@ -29,3 +29,18 @@
 .deck__top img {
   width: 120px;
 }
+
+
+.subhand {
+  position: absolute;
+  height: 184px;
+  width: 270px;
+}
+
+.subhand__left {
+  left: 0px;
+}
+
+.subhand__right {
+  right: 0px;
+}

@@ -16,6 +16,7 @@ export default class Panel {
       .map( suffix => `
         <div class="clicker" id="${ suffix }">
           <img src="/assets/buttons/button_${ suffix }_off.png">
+          <img src="/assets/buttons/button_${ suffix }_on.png" style="opacity:0">
         </div>`)
       .join('');
       
@@ -34,57 +35,37 @@ export default class Panel {
       </div>
       
       <div class="panel__chip-machine">
-      ${ layoutChipMachine }
+      
       </div>`;
   }
   
   onPointerDown = ({target}) => {
-    const aim = target.closest('.clicker');
+    const id = target.closest('.clicker').id;
     
-    if ( aim ) this.buttonProcesses( aim ); 
+    switch( id ) {
+      case 'check': this.act('check'); break;
+      case 'doubled': this.act('doubled'); break;
+      case 'split': this.act('split'); break;
+      case 'hover': this.act('hover'); break;
+    }
   }
 
-  buttonProcesses( aim ) {
-    if ( aim.classList.contains('check') ) this.check( aim );
-    if ( aim.classList.contains('doubled') ) this.doubled( aim );
-    if ( aim.classList.contains('split') ) this.split( aim );
-    if ( aim.classList.contains('hover') ) this.hover( aim );
-  }
-  
-  check( aim ) {
-    this.setCommonBehavior( aim, 'check' );
+  act( suffix ) {
+    const clicker = this.elem.querySelector(`#${ suffix }`) 
+    this.switchback( clicker );
     
-    this.elem.dispatchEvent( new CustomEvent('check', { bubbles: true }) );
-  }
-  
-  doubled( aim ) {
-    this.setCommonBehavior( aim, 'doubled' );
+    this.elem.dispatchEvent( new CustomEvent(`${ suffix }`, { bubbles: true }) );
     
-    this.elem.dispatchEvent( new CustomEvent('doubled', { bubbles: true }) );
+    if ( suffix == 'check' || suffix == 'doubled' ) this.elem.onpointerup = () => this.switchback( clicker );
+
   }
   
-  split( aim ) {
-    this.setToggleBehavior( aim, 'split' );
+  switchback( clicker ) {
+    const imgOn = clicker.firstElementChild.style;
+    const imgOff = clicker.lastElementChild.style;
     
-    this.elem.dispatchEvent( new CustomEvent('split', { bubbles: true }) );
+    imgOn.opacity === '0'
+    ? ( imgOn.opacity = '1', imgOff.opacity = '0' )
+    : ( imgOn.opacity = '0', imgOff.opacity = '1' ); 
   }
-  
-  hover( aim ) {
-    this.setToggleBehavior( aim, 'hover' );
-    
-    this.elem.dispatchEvent( new CustomEvent('hover', { bubbles: true }) );
-  }
-  
-  setCommonBehavior( btn, suffix ) {
-    btn.onpointerdown = () => btn.firstChild.src = "/assets/buttons/button_${ suffix }_on";
-    btn.onpointerup = () => btn.firstChild.src = "/assets/buttons/button_${ suffix }_off";
-  }
-  
-  setToggleBehavior( btn, suffix ) {
-    btn.onclick = () => btn.firstChild.src = 
-      btn.firstChild.src === "/assets/buttons/button_${ suffix }_on"
-        ? "/assets/buttons/button_${ suffix }_off"
-        : "/assets/buttons/button_${ suffix }_on";
-  }
-  
 }

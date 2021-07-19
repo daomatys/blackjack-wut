@@ -113,7 +113,7 @@ export default class Round {
     for (let card of cards) card.addEventListener('pointerover', onHover( card ));
   }
   
-  panelButtonSplit() {
+  panelButtonSplit = () => {
     this.splitModeState = true;
     
     const subHands = `
@@ -125,7 +125,7 @@ export default class Round {
     hand.insertAdjacentHTML('afterbegin', subHands);
     
     const cardSplitted = { 
-      left: hand.lastChild.getBoundingClientRect().left, 
+      left: hand.lastChild.getBoundingClientRect().left,
       top: hand.lastChild.getBoundingClientRect().top 
     };
     hand.querySelector('.subhand__right').append( hand.lastChild );
@@ -133,13 +133,10 @@ export default class Round {
     
     const rightCard = hand.querySelector('.subhand__right').lastChild;
     
-    Object.assign(rightCard.style, {
-      left: cardSplitted.left,
-      top: cardSplitted.top
-    });
+    rightCard.style = '';
+    rightCard.style.left = '-210px';
+    rightCard.style.transform = 'rotateY( -0.5turn )';
     
-    const shiftX = 'px';
-    const shiftY = 'px';
     
   }
   

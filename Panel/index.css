@@ -16,18 +16,23 @@
 }
 
 .clicker {
-  position: fixed;
-  width: 100px;
-}
-.clicker img {
+  position: absolute;
   width: 85px;
+  height: 100%;
 }
 
-#check {
-  
+.clicker img {
+  position: absolute;
+  top: 0px;
+  width: 85px;
+  heigth: 31px;
 }
 
 #doubled {
+  
+}
+
+#check {
   left: 128px;
 }
 
