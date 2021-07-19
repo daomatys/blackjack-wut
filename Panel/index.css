@@ -7,21 +7,40 @@
 }
 
 .panel__buttons {
-  position: absolite;
-  width: 600px;
-  heigth: 41px;
-  display: inline-table;
+  position: absolute;
+  width: 468px;
+  height: 35px;
+  left: 50%;
+  top: 61%;
+  transform: translate(-50%, -50%);
 }
 
 .clicker {
-  position: absolute;
+  position: fixed;
   width: 100px;
 }
 .clicker img {
-  width: 100px;
+  width: 85px;
+}
+
+#check {
+  
+}
+
+#doubled {
+  left: 128px;
+}
+
+#split {
+  left: 256px;
+}
+
+#hover {
+  left: 384px;
 }
 
 .chip {
   position: absolute;
   opacity: 0;
 }
+

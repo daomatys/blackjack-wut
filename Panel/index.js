@@ -14,7 +14,7 @@ export default class Panel {
     
     const layoutPanelButtons = buttons
       .map( suffix => `
-        <div class="clicker ${ suffix }">
+        <div class="clicker" id="${ suffix }">
           <img src="/assets/buttons/button_${ suffix }_off.png">
         </div>`)
       .join('');
