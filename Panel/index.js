@@ -56,7 +56,7 @@ export default class Panel {
     
     this.elem.dispatchEvent( new CustomEvent(`${ suffix }`, { bubbles: true }) );
     
-    if ( suffix == 'check' || suffix == 'doubled' ) this.elem.onpointerup = () => this.switchback( clicker );
+    if ( suffix == 'check' || suffix == 'doubled' ) clicker.onpointerup = () => this.switchback( clicker );
 
   }
   
