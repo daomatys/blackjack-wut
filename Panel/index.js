@@ -35,7 +35,7 @@ export default class Panel {
       </div>
       
       <div class="panel__chip-machine">
-      
+      ${ layoutChipMachine }
       </div>`;
   }
   
@@ -51,7 +51,8 @@ export default class Panel {
   }
 
   act( suffix ) {
-    const clicker = this.elem.querySelector(`#${ suffix }`) 
+    const clicker = this.elem.querySelector(`#${ suffix }`)
+    
     this.switchback( clicker );
     
     this.elem.dispatchEvent( new CustomEvent(`${ suffix }`, { bubbles: true }) );
