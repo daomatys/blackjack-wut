@@ -53,12 +53,10 @@
 
 .panel__chips {
   position: absolute;
-  width: 100%;
+  width: 581px;
   height: 90px;
-  left: 50%;
-  transform: translateX(-50%);
   z-index: -1;
-  padding-left: 216px;
+  padding-left: 108px;
 }
 
 .chip {

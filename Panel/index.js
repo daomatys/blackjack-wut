@@ -77,7 +77,7 @@ export default class Panel {
     
     //this.elem.dispatchEvent( new CustomEvent(`${ suffix }`, { bubbles: true }) );
     
-    if ( suffix != 'split' || suffix != 'hover' ) document.addEventListener('pointerup', nonToggleBehavior );
+    if ( !(suffix === 'split' || suffix === 'hover') ) document.addEventListener('pointerup', nonToggleBehavior );
   }
   
   switchback( btn ) {
