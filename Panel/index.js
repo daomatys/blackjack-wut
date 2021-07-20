@@ -9,12 +9,12 @@ export default class Panel {
   }
   
   layout() {
-    const buttons = [ 'check', 'doubled', 'split', 'hover' ];
+    const clickers = [ 'check', 'doubled', 'split', 'hover' ];
     const chips = [ 1, 5, 10, 25, 100 ];
     
-    const layoutPanelButtons = buttons
+    const layoutPanelButtons = clickers
       .map( suffix => `
-        <div class="clicker" id="${ suffix }">
+        <div class="clicker tap" id="${ suffix }">
           <img src="/assets/buttons/button_${ suffix }_off.png">
           <img src="/assets/buttons/button_${ suffix }_on.png" style="opacity:0">
         </div>`)
@@ -29,7 +29,7 @@ export default class Panel {
       
     const layoutAdderBar = chips 
       .map( code => `
-        <div class="adder" id="adder-${ code }">
+        <div class="adder tap" id="adder-${ code }">
           <img src="/assets/buttons/adder_off.png">
           <img src="/assets/buttons/adder_on.png" style="opacity:0">
         </div>`)
@@ -52,38 +52,37 @@ export default class Panel {
   
   eventListeners() {
     const clickers = this.elem.querySelectorAll('.clicker');
+    const adders = this.elem.querySelectorAll('.adder');
     
-    for (let clicker of clickers) clicker.addEventListener('pointerdown', this.onPointerDown);
+    for (let clicker of clickers) clicker.addEventListener('pointerdown', this.actsOfButtons);
+    for (let adder of adders) adder.addEventListener('pointerdown', this.actsOfButtons);
   }
   
-  onPointerDown = (event) => {
+  actsOfButtons = (event) => {
     event.preventDefault();
     
-    switch( event.target.closest('.clicker').id ) {
-      case 'check': this.act('check'); break;
-      case 'doubled': this.act('doubled'); break;
-      case 'split': this.act('split'); break;
-      case 'hover': this.act('hover'); break;
-    }
+    const id = event.target.closest('.tap').id;
+    
+    this.act( id );
   }
 
   act( suffix ) {
-    const clicker = this.elem.querySelector(`#${ suffix }`);
+    const btn = this.elem.querySelector(`#${ suffix }`);
     
     const nonToggleBehavior = () => {
-      this.switchback( clicker );
+      this.switchback( btn );
       document.removeEventListener('pointerup', nonToggleBehavior )
     }
-    this.switchback( clicker );
+    this.switchback( btn );
     
     //this.elem.dispatchEvent( new CustomEvent(`${ suffix }`, { bubbles: true }) );
     
-    if ( suffix == 'check' || suffix == 'doubled' ) document.addEventListener('pointerup', nonToggleBehavior );
+    if ( suffix != 'split' || suffix != 'hover' ) document.addEventListener('pointerup', nonToggleBehavior );
   }
   
-  switchback( clicker ) {
-    const imgOn = clicker.firstElementChild.style;
-    const imgOff = clicker.lastElementChild.style;
+  switchback( btn ) {
+    const imgOn = btn.firstElementChild.style;
+    const imgOff = btn.lastElementChild.style;
     
     imgOn.opacity === '0'
     ? ( imgOn.opacity = '1', imgOff.opacity = '0' )
