@@ -3,7 +3,6 @@ export default class Panel {
   constructor() {
     this.elem = document.createElement('div');
     this.elem.classList.add('panel');
-    this.elem.id = 'panel';
     this.elem.insertAdjacentHTML('afterbegin', this.layout());
     
     this.eventListeners();
@@ -23,20 +22,31 @@ export default class Panel {
       
     const layoutChipMachine = chips
       .map( code => `
-        <div class="chip" id="c${ code }">
+        <div class="chip" id="chip-${ code }">
           <img src="/assets/chips/chip_${ code }.png">
-          <button type="button" data-raise-${ code }>
-          </button>
         </div>`)
       .join('');
-    
+      
+    const layoutAdderBar = chips 
+      .map( code => `
+        <div class="adder" id="adder-${ code }">
+          <img src="/assets/buttons/adder_off.png">
+          <img src="/assets/buttons/adder_on.png" style="opacity:0">
+        </div>`)
+      .join('');
+      
     return `
-      <div class="panel__buttons">
+      <div class="panel__clickers">
       ${ layoutPanelButtons }
       </div>
       
       <div class="panel__chip-machine">
-      ${ layoutChipMachine }
+        <div class="panel__chips">
+          ${ layoutChipMachine }
+        </div>
+        <div class="panel__adders">
+          ${ layoutAdderBar }
+        </div>
       </div>`;
   }
   
