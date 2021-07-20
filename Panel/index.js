@@ -3,9 +3,10 @@ export default class Panel {
   constructor() {
     this.elem = document.createElement('div');
     this.elem.classList.add('panel');
+    this.elem.id = 'panel';
     this.elem.insertAdjacentHTML('afterbegin', this.layout());
     
-    this.elem.addEventListener('pointerdown', this.onPointerDown);
+    this.eventListeners();
   }
   
   layout() {
@@ -39,10 +40,16 @@ export default class Panel {
       </div>`;
   }
   
-  onPointerDown = ({target}) => {
-    const id = target.closest('.clicker').id;
+  eventListeners() {
+    const clickers = this.elem.querySelectorAll('.clicker');
     
-    switch( id ) {
+    for (let clicker of clickers) clicker.addEventListener('pointerdown', this.onPointerDown);
+  }
+  
+  onPointerDown = (event) => {
+    event.preventDefault();
+    
+    switch( event.target.closest('.clicker').id ) {
       case 'check': this.act('check'); break;
       case 'doubled': this.act('doubled'); break;
       case 'split': this.act('split'); break;
@@ -51,14 +58,17 @@ export default class Panel {
   }
 
   act( suffix ) {
-    const clicker = this.elem.querySelector(`#${ suffix }`)
+    const clicker = this.elem.querySelector(`#${ suffix }`);
     
+    const nonToggleBehavior = () => {
+      this.switchback( clicker );
+      document.removeEventListener('pointerup', nonToggleBehavior )
+    }
     this.switchback( clicker );
     
-    this.elem.dispatchEvent( new CustomEvent(`${ suffix }`, { bubbles: true }) );
+    //this.elem.dispatchEvent( new CustomEvent(`${ suffix }`, { bubbles: true }) );
     
-    if ( suffix == 'check' || suffix == 'doubled' ) clicker.onpointerup = () => this.switchback( clicker );
-
+    if ( suffix == 'check' || suffix == 'doubled' ) document.addEventListener('pointerup', nonToggleBehavior );
   }
   
   switchback( clicker ) {

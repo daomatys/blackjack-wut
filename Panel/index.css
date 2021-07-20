@@ -46,5 +46,12 @@
 
 .chip {
   position: absolute;
-  opacity: 0;
+  height: 70px;
+  width: 70px;
+}
+
+.chip img {
+  position: absolute;
+  height: 70px;
+  width: 70px;
 }
