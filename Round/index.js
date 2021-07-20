@@ -121,11 +121,10 @@ export default class Round {
       
       if ( cardsUnrotated === 0 ) {
         const btn = document.querySelector('#hover');
-        console.log(btn)
+        
         btn.firstElementChild.style.opacity = '1';
         btn.lastElementChild.style.opacity = '0';
       }
-      console.log(cardsUnrotated)
     }
     for (let card of cards) card.addEventListener('pointerover', () => onHover( card ), { once: true });
   }
