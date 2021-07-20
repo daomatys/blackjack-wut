@@ -9,7 +9,7 @@ export default class Panel {
   }
   
   layout() {
-    const clickers = [ 'check', 'doubled', 'split', 'hover' ];
+    const clickers = [ 'doubled', 'check', 'split', 'hover' ];
     const chips = [ 1, 5, 10, 25, 100 ];
     
     const layoutPanelButtons = clickers
@@ -75,7 +75,7 @@ export default class Panel {
     }
     this.switchback( btn );
     
-    //this.elem.dispatchEvent( new CustomEvent(`${ suffix }`, { bubbles: true }) );
+    this.elem.dispatchEvent( new CustomEvent(`${ suffix }`, { bubbles: true }) );
     
     if ( !(suffix === 'split' || suffix === 'hover') ) document.addEventListener('pointerup', nonToggleBehavior );
   }
