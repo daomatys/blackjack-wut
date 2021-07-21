@@ -39,7 +39,6 @@ export default class Panel {
       <div class="panel__clickers">
       ${ layoutPanelButtons }
       </div>
-      
       <div class="panel__chip-machine">
         <div class="panel__chips">
           ${ layoutChipMachine }
@@ -58,7 +57,7 @@ export default class Panel {
     for (let adder of adders) adder.addEventListener('pointerdown', this.actsOfButtons);
   }
   
-  actsOfButtons = (event) => {
+  actsOfButtons = event => {
     event.preventDefault();
     
     const id = event.target.closest('.tap').id;
@@ -69,15 +68,21 @@ export default class Panel {
   act( suffix ) {
     const btn = this.elem.querySelector(`#${ suffix }`);
     
-    const nonToggleBehavior = () => {
-      this.switchback( btn );
-      document.removeEventListener('pointerup', nonToggleBehavior )
-    }
     this.switchback( btn );
     
-    this.elem.dispatchEvent( new CustomEvent(`${ suffix }`, { bubbles: true }) );
+    const btnRelease = () => {
+      this.switchback( btn );
+      document.removeEventListener('pointerup', btnRelease )
+    }
+    document.addEventListener('pointerup', btnRelease );
     
-    document.addEventListener('pointerup', nonToggleBehavior );
+    switch (suffix) {
+      case 'doubled': this.actDoubled(); break;
+      case 'check': this.actCheck(); break;
+      case 'split': this.actSplit(); break;
+      case 'hover': this.actHover(); break;
+      default: this.actAdder( suffix ); break;
+    }
   }
   
   switchback( btn ) {
@@ -87,5 +92,67 @@ export default class Panel {
     imgOn.opacity === '0'
     ? ( imgOn.opacity = '1', imgOff.opacity = '0' )
     : ( imgOn.opacity = '0', imgOff.opacity = '1' ); 
+  }
+  
+  actDoubled = () => {
+    
+  }
+  
+  actCheck = () => {
+    
+  }
+  
+  actSplit = () => {
+    document.body.dispatchEvent( new CustomEvent('split', {bubbles: true}) );
+    
+    const subHands = `
+      <div class="subhand subhand__left"></div>
+      <div class="subhand subhand__right"></div>`;
+    
+    const hand = document.querySelector('.hand__player');
+    
+    hand.insertAdjacentHTML('afterbegin', subHands);
+    
+    const cardSplitted = { 
+      left: hand.lastChild.getBoundingClientRect().left,
+      top: hand.lastChild.getBoundingClientRect().top 
+    };
+    hand.querySelector('.subhand__right').append( hand.lastChild );
+    hand.querySelector('.subhand__left').append( hand.lastChild );
+    
+    const rightCard = hand.querySelector('.subhand__right').lastChild;
+    
+    rightCard.style = 'left: -210px; transform: rotateY( -0.5turn );';
+    
+    rightCard.animate({
+      transform: 'translateX(-360px)'
+    }, {
+      easing: 'ease',
+      duration: 800,
+      fill: 'both',
+      composite: 'add'
+    });
+  }
+  
+  actHover() {
+    const cards = document
+      .querySelector('.hand__player')
+      .querySelectorAll('.card');
+    
+    const onHover = card => {
+      card.animate({
+        transform: [ 'scale(1)', 'scale(1.1)', 'perspective( 500px ) rotateY( -0.5turn )' ]
+      }, {
+        easing: 'ease',
+        duration: 800,
+        fill: 'both',
+        composite: 'add'
+      });
+    }
+    for (let card of cards) card.addEventListener('pointerover', () => onHover( card ), { once: true });
+  }
+  
+  actAdder = id => {
+    
   }
 }

@@ -25,10 +25,12 @@ export default class Round {
       'card-placed',
       ({ detail: data }) => this.newCardForPlayer( data )
     );
-    document.body.addEventListener('doubled', this.panelButtonDoubled);
-    document.body.addEventListener('check', this.panelButtonCheck);
-    document.body.addEventListener('split', this.panelButtonSplit);
-    document.body.addEventListener('hover', this.panelButtonHover);
+    
+    document.addEventListener(
+      'split', 
+      () => this.splitModeState = true, 
+      { once: true }
+    );
   }
   
   modeSplit( data ) {
@@ -99,66 +101,6 @@ export default class Round {
     if ( card.rank === 'A' ) return currentValue + 11 < 22 ? 11 : 1 ;
     
     return 10;
-  }
-  
-  panelButtonDoubled = () => {
-    
-  }
-  
-  panelButtonCheck = () => {
-    
-  }
-  
-  panelButtonSplit = () => {
-    this.splitModeState = true;
-    
-    const subHands = `
-      <div class="subhand subhand__left"></div>
-      <div class="subhand subhand__right"></div>`;
-    
-    const hand = document.querySelector('.hand__player');
-    
-    hand.insertAdjacentHTML('afterbegin', subHands);
-    
-    const cardSplitted = { 
-      left: hand.lastChild.getBoundingClientRect().left,
-      top: hand.lastChild.getBoundingClientRect().top 
-    };
-    hand.querySelector('.subhand__right').append( hand.lastChild );
-    hand.querySelector('.subhand__left').append( hand.lastChild );
-    
-    const rightCard = hand.querySelector('.subhand__right').lastChild;
-    
-    rightCard.style = 'left: -210px; transform: rotateY( -0.5turn );';
-    
-    rightCard.animate({
-      transform: 'translateX(-360px)'
-    }, {
-      easing: 'ease',
-      duration: 800,
-      fill: 'both',
-      composite: 'add'
-    });
-  }
-  
-  panelButtonHover() {
-    const cards = document
-      .querySelector('.hand__player')
-      .querySelectorAll('.card');
-    
-    for (let card of cards) card.removeEventListener('pointerover', () => onHover( card ), { once: true });
-    
-    const onHover = card => {
-      card.animate({
-        transform: [ 'scale(1)', 'scale(1.1)', 'perspective( 500px ) rotateY( -0.5turn )' ]
-      }, {
-        easing: 'ease',
-        duration: 800,
-        fill: 'both',
-        composite: 'add'
-      });
-    }
-    for (let card of cards) card.addEventListener('pointerover', () => onHover( card ), { once: true });
   }
   
   getRect = sel => document.querySelector( sel ).getBoundingClientRect();

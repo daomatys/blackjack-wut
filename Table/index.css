@@ -67,10 +67,25 @@ img {
   position: absolute;
   right: 100px;
   bottom: 25%;
-}
-
-.bank {
   
 }
 
+.bank {
+  position: absolute;
+  height: 100%;
+  width: 520px;
+  left: 50%;
+  top: 0px;
+  padding: 0px;
+  transform: translateX(-50%);
+}
 
+.bank__slot {
+  position: relative;
+  display: inline-block;
+  width: 100px;
+  height: 100px;
+  bottom: 40px;
+  margin: 0px;
+  
+}
