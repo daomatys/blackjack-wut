@@ -51,6 +51,15 @@ export default class Deck {
     
     document.body.append( this.sub('top') );
     
+    this.sub('top').style.opacity = 1;
+    
+    this.topCardScaleOnPick( 1.05 );
+    
+    Object.assign( this.sub('top').style, {
+      top: event.pageY - this.shiftY + 'px',
+      left: event.pageX - this.shiftX + 'px',
+    });
+    
     document.addEventListener('pointermove', this.onPointerMove);
     document.addEventListener('pointerup', this.onPointerUp);
   }
@@ -59,7 +68,6 @@ export default class Deck {
     event.preventDefault();
     
     Object.assign( this.sub('top').style, {
-      opacity: 1,
       top: event.pageY - this.shiftY + 'px',
       left: event.pageX - this.shiftX + 'px',
     });
@@ -68,6 +76,8 @@ export default class Deck {
   onPointerUp = event => {
     document.removeEventListener('pointermove', this.onPointerMove);
     document.removeEventListener('pointerup', this.onPointerUp);
+    
+    this.topCardScaleOnPick( 1 );
     
     this.sub('top').hidden = true;
     const elementBelow = document.elementFromPoint( event.clientX, event.clientY );
@@ -100,6 +110,17 @@ export default class Deck {
     this.cards.splice(i, 1);
     
     return card;
+  }
+  
+  topCardScaleOnPick( num ) {
+    this.sub('top').animate({
+      transform: `scale( ${ num } )`
+    }, {
+      easing: 'ease',
+      duration: 100,
+      fill: 'both',
+      composite: 'replace'
+    });
   }
   
   sub = suffix => document.querySelector(`.deck__${ suffix }`);

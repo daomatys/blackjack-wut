@@ -25,8 +25,8 @@ export default class Round {
       'card-placed',
       ({ detail: data }) => this.newCardForPlayer( data )
     );
-    document.body.addEventListener('check', this.panelButtonCheck);
     document.body.addEventListener('doubled', this.panelButtonDoubled);
+    document.body.addEventListener('check', this.panelButtonCheck);
     document.body.addEventListener('split', this.panelButtonSplit);
     document.body.addEventListener('hover', this.panelButtonHover);
   }
@@ -87,6 +87,7 @@ export default class Round {
   
   newCardMovement( cardStyle, shiftX, shiftY ) {
     cardStyle.transform = `
+      scale( 1 )
       translate( ${ shiftX }, ${ shiftY } )
       rotateY( -0.5turn )
     `;
@@ -100,33 +101,12 @@ export default class Round {
     return 10;
   }
   
-  
-  panelButtonHover() {
-    const cards = document
-      .querySelector('.hand__player')
-      .querySelectorAll('.card');
-      
-    let cardsUnrotated = cards.length;
+  panelButtonDoubled = () => {
     
-    const onHover = card => {
-      card.animate({
-        transform: ['perspective(500px)', 'rotateY( -0.5turn )'],
-      }, {
-        easing: 'ease',
-        duration: 800,
-        fill: 'both',
-        composite: 'accumulate'
-      });
-      cardsUnrotated--;
-      
-      if ( cardsUnrotated === 0 ) {
-        const btn = document.querySelector('#hover');
-        
-        btn.firstElementChild.style.opacity = '1';
-        btn.lastElementChild.style.opacity = '0';
-      }
-    }
-    for (let card of cards) card.addEventListener('pointerover', () => onHover( card ), { once: true });
+  }
+  
+  panelButtonCheck = () => {
+    
   }
   
   panelButtonSplit = () => {
@@ -149,9 +129,7 @@ export default class Round {
     
     const rightCard = hand.querySelector('.subhand__right').lastChild;
     
-    rightCard.style = '';
-    rightCard.style.left = '-210px';
-    rightCard.style.transform = 'rotateY( -0.5turn )';
+    rightCard.style = 'left: -210px; transform: rotateY( -0.5turn );';
     
     rightCard.animate({
       transform: 'translateX(-360px)'
@@ -161,6 +139,26 @@ export default class Round {
       fill: 'both',
       composite: 'add'
     });
+  }
+  
+  panelButtonHover() {
+    const cards = document
+      .querySelector('.hand__player')
+      .querySelectorAll('.card');
+    
+    for (let card of cards) card.removeEventListener('pointerover', () => onHover( card ), { once: true });
+    
+    const onHover = card => {
+      card.animate({
+        transform: [ 'scale(1)', 'scale(1.1)', 'perspective( 500px ) rotateY( -0.5turn )' ]
+      }, {
+        easing: 'ease',
+        duration: 800,
+        fill: 'both',
+        composite: 'add'
+      });
+    }
+    for (let card of cards) card.addEventListener('pointerover', () => onHover( card ), { once: true });
   }
   
   getRect = sel => document.querySelector( sel ).getBoundingClientRect();

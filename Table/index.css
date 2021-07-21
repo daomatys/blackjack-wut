@@ -62,3 +62,15 @@ img {
   height: 142px;
   z-index: 18;
 }
+
+[data-bank] {
+  position: absolute;
+  right: 100px;
+  bottom: 25%;
+}
+
+.bank {
+  
+}
+
+
