@@ -56,14 +56,21 @@
   width: 581px;
   height: 90px;
   z-index: -1;
-  padding-left: 108px;
+  right: 0px;
 }
 
 .chip {
   height: 90px;
   width: 90px;
+}
+
+.chip-armed {
   display: inline-block;
   margin-right: 2px;
+}
+
+.chip-bet {
+  position: absolute;
 }
 
 .chip img {

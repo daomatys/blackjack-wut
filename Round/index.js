@@ -90,7 +90,7 @@ export default class Round {
   newCardMovement( elem, shiftX, shiftY ) {
     
     const shift = elem.animate({
-      transform: `perspective( 400px ) scale( 1 ) translate( ${ shiftX }, ${ shiftY } ) rotateY( 0.5turn )`
+      transform: `perspective( 500px ) scale( 1 ) translate( ${ shiftX }, ${ shiftY } ) rotateY( 0.5turn )`
     }, {
       easing: 'ease',
       duration: 1000,

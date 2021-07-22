@@ -8,11 +8,16 @@ export default class Panel {
     this.eventListeners();
   }
   
-  layout() {
-    const clickers = [ 'doubled', 'check', 'split', 'hover' ];
-    const chips = [ 1, 5, 10, 25, 100 ];
+  initCounters() {
+
+  }
+  
+  layout = () => {
+    this.arrClickers = [ 'doubled', 'check', 'split', 'hover' ];
+    this.arrChipsCounters = [ 0, 0, 0, 0, 0 ];
+    this.arrChips = [ 1, 5, 10, 25, 100 ];
     
-    const layoutPanelButtons = clickers
+    const layoutPanelButtons = this.arrClickers
       .map( suffix => `
         <div class="clicker tap" id="${ suffix }">
           <img src="/assets/buttons/button_${ suffix }_off.png">
@@ -20,14 +25,14 @@ export default class Panel {
         </div>`)
       .join('');
       
-    const layoutChipMachine = chips
+    const layoutChipMachine = this.arrChips
       .map( code => `
-        <div class="chip" id="chip-${ code }">
+        <div class="chip chip-armed chip-${ code }">
           <img src="/assets/chips/chip_${ code }.png">
         </div>`)
       .join('');
       
-    const layoutAdderBar = chips 
+    const layoutAdderBar = this.arrChips 
       .map( code => `
         <div class="adder tap" id="adder-${ code }">
           <img src="/assets/buttons/adder_off.png">
@@ -94,13 +99,19 @@ export default class Panel {
     : ( imgOn.opacity = '0', imgOff.opacity = '1' ); 
   }
   
+  
+  //button actions on scrolldown
+  
+  
   actDoubled = () => {
     
   }
   
+  
   actCheck = () => {
     
   }
+  
   
   actSplit = () => {
     document.body.dispatchEvent( new CustomEvent('split', {bubbles: true}) );
@@ -136,6 +147,7 @@ export default class Panel {
     splitting.persist();
   }
   
+  
   actHover() {
     const cards = document
       .querySelector('.hand__player')
@@ -157,8 +169,56 @@ export default class Panel {
     for (let card of cards) card.addEventListener('pointerover', () => onHoverRotation( card ), { once: true });
   }
   
+  
   actAdder = suffix => {
-    const id = parseInt( suffix, 10 );
+    const id = suffix.slice(6);
     
+    const slot = document.getElementById(`slot-${ id }`);
+    
+    const chipBet = document.querySelector(`.chip-${ id }`).cloneNode( true );
+    const chipArmed = document.querySelector(`.chip-armed.chip-${ id }`);
+    
+    chipBet.classList.replace('chip-armed', 'chip-bet');
+    
+    slot.append( chipBet );
+    
+    Object.assign( chipBet.style, {
+      left: parseInt( this.getRect( chipArmed ).left, 10 ) - parseInt( this.getRect( chipBet ).left, 10 ) + 'px',
+      top: parseInt( this.getRect( chipArmed ).top, 10 ) - parseInt( this.getRect( chipBet ).top, 10 ) + 'px',
+    });
+    
+    const num = this.arrChips.indexOf( parseInt( id, 10 ) );
+    
+    const shiftX = 0.5 * ++this.arrChipsCounters[ num ] - parseInt( chipBet.style.left, 10 ) + 'px';
+    const shiftY = - 2 * this.arrChipsCounters[ num ] - parseInt( chipBet.style.top, 10 ) + 'px';
+    
+    const chipBetJump = chipBet.animate({
+      transform: [`translate( ${ shiftX }, ${ shiftY } )`]
+    }, {
+      easing: 'ease',
+      duration: 600,
+      fill: 'both',
+      composite: 'add'
+    });
+    chipBetJump.persist();
+    
+    //chipArmed.style.top = '-90px';
+    
+    const chipArmedEject = chipArmed.animate({
+      transform: ['translateY(90px) rotate(-90deg)', 'translateY(0px)']
+    }, {
+      easing: 'cubic-bezier(0.25, 1, 0.5, 1)',
+      duration: 600,
+      fill: 'forwards',
+      composite: 'add'
+    });
+    chipArmedEject.persist();
   }
+  
+  
+  //end of button actions
+  
+  getRect = elem => elem.getBoundingClientRect();
+  
+  getRandomInt = num => Math.floor( Math.random() * Math.floor( num ) );
 }
