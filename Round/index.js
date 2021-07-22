@@ -97,7 +97,6 @@ export default class Round {
       fill: 'both',
       composite: 'replace'
     });
-    
     shift.persist();
   }
   

@@ -122,7 +122,6 @@ export default class Deck {
       fill: 'both',
       composite: 'replace'
     });
-    
     zoom.persist();
   }
   

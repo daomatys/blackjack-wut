@@ -163,7 +163,6 @@ export default class Panel {
         fill: 'both',
         composite: 'add'
       });
-      
       rotation.persist();
     }
     for (let card of cards) card.addEventListener('pointerover', () => onHoverRotation( card ), { once: true });
@@ -193,22 +192,24 @@ export default class Panel {
     const shiftY = - 2 * this.arrChipsCounters[ num ] - parseInt( chipBet.style.top, 10 ) + 'px';
     
     const chipBetJump = chipBet.animate({
-      transform: [`translate( ${ shiftX }, ${ shiftY } )`]
+      transform: [
+        'scale(1)',
+        'translate(10px, -80px) rotate3d(-1, -0.33, 0, 190deg) scale(1.26)',
+        `translate( ${ shiftX }, ${ shiftY } )`
+      ]
     }, {
-      easing: 'ease',
-      duration: 600,
+      easing: 'cubic-bezier(0.01, -0.2, 0.28, 1.08)',
+      duration: 800,
       fill: 'both',
       composite: 'add'
     });
     chipBetJump.persist();
     
-    //chipArmed.style.top = '-90px';
-    
     const chipArmedEject = chipArmed.animate({
       transform: ['translateY(90px) rotate(-90deg)', 'translateY(0px)']
     }, {
       easing: 'cubic-bezier(0.25, 1, 0.5, 1)',
-      duration: 600,
+      duration: 800,
       fill: 'forwards',
       composite: 'add'
     });
