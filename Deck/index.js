@@ -113,14 +113,17 @@ export default class Deck {
   }
   
   topCardScaleOnPick( num ) {
-    this.sub('top').animate({
-      transform: `scale( ${ num } )`
+    
+    const zoom = this.sub('top').animate({
+      transform: `scale(${ num })`
     }, {
       easing: 'ease',
-      duration: 100,
+      duration: 200,
       fill: 'both',
       composite: 'replace'
     });
+    
+    zoom.persist();
   }
   
   sub = suffix => document.querySelector(`.deck__${ suffix }`);

@@ -122,16 +122,18 @@ export default class Panel {
     
     const rightCard = hand.querySelector('.subhand__right').lastChild;
     
-    rightCard.style = 'left: -210px; transform: rotateY( -0.5turn );';
+    rightCard.style.top = cardSplitted.top;
     
-    rightCard.animate({
-      transform: 'translateX(-360px)'
+    const splitting = rightCard.animate({
+      transform: 'translateX(-1px)'
     }, {
       easing: 'ease',
-      duration: 800,
+      duration: 500,
       fill: 'both',
       composite: 'add'
     });
+    
+    splitting.persist();
   }
   
   actHover() {
@@ -139,20 +141,24 @@ export default class Panel {
       .querySelector('.hand__player')
       .querySelectorAll('.card');
     
-    const onHover = card => {
-      card.animate({
-        transform: [ 'scale(1)', 'scale(1.1)', 'perspective( 500px ) rotateY( -0.5turn )' ]
+    const onHoverRotation = card => {
+      
+      const rotation = card.animate({
+        transform: [ 'scale(1)' ,'scale(1.1)', 'perspective( 500px ) rotateY( 0.5turn ) scale(1)' ]
       }, {
         easing: 'ease',
-        duration: 800,
+        duration: 1000,
         fill: 'both',
         composite: 'add'
       });
+      
+      rotation.persist();
     }
-    for (let card of cards) card.addEventListener('pointerover', () => onHover( card ), { once: true });
+    for (let card of cards) card.addEventListener('pointerover', () => onHoverRotation( card ), { once: true });
   }
   
-  actAdder = id => {
+  actAdder = suffix => {
+    const id = parseInt( suffix, 10 );
     
   }
 }

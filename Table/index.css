@@ -65,7 +65,7 @@ img {
 
 [data-bank] {
   position: absolute;
-  right: 100px;
+  right: 2000px;
   bottom: 25%;
   
 }
@@ -87,5 +87,4 @@ img {
   height: 100px;
   bottom: 40px;
   margin: 0px;
-  
 }

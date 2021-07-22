@@ -49,7 +49,7 @@ export default class Round {
     const shiftX = -parseInt( cardStyle.left, 10 ) + this.playerCardsCount * 60 + 'px';
     const shiftY = -parseInt( cardStyle.top, 10 ) + 'px';
     
-    this.newCardMovement( cardStyle, shiftX, shiftY );
+    this.newCardMovement( data.card.elem, shiftX, shiftY );
     
     this.playerCardsCount < 1
       ? this.newCardForDealer()
@@ -82,17 +82,23 @@ export default class Round {
     const shiftX = -parseInt( cardStyleRight, 10 ) + this.dealerCardsCount * 60 + 'px';
     const shiftY = -parseInt( cardStyleTop, 10 ) + 'px';
     
-    this.newCardMovement( cardStyle, shiftX, shiftY );
+    this.newCardMovement( card.elem, shiftX, shiftY );
     
     if ( this.dealerCardsCount < 7 ) this.dealerCardsCount++;
   }
   
-  newCardMovement( cardStyle, shiftX, shiftY ) {
-    cardStyle.transform = `
-      scale( 1 )
-      translate( ${ shiftX }, ${ shiftY } )
-      rotateY( -0.5turn )
-    `;
+  newCardMovement( elem, shiftX, shiftY ) {
+    
+    const shift = elem.animate({
+      transform: `perspective( 400px ) scale( 1 ) translate( ${ shiftX }, ${ shiftY } ) rotateY( 0.5turn )`
+    }, {
+      easing: 'ease',
+      duration: 1000,
+      fill: 'both',
+      composite: 'replace'
+    });
+    
+    shift.persist();
   }
   
   getCardValue( card, currentValue ) {
