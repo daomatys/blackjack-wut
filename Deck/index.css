@@ -39,11 +39,8 @@
 
 .subhand__left {
   left: 0px;
-  z-index: 3;
 }
 
 .subhand__right {
   right: 0px;
-  z-index: 4;
-  transform: rotate( 0.5turn );
 }

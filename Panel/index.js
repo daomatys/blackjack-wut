@@ -137,7 +137,7 @@ export default class Panel {
     
     const splitting = rightCard.animate({
       transform: [
-        'translateX( -300px )',
+        'translateX( 270px )',
         'translateX( 60px )',
       ]
     }, {

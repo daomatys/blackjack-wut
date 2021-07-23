@@ -9,12 +9,15 @@ export default class Round {
   }
   
   initRound() {
-    this.dealerCardsCount = 0;
     this.dealerCardsValue = 0;
+    this.dealerCardsCount = 0;
     
-    this.playerCardsCount = 0;
     this.playerCardsValue = 0;
-    
+    this.playerCardsCount = { 
+      normal: 0,
+      right: 1,
+      left: 1
+    };
     this.splitModeState = false;
     
     this.initListeners();
@@ -23,7 +26,7 @@ export default class Round {
   initListeners() {
     this.deck.elem.addEventListener(
       'card-placed',
-      ({ detail: data }) => this.newCardForPlayer( data )
+      ({ detail: data }) => this.newCardPlayer( data )
     );
     
     document.addEventListener(
@@ -33,43 +36,71 @@ export default class Round {
     );
   }
   
-  modeSplit( data ) {
-    const subhand = data.below;
-    subhand.append( data.card.elem );
-    
-    
-  }
-  
-  modeNormal( data ) {
-    document.querySelector('.hand__player').append( data.card.elem );
-    
-    const cardStyle = data.card.elem.style;
-    
-    Object.assign( cardStyle, {
-      left: parseInt( data.left, 10 ) - data.below.getBoundingClientRect().left + 1 + 'px',
-      top: parseInt( data.top, 10 ) - data.below.getBoundingClientRect().top + 1 + 'px'
-    });
-    const shiftX = -parseInt( cardStyle.left, 10 ) + this.playerCardsCount * 60 + 'px';
-    const shiftY = -parseInt( cardStyle.top, 10 ) + 'px';
-    
-    this.newCardMovement( data.card.elem, shiftX, shiftY );
-    
-    this.playerCardsCount < 1
-      ? this.newCardForDealer()
-      : null;
-    
-    this.playerCardsCount < 7
-      ? this.playerCardsCount++
-      : this.deck.sub('top').removeEventListener('pointerdown', this.deck.onPointerDown);
-  }
-  
-  newCardForPlayer( data ) {
+  newCardPlayer( data ) {
     this.splitModeState
       ? this.modeSplit( data )
       : this.modeNormal( data )
   }
   
-  newCardForDealer() {
+  modeSplit( data ) {
+    const subHand = data.below.closest('.subhand');
+    const subHandRect = subHand.getBoundingClientRect();
+    const subHandCardCount = subHand.classList.contains('subhand__left') 
+      ? this.playerCardsCount.left++ 
+      : this.playerCardsCount.right++;
+    
+    const animationContext = {
+      zone: subHand,
+      holder: subHandRect,
+      card: data.card.elem,
+      cardcount: subHandCardCount,
+      cardprops: data,
+      cardmargin: 18
+    }
+    this.newCardTransition( animationContext );
+  }
+  
+  modeNormal( data ) {
+    const playerHand = document.querySelector('.hand__player');
+    const playerHandRect = playerHand.getBoundingClientRect();
+    const playerHandCardCount = this.playerCardsCount.normal;
+    
+    const animationContext = {
+      zone: playerHand,
+      holder: playerHandRect,
+      card: data.card.elem,
+      cardcount: playerHandCardCount,
+      cardprops: data,
+      cardmargin: 60
+    }
+    if ( this.playerCardsCount.normal < 1 ) this.newCardDealer();
+      
+    if ( this.playerCardsCount.normal < 7 ) {
+      this.newCardTransition( animationContext );
+      this.playerCardsCount.normal++;
+    } else {
+      this.deck.sub('top').removeEventListener('pointerdown', this.deck.onPointerDown);
+    }
+  }
+  
+  newCardTransition( animationContext ) {
+    const card = animationContext.card;
+    const cardProps = animationContext.cardprops;
+    
+    animationContext.zone.append( card );
+    
+    Object.assign( card.style, {
+      left: parseInt( cardProps.left, 10 ) - animationContext.holder.left + 1 + 'px',
+      top: parseInt( cardProps.top, 10 ) - animationContext.holder.top + 1 + 'px'
+    });
+    
+    const shiftX = -parseInt( card.style.left, 10 ) + animationContext.cardcount * animationContext.cardmargin + 'px';
+    const shiftY = -parseInt( card.style.top, 10 ) + 'px';
+    
+    this.newCardMovement( card, shiftX, shiftY );
+  }
+  
+  newCardDealer() {
     const card = this.deck.topCardData();
     
     document.querySelector(`.hand__dealer`).append( card.elem );
