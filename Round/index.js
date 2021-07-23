@@ -34,6 +34,9 @@ export default class Round {
   }
   
   modeSplit( data ) {
+    const subhand = data.below;
+    subhand.append( data.card.elem );
+    
     
   }
   
@@ -43,8 +46,8 @@ export default class Round {
     const cardStyle = data.card.elem.style;
     
     Object.assign( cardStyle, {
-      left: parseInt( data.left, 10 ) - this.getRect('.hand__player').left + 1 + 'px',
-      top: parseInt( data.top, 10 ) - this.getRect('.hand__player').top + 1 + 'px'
+      left: parseInt( data.left, 10 ) - data.below.getBoundingClientRect().left + 1 + 'px',
+      top: parseInt( data.top, 10 ) - data.below.getBoundingClientRect().top + 1 + 'px'
     });
     const shiftX = -parseInt( cardStyle.left, 10 ) + this.playerCardsCount * 60 + 'px';
     const shiftY = -parseInt( cardStyle.top, 10 ) + 'px';
@@ -90,7 +93,10 @@ export default class Round {
   newCardMovement( elem, shiftX, shiftY ) {
     
     const shift = elem.animate({
-      transform: `perspective( 900px ) scale( 1 ) translate( ${ shiftX }, ${ shiftY } ) rotateY( 0.5turn )`
+      transform: [
+        'scale( 1.05 )',
+        `perspective( 900px ) scale( 1 ) translate( ${ shiftX }, ${ shiftY } ) rotateY( 0.5turn )`
+      ]
     }, {
       easing: 'ease',
       duration: 1000,

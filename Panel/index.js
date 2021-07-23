@@ -136,10 +136,13 @@ export default class Panel {
     rightCard.style.top = cardSplitted.top;
     
     const splitting = rightCard.animate({
-      transform: [ 'translateX( 270px )', 'scale(1.1)', 'translateX( -90px ) scale(1)']
+      transform: [
+        'translateX( -300px )',
+        'translateX( 60px )',
+      ]
     }, {
-      easing: 'cubic-bezier(0.37, 0, 0.63, 1)',
-      duration: 1200,
+      easing: 'ease',
+      duration: 1000,
       fill: 'both',
       composite: 'add'
     });
@@ -156,7 +159,11 @@ export default class Panel {
     const onHoverRotation = card => {
       
       const rotation = card.animate({
-        transform: [ 'scale(1)' ,'scale(1.1)', 'perspective( 900px ) rotateY( 0.5turn ) scale(1)' ]
+        transform: [
+          'scale( 1 )',
+          'scale( 1.1 )',
+          'perspective( 900px ) rotateY( 0.5turn ) scale( 1 )'
+        ]
       }, {
         easing: 'ease',
         duration: 1000,
