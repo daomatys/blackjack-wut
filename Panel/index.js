@@ -99,19 +99,15 @@ export default class Panel {
     : ( imgOn.opacity = '0', imgOff.opacity = '1' ); 
   }
   
-  
   //button actions on scrolldown
-  
   
   actDoubled = () => {
     
   }
   
-  
   actCheck = () => {
     
   }
-  
   
   actSplit = () => {
     document.body.dispatchEvent( new CustomEvent('split', {bubbles: true}) );
@@ -146,10 +142,8 @@ export default class Panel {
       fill: 'both',
       composite: 'add'
     });
-    
     splitting.persist();
   }
-  
   
   actHover() {
     const cards = document
@@ -174,7 +168,6 @@ export default class Panel {
     }
     for (let card of cards) card.addEventListener('pointerover', () => onHoverRotation( card ), { once: true });
   }
-  
   
   actAdder = suffix => {
     const id = suffix.slice(6);
@@ -222,7 +215,6 @@ export default class Panel {
     });
     chipArmedEject.persist();
   }
-  
   
   //end of button actions
   

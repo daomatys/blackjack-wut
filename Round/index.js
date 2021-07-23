@@ -26,7 +26,7 @@ export default class Round {
   initListeners() {
     this.deck.elem.addEventListener(
       'card-placed',
-      ({ detail: data }) => this.newCardPlayer( data )
+      ({ detail: cardOnSpawnProperties }) => this.newCardPlayer( cardOnSpawnProperties )
     );
     
     document.addEventListener(
@@ -36,14 +36,14 @@ export default class Round {
     );
   }
   
-  newCardPlayer( data ) {
+  newCardPlayer( cardOnSpawnProperties ) {
     this.splitModeState
-      ? this.modeSplit( data )
-      : this.modeNormal( data )
+      ? this.modeSplit( cardOnSpawnProperties )
+      : this.modeNormal( cardOnSpawnProperties )
   }
   
-  modeSplit( data ) {
-    const subHand = data.below.closest('.subhand');
+  modeSplit( cardOnSpawnProperties ) {
+    const subHand = cardOnSpawnProperties.below.closest('.subhand');
     const subHandRect = subHand.getBoundingClientRect();
     const subHandCardCount = subHand.classList.contains('subhand__left') 
       ? this.playerCardsCount.left++ 
@@ -54,15 +54,15 @@ export default class Round {
       holder: subHandRect,
       count: subHandCardCount,
       card: {
-        elem: data.card.elem,
-        props: data,
+        elem: cardOnSpawnProperties.card.elem,
+        props: cardOnSpawnProperties,
         margin: 18
       }
     }
     this.newCardTransition( animationContext );
   }
   
-  modeNormal( data ) {
+  modeNormal( cardOnSpawnProperties ) {
     const playerHand = document.querySelector('.hand__player');
     const playerHandRect = playerHand.getBoundingClientRect();
     const playerHandCardCount = this.playerCardsCount.normal;
@@ -72,19 +72,18 @@ export default class Round {
       holder: playerHandRect,
       count: playerHandCardCount,
       card: {
-        elem: data.card.elem,
-        props: data,
+        elem: cardOnSpawnProperties.card.elem,
+        props: cardOnSpawnProperties,
         margin: 60
       }
     }
     if ( this.playerCardsCount.normal < 1 ) this.newCardDealer();
-      
-    if ( this.playerCardsCount.normal < 7 ) {
-      this.newCardTransition( animationContext );
-      this.playerCardsCount.normal++;
-    } else {
-      this.deck.sub('top').removeEventListener('pointerdown', this.deck.onPointerDown);
-    }
+    
+    this.newCardTransition( animationContext );
+    
+    this.playerCardsCount.normal < 7 
+      ? this.playerCardsCount.normal++
+      : this.deck.sub('top').removeEventListener('pointerdown', this.deck.onPointerDown);
   }
   
   newCardTransition( animationContext ) {
@@ -125,7 +124,6 @@ export default class Round {
   }
   
   newCardMovement( elem, shiftX, shiftY ) {
-    
     const shift = elem.animate({
       transform: [
         'scale( 1.05 )',
