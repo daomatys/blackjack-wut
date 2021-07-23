@@ -50,12 +50,14 @@ export default class Round {
       : this.playerCardsCount.right++;
     
     const animationContext = {
-      zone: subHand,
+      parent: subHand,
       holder: subHandRect,
-      card: data.card.elem,
-      cardcount: subHandCardCount,
-      cardprops: data,
-      cardmargin: 18
+      count: subHandCardCount,
+      card: {
+        elem: data.card.elem,
+        props: data,
+        margin: 18
+      }
     }
     this.newCardTransition( animationContext );
   }
@@ -66,12 +68,14 @@ export default class Round {
     const playerHandCardCount = this.playerCardsCount.normal;
     
     const animationContext = {
-      zone: playerHand,
+      parent: playerHand,
       holder: playerHandRect,
-      card: data.card.elem,
-      cardcount: playerHandCardCount,
-      cardprops: data,
-      cardmargin: 60
+      count: playerHandCardCount,
+      card: {
+        elem: data.card.elem,
+        props: data,
+        margin: 60
+      }
     }
     if ( this.playerCardsCount.normal < 1 ) this.newCardDealer();
       
@@ -85,19 +89,18 @@ export default class Round {
   
   newCardTransition( animationContext ) {
     const card = animationContext.card;
-    const cardProps = animationContext.cardprops;
     
-    animationContext.zone.append( card );
+    animationContext.parent.append( card.elem );
     
-    Object.assign( card.style, {
-      left: parseInt( cardProps.left, 10 ) - animationContext.holder.left + 1 + 'px',
-      top: parseInt( cardProps.top, 10 ) - animationContext.holder.top + 1 + 'px'
+    Object.assign( card.elem.style, {
+      left: parseInt( card.props.left, 10 ) - animationContext.holder.left + 1 + 'px',
+      top: parseInt( card.props.top, 10 ) - animationContext.holder.top + 1 + 'px'
     });
     
-    const shiftX = -parseInt( card.style.left, 10 ) + animationContext.cardcount * animationContext.cardmargin + 'px';
-    const shiftY = -parseInt( card.style.top, 10 ) + 'px';
+    const shiftX = -parseInt( card.elem.style.left, 10 ) + animationContext.count * animationContext.card.margin + 'px';
+    const shiftY = -parseInt( card.elem.style.top, 10 ) + 'px';
     
-    this.newCardMovement( card, shiftX, shiftY );
+    this.newCardMovement( card.elem, shiftX, shiftY );
   }
   
   newCardDealer() {
