@@ -1,0 +1,9 @@
+.menu {
+  z-index: 30;
+  position: absolute;
+  filter: opacity(99%);
+}
+
+.menu__button {
+  display: inline-block;
+}

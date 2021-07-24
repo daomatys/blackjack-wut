@@ -27,7 +27,8 @@ export default class Menu {
     this.elem.querySelector('#menu-button-home').addEventListener('pointerdown', this.home);
   }
   
-  start() {
-    
+  start = () => {
+    document.querySelector('#blackjack-table').style.opacity = 1;
+    document.querySelector('#start-menu').style.transform = 'translateX(-2000px)';
   }
 }
