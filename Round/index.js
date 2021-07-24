@@ -59,7 +59,7 @@ export default class Round {
         margin: 18
       }
     }
-    this.newCardTransition( animationContext );
+    this.newCardPlayerTransition( animationContext );
   }
   
   modeNormal( cardOnSpawnProperties ) {
@@ -77,16 +77,14 @@ export default class Round {
         margin: 60
       }
     }
-    if ( this.playerCardsCount.normal < 1 ) this.newCardDealer();
-    
-    this.newCardTransition( animationContext );
+    this.newCardPlayerTransition( animationContext );
     
     this.playerCardsCount.normal < 7 
       ? this.playerCardsCount.normal++
       : this.deck.sub('top').removeEventListener('pointerdown', this.deck.onPointerDown);
   }
   
-  newCardTransition( animationContext ) {
+  newCardPlayerTransition( animationContext ) {
     const card = animationContext.card;
     
     animationContext.parent.append( card.elem );

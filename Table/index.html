@@ -2,43 +2,54 @@
 <html>
 
 <head>
+
   <meta charset="utf-8" />
+  
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   
   <title>TABLE</title>
   
   <link rel="stylesheet" href="./all.css">
+  
 </head>
 
 <body>
 
-  <div data-zone-deck>
-    <img src="/assets/zone_deck.png">
+  <div id="start-menu">
+    <div data-menu></div>
   </div>
+
+  <div id="blackjack-table">
   
-  <div class="hand" data-zone-dealer>
-    <img src="/assets/zone_hand.png">
-    <div class="holder hand__dealer"></div>
-  </div>
-  
-  <div class="hand" data-zone-player>
-    <img src="/assets/zone_hand.png">
-    <div class="holder hand__player"></div>
-  </div>
-  
-  <div data-panel>
-    <img src="/assets/panel.png">
-  </div>
-  
-  <div data-bank>
-    <img src="/assets/bank.png">
-    <div class="bank">
-      <div class="bank__slot" id="slot-1"></div>
-      <div class="bank__slot" id="slot-5"></div>
-      <div class="bank__slot" id="slot-10"></div>
-      <div class="bank__slot" id="slot-25"></div>
-      <div class="bank__slot" id="slot-100"></div>
+    <div data-zone-deck>
+      <img src="/assets/zone_deck.png">
     </div>
+    
+    <div data-zone-dealer class="hand">
+      <img src="/assets/zone_hand.png">
+      <div class="holder hand__dealer"></div>
+    </div>
+    
+    <div data-zone-player class="hand">
+      <img src="/assets/zone_hand.png">
+      <div class="holder hand__player"></div>
+    </div>
+    
+    <div data-panel>
+      <img src="/assets/panel.png">
+    </div>
+    
+    <div data-bank>
+      <img src="/assets/bank.png">
+      <div class="bank">
+        <div class="bank__slot" id="slot-1"></div>
+        <div class="bank__slot" id="slot-5"></div>
+        <div class="bank__slot" id="slot-10"></div>
+        <div class="bank__slot" id="slot-25"></div>
+        <div class="bank__slot" id="slot-100"></div>
+      </div>
+    </div>
+    
   </div>
   
   <script type="module">

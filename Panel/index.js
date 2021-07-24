@@ -8,10 +8,6 @@ export default class Panel {
     this.eventListeners();
   }
   
-  initCounters() {
-
-  }
-  
   layout = () => {
     this.arrClickers = [ 'doubled', 'check', 'split', 'hover' ];
     this.arrChipsCounters = [ 0, 0, 0, 0, 0 ];
@@ -138,7 +134,7 @@ export default class Panel {
       ]
     }, {
       easing: 'ease',
-      duration: 1000,
+      duration: 800,
       fill: 'both',
       composite: 'add'
     });
@@ -160,7 +156,7 @@ export default class Panel {
         ]
       }, {
         easing: 'ease',
-        duration: 1000,
+        duration: 800,
         fill: 'both',
         composite: 'add'
       });

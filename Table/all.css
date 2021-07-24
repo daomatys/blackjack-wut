@@ -1,3 +1,6 @@
+/*Table*/
+@import './index.css';
+
 /*Card*/
 @import '../Card/index.css';
 
@@ -7,5 +10,5 @@
 /*Panel*/
 @import '../Panel/index.css';
 
-/*Table*/
-@import './index.css';
+/*Menu*/
+@import './Menu/index.css';
