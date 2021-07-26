@@ -61,7 +61,6 @@ export default class Menu {
       fill: 'both',
       composite: 'add'
     });
-    tableShakes.persist();
     
   }
 }

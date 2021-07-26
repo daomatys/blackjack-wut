@@ -104,3 +104,19 @@ img {
   height: 100px;
   top: -30px;
 }
+
+
+.caller-bank {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 66%;
+}
+
+.caller-bank img {
+  width: inherit;
+  height: inherit;
+}
