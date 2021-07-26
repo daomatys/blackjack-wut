@@ -13,23 +13,25 @@ export default class Menu {
       <div class="menu__logo">
         <img src="/assets/logo-4.png">
       </div>
-      <div class="menu__buttons">
-        <div class="menu__button" id="menu-button-start">START</div>
-        <div class="menu__button" id="menu-button-about">ABOUT</div>
-        <div class="menu__button" id="menu-button-home">HOME</div>
+      <div class="menu__button-array">
+        <div class="menu__button" id="menu-start">START</div>
+        <div class="menu__button" id="menu-about">ABOUT</div>
+        <div class="menu__button" id="menu-home">HOME</div>
       </div>
     `;
   }
   
   eventListeners() {
-    this.elem.querySelector('#menu-button-start').addEventListener('pointerdown', this.start);
-    this.elem.querySelector('#menu-button-about').addEventListener('pointerdown', this.about);
-    this.elem.querySelector('#menu-button-home').addEventListener('pointerdown', this.home);
+    const getButton = name => this.elem.querySelector(`#menu-${ name }`)
+    
+    getButton('start').addEventListener('pointerdown', this.start);
+    getButton('about').addEventListener('pointerdown', this.about);
+    getButton('home').addEventListener('pointerdown', this.home);
   }
   
   start = () => {
-    document.querySelector('#blackjack-table').style.opacity = 1;
-    document.querySelector('#start-menu').style.transform = 'translateX( -2000px )';
+    document.querySelector('#blackjack-table').style.display = 'inline';
+    document.querySelector('#start-screen-menu').style.display = 'none';
     
     const deckInitHiddenPosition = document.querySelector('.deck').animate({
       transform: 'translate( -280px, -600px )'

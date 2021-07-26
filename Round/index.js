@@ -35,14 +35,36 @@ export default class Round {
       { once: true }
     );
     
+    document.addEventListener(
+      'firstcoin',
+      this.initCallerAutodim,
+      { once: true }
+    );
+    
     document.querySelector('.caller-bank').addEventListener(
       'click',
-      this.deckSpawn
+      this.deckSpawn,
+      { once: true }
     );
   }
   
+  initCallerAutodim() {
+    const caller = document.querySelector('.caller-bank');
+    const callerAutoDimmer = caller.animate([
+      { opacity: 0 },
+      { opacity: 1 },
+      { opacity: 0 }
+    ], {
+      duration: 3000,
+      iterations: Infinity
+    });
+    callerAutoDimmer.persist();
+    
+    caller.style.display = 'inline';
+  }
+  
   deckSpawn() {
-    const deckFallsDown = document.querySelector('.deck').animate({
+    const deckFallDownUponHolder = document.querySelector('.deck').animate({
       transform: ['scale( 2 ) rotate( 180deg )', 'translate( 280px, 600px ) scale( 1 ) rotate( -360deg )']
     }, {
       easing: 'cubic-bezier(0.68, -0.6, 0.32, 1.1)',
@@ -50,7 +72,14 @@ export default class Round {
       fill: 'forwards',
       composite: 'add'
     });
-    deckFallsDown.persist();
+    
+    const callerDimDown = document.querySelector('.caller-bank').animate({
+      opacity: 0
+    },{
+      duration: 300,
+      fill: 'forwards',
+      composite: 'replace'
+    });
     
     const tableShakes = document.querySelector('html').animate([
       { transform: 'translate(0px, 0px) rotate(0deg)' },
@@ -73,6 +102,10 @@ export default class Round {
       fill: 'both',
       composite: 'add'
     });
+    
+    deckFallDownUponHolder.persist();
+    callerDimDown.persist();
+    tableShakes.persist();
   }
   
   newCardPlayer( cardOnSpawnProperties ) {

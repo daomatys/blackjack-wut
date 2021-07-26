@@ -210,6 +210,8 @@ export default class Panel {
       composite: 'add'
     });
     chipArmedEject.persist();
+    
+    this.elem.dispatchEvent( new CustomEvent('firstcoin', {bubbles: true}) );
   }
   
   //end of button actions

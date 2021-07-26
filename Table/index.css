@@ -19,7 +19,7 @@ img {
   pointer-events: none;
 }
 
-#start-menu {
+#start-screen-menu {
   position: absolute;
   width: 936px;
   height: 188px;
@@ -30,10 +30,10 @@ img {
 }
 
 #blackjack-table {
+  display: none;
   position: absolute;
   width: 100%;
   height: 100%;
-  opacity: 0;
 }
 
 .hand {
@@ -113,7 +113,7 @@ img {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  opacity: 66%;
+  display: none;
 }
 
 .caller-bank img {
