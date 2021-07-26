@@ -178,8 +178,8 @@ export default class Panel {
     slot.append( chipBet );
     
     Object.assign( chipBet.style, {
-      left: parseInt( this.getRect( chipArmed ).left, 10 ) - parseInt( this.getRect( chipBet ).left, 10 ) + 'px',
-      top: parseInt( this.getRect( chipArmed ).top, 10 ) - parseInt( this.getRect( chipBet ).top, 10 ) + 'px',
+      left: parseInt( this.defineRect( chipArmed ).left, 10 ) - parseInt( this.defineRect( chipBet ).left, 10 ) + 'px',
+      top: parseInt( this.defineRect( chipArmed ).top, 10 ) - parseInt( this.defineRect( chipBet ).top, 10 ) + 'px',
     });
     
     const num = this.arrChips.indexOf( parseInt( id, 10 ) );
@@ -216,7 +216,5 @@ export default class Panel {
   
   //end of button actions
   
-  getRect = elem => elem.getBoundingClientRect();
-  
-  getRandomInt = num => Math.floor( Math.random() * Math.floor( num ) );
+  defineRect = elem => elem.getBoundingClientRect();
 }

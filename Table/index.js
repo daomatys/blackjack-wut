@@ -19,5 +19,4 @@ export default class Table {
     document.querySelector('[data-panel]').append( this.panel.elem );
     document.querySelector('[data-menu]').append( this.menu.elem );
   }
-  
 }

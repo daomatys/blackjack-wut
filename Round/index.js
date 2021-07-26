@@ -37,18 +37,18 @@ export default class Round {
     
     document.addEventListener(
       'firstcoin',
-      this.initCallerAutodim,
+      this.onFirstCoinEvent,
       { once: true }
     );
     
     document.querySelector('.caller-bank').addEventListener(
       'click',
-      this.deckSpawn,
+      this.onСallerClickEvent,
       { once: true }
     );
   }
   
-  initCallerAutodim() {
+  onFirstCoinEvent() {
     const caller = document.querySelector('.caller-bank');
     const callerAutoDimmer = caller.animate([
       { opacity: 0 },
@@ -63,8 +63,8 @@ export default class Round {
     caller.style.display = 'inline';
   }
   
-  deckSpawn() {
-    const deckFallDownUponHolder = document.querySelector('.deck').animate({
+  onСallerClickEvent() {
+    const deckFallDownUponZone = document.querySelector('.deck').animate({
       transform: ['scale( 2 ) rotate( 180deg )', 'translate( 280px, 600px ) scale( 1 ) rotate( -360deg )']
     }, {
       easing: 'cubic-bezier(0.68, -0.6, 0.32, 1.1)',
@@ -103,7 +103,7 @@ export default class Round {
       composite: 'add'
     });
     
-    deckFallDownUponHolder.persist();
+    deckFallDownUponZone.persist();
     callerDimDown.persist();
     tableShakes.persist();
   }
@@ -178,8 +178,8 @@ export default class Round {
     document.querySelector(`.hand__dealer`).append( card.elem );
     
     const cardStyle = card.elem.style;
-    const cardStyleRight = this.getRect(`.hand__dealer`).right - this.getRect('[data-zone-deck]').right + 'px';
-    const cardStyleTop = this.getRect(`.hand__dealer`).top - this.getRect('[data-zone-deck]').top + 'px';
+    const cardStyleRight = this.defineRect(`.hand__dealer`).right - this.defineRect('[data-zone-deck]').right + 'px';
+    const cardStyleTop = this.defineRect(`.hand__dealer`).top - this.defineRect('[data-zone-deck]').top + 'px';
     
     Object.assign( cardStyle, {
       left: cardStyleRight,
@@ -208,7 +208,7 @@ export default class Round {
     shift.persist();
   }
   
-  getCardValue( card, currentValue ) {
+  calcCardValue( card, currentValue ) {
     if ( typeof( card.rank ) === 'number' ) return card.rank;
     
     if ( card.rank === 'A' ) return currentValue + 11 < 22 ? 11 : 1 ;
@@ -216,6 +216,5 @@ export default class Round {
     return 10;
   }
   
-  getRect = sel => document.querySelector( sel ).getBoundingClientRect();
-  
+  defineRect = sel => document.querySelector( sel ).getBoundingClientRect();
 }

@@ -40,6 +40,5 @@ export default class Menu {
       composite: 'add'
     });
     deckInitHiddenPosition.persist();
-    
   }
 }
