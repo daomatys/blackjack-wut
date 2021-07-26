@@ -34,6 +34,45 @@ export default class Round {
       () => this.splitModeState = true, 
       { once: true }
     );
+    
+    document.querySelector('.caller-bank').addEventListener(
+      'click',
+      this.deckSpawn
+    );
+  }
+  
+  deckSpawn() {
+    const deckFallsDown = document.querySelector('.deck').animate({
+      transform: ['scale( 2 ) rotate( 180deg )', 'translate( 280px, 600px ) scale( 1 ) rotate( -360deg )']
+    }, {
+      easing: 'cubic-bezier(0.68, -0.6, 0.32, 1.1)',
+      duration: 800,
+      fill: 'forwards',
+      composite: 'add'
+    });
+    deckFallsDown.persist();
+    
+    const tableShakes = document.querySelector('html').animate([
+      { transform: 'translate(0px, 0px) rotate(0deg)' },
+      { transform: 'translate(1px, 1px) rotate(0deg)' },
+      { transform: 'translate(-1px, -2px) rotate(-1deg)' },
+      { transform: 'translate(-3px, 0px) rotate(1deg)' },
+      { transform: 'translate(3px, 2px) rotate(0deg)' },
+      { transform: 'translate(1px, -1px) rotate(1deg)' },
+      { transform: 'translate(-1px, 2px) rotate(-1deg)' },
+      { transform: 'translate(-3px, 1px) rotate(0deg)' },
+      { transform: 'translate(3px, 1px) rotate(-1deg)' },
+      { transform: 'translate(-1px, -1px) rotate(1deg)' },
+      { transform: 'translate(1px, 2px) rotate(0deg)' },
+      { transform: 'translate(1px, -2px) rotate(-1deg)' },
+      { transform: 'translate(0px, 0px) rotate(0deg)' },
+    ], {
+      easing: 'ease',
+      delay: 710,
+      duration: 200,
+      fill: 'both',
+      composite: 'add'
+    });
   }
   
   newCardPlayer( cardOnSpawnProperties ) {

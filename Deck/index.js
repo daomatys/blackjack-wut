@@ -113,7 +113,6 @@ export default class Deck {
   }
   
   topCardScaleOnPick( num ) {
-    
     const zoom = this.sub('top').animate({
       transform: `scale(${ num })`
     }, {
