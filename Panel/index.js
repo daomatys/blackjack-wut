@@ -16,8 +16,8 @@ export default class Panel {
     const layoutPanelButtons = this.arrClickers
       .map( suffix => `
         <div class="clicker tap" id="${ suffix }">
-          <img src="/assets/buttons/button_${ suffix }_off.png">
-          <img src="/assets/buttons/button_${ suffix }_on.png" style="opacity:0">
+          <img src="/assets/buttons/button_${ suffix }_off.png" style="display: inline">
+          <img src="/assets/buttons/button_${ suffix }_on.png" style="display: none">
         </div>`)
       .join('');
       
@@ -31,8 +31,8 @@ export default class Panel {
     const layoutAdderBar = this.arrChips 
       .map( code => `
         <div class="adder tap" id="adder-${ code }">
-          <img src="/assets/buttons/adder_off.png">
-          <img src="/assets/buttons/adder_on.png" style="opacity:0">
+          <img src="/assets/buttons/adder_off.png" style="display: inline">
+          <img src="/assets/buttons/adder_on.png" style="display: none">
         </div>`)
       .join('');
       
@@ -56,6 +56,28 @@ export default class Panel {
     
     for (let clicker of clickers) clicker.addEventListener('pointerdown', this.actsOfButtons);
     for (let adder of adders) adder.addEventListener('pointerdown', this.actsOfButtons);
+    
+    document.body.addEventListener('end-of-bet', () => {
+      for (let adder of adders) adder.removeEventListener('pointerdown', this.actsOfButtons);
+    }, { 
+      once: true 
+    });
+  }
+  
+  changeButtonDisplayState = id => {
+    const btn = this.elem.querySelector(`#${ id }`);
+    
+    const btnToggle = () => {
+      const imgOn = btn.firstElementChild.style;
+      const imgOff = btn.lastElementChild.style;
+      
+      imgOn.display === 'none'
+      ? ( imgOn.display = 'inline', imgOff.display = 'none' )
+      : ( imgOn.display = 'none', imgOff.display = 'inline' ); 
+    }
+    btnToggle();
+    
+    document.body.addEventListener('pointerup', btnToggle, { once: true } );
   }
   
   actsOfButtons = event => {
@@ -63,36 +85,15 @@ export default class Panel {
     
     const id = event.target.closest('.tap').id;
     
-    this.act( id );
-  }
-
-  act( suffix ) {
-    const btn = this.elem.querySelector(`#${ suffix }`);
+    this.changeButtonDisplayState( id );
     
-    this.switchback( btn );
-    
-    const btnRelease = () => {
-      this.switchback( btn );
-      document.removeEventListener('pointerup', btnRelease )
-    }
-    document.addEventListener('pointerup', btnRelease );
-    
-    switch (suffix) {
+    switch ( id ) {
       case 'doubled': this.actDoubled(); break;
-      case 'check': this.actCheck(); break;
+      case 'check': this.actCheck(); break;  
       case 'split': this.actSplit(); break;
       case 'hover': this.actHover(); break;
-      default: this.actAdder( suffix ); break;
+      default: this.actAdder( id ); break;
     }
-  }
-  
-  switchback( btn ) {
-    const imgOn = btn.firstElementChild.style;
-    const imgOff = btn.lastElementChild.style;
-    
-    imgOn.opacity === '0'
-    ? ( imgOn.opacity = '1', imgOff.opacity = '0' )
-    : ( imgOn.opacity = '0', imgOff.opacity = '1' ); 
   }
   
   //button actions on scrolldown
@@ -165,8 +166,8 @@ export default class Panel {
     for (let card of cards) card.addEventListener('pointerover', () => onHoverRotation( card ), { once: true });
   }
   
-  actAdder = suffix => {
-    const id = suffix.slice(6);
+  actAdder = idRaw => {
+    const id = idRaw.slice(6);
     
     const slot = document.getElementById(`slot-${ id }`);
     
@@ -211,7 +212,10 @@ export default class Panel {
     });
     chipArmedEject.persist();
     
-    this.elem.dispatchEvent( new CustomEvent('firstcoin', {bubbles: true}) );
+    if ( !this.firstChipBet ) {
+      this.elem.dispatchEvent( new CustomEvent('first-chip-bet', {bubbles: true}) );
+      this.firstChipBet = true;
+    }
   }
   
   //end of button actions

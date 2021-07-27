@@ -36,8 +36,8 @@ export default class Round {
     );
     
     document.addEventListener(
-      'firstcoin',
-      this.onFirstCoinEvent,
+      'first-chip-bet',
+      this.onFirstChipEvent,
       { once: true }
     );
     
@@ -48,14 +48,14 @@ export default class Round {
     );
   }
   
-  onFirstCoinEvent() {
+  onFirstChipEvent() {
     const caller = document.querySelector('.caller-bank');
     const callerAutoDimmer = caller.animate([
       { opacity: 0 },
       { opacity: 1 },
       { opacity: 0 }
     ], {
-      duration: 3000,
+      duration: 4000,
       iterations: Infinity
     });
     callerAutoDimmer.persist();
@@ -65,7 +65,10 @@ export default class Round {
   
   onСallerClickEvent() {
     const deckFallDownUponZone = document.querySelector('.deck').animate({
-      transform: ['scale( 2 ) rotate( 180deg )', 'translate( 280px, 600px ) scale( 1 ) rotate( -360deg )']
+      transform: [
+        'scale( 2 ) rotate( 180deg )', 
+        'translate( 280px, 600px ) scale( 1 ) rotate( -360deg )'
+      ]
     }, {
       easing: 'cubic-bezier(0.68, -0.6, 0.32, 1.1)',
       duration: 800,
@@ -81,21 +84,23 @@ export default class Round {
       composite: 'replace'
     });
     
-    const tableShakes = document.querySelector('html').animate([
-      { transform: 'translate(0px, 0px) rotate(0deg)' },
-      { transform: 'translate(1px, 1px) rotate(0deg)' },
-      { transform: 'translate(-1px, -2px) rotate(-1deg)' },
-      { transform: 'translate(-3px, 0px) rotate(1deg)' },
-      { transform: 'translate(3px, 2px) rotate(0deg)' },
-      { transform: 'translate(1px, -1px) rotate(1deg)' },
-      { transform: 'translate(-1px, 2px) rotate(-1deg)' },
-      { transform: 'translate(-3px, 1px) rotate(0deg)' },
-      { transform: 'translate(3px, 1px) rotate(-1deg)' },
-      { transform: 'translate(-1px, -1px) rotate(1deg)' },
-      { transform: 'translate(1px, 2px) rotate(0deg)' },
-      { transform: 'translate(1px, -2px) rotate(-1deg)' },
-      { transform: 'translate(0px, 0px) rotate(0deg)' },
-    ], {
+    const tableShakes = document.querySelector('html').animate({
+      transform: [
+        'translate(0px, 0px) rotate(0deg)',
+        'translate(1px, 1px) rotate(0deg)',
+        'translate(-1px, -2px) rotate(-1deg)',
+        'translate(-3px, 0px) rotate(1deg)',
+        'translate(3px, 2px) rotate(0deg)',
+        'translate(1px, -1px) rotate(1deg)',
+        'translate(-1px, 2px) rotate(-1deg)',
+        'translate(-3px, 1px) rotate(0deg)',
+        'translate(3px, 1px) rotate(-1deg)',
+        'translate(-1px, -1px) rotate(1deg)',
+        'translate(1px, 2px) rotate(0deg)',
+        'translate(1px, -2px) rotate(-1deg)',
+        'translate(0px, 0px) rotate(0deg)'
+      ]
+    }, {
       easing: 'ease',
       delay: 710,
       duration: 200,
@@ -103,9 +108,40 @@ export default class Round {
       composite: 'add'
     });
     
+    const bankMoves = document.querySelector('.bank').animate({
+      transform: 'translateY(-100px)'
+    }, {
+      easing: 'ease',
+      duration: 500,
+      fill: 'both',
+      composite: 'add'
+    });
+    
+    const adders = document.querySelectorAll('.adder');
+
+    for ( let adder of adders ) {
+      adder.lastElementChild.src = '/assets/buttons/adder_inactive.png';
+      
+      Object.assign( adder.lastElementChild.style, {
+        display: 'inline',
+        opacity: 0
+      });
+      
+      adder.lastElementChild.animate({
+        opacity: 1
+      }, {
+        easing: 'ease',
+        duration: 500,
+        fill: 'both',
+        composite: 'replace'
+      });
+    }
     deckFallDownUponZone.persist();
     callerDimDown.persist();
     tableShakes.persist();
+    bankMoves.persist();
+    
+    document.body.dispatchEvent( new CustomEvent('end-of-bet', {bubbles: true}) );
   }
   
   newCardPlayer( cardOnSpawnProperties ) {
