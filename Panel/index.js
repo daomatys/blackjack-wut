@@ -67,7 +67,7 @@ export default class Panel {
   changeButtonDisplayState = id => {
     const btn = this.elem.querySelector(`#${ id }`);
     
-    const btnToggle = () => {
+    const btnClickIllusion = () => {
       const imgOn = btn.firstElementChild.style;
       const imgOff = btn.lastElementChild.style;
       
@@ -75,9 +75,9 @@ export default class Panel {
       ? ( imgOn.display = 'inline', imgOff.display = 'none' )
       : ( imgOn.display = 'none', imgOff.display = 'inline' ); 
     }
-    btnToggle();
+    btnClickIllusion();
     
-    document.body.addEventListener('pointerup', btnToggle, { once: true } );
+    document.body.addEventListener('pointerup', btnClickIllusion, { once: true } );
   }
   
   actsOfButtons = event => {
@@ -89,14 +89,12 @@ export default class Panel {
     
     switch ( id ) {
       case 'doubled': this.actDoubled(); break;
-      case 'check': this.actCheck(); break;  
+      case 'check': this.actCheck(); break;
       case 'split': this.actSplit(); break;
       case 'hover': this.actHover(); break;
       default: this.actAdder( id ); break;
     }
   }
-  
-  //button actions on scrolldown
   
   actDoubled = () => {
     
@@ -107,7 +105,7 @@ export default class Panel {
   }
   
   actSplit = () => {
-    document.body.dispatchEvent( new CustomEvent('split', {bubbles: true}) );
+    document.body.dispatchEvent( new CustomEvent('split', { bubbles: true }) );
     
     const subHands = `
       <div class="subhand subhand__left"></div>
@@ -213,12 +211,10 @@ export default class Panel {
     chipArmedEject.persist();
     
     if ( !this.firstChipBet ) {
-      this.elem.dispatchEvent( new CustomEvent('first-chip-bet', {bubbles: true}) );
+      this.elem.dispatchEvent( new CustomEvent('first-chip-bet', { bubbles: true }) );
       this.firstChipBet = true;
     }
   }
-  
-  //end of button actions
   
   defineRect = elem => elem.getBoundingClientRect();
 }

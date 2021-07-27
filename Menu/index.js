@@ -22,11 +22,11 @@ export default class Menu {
   }
   
   eventListeners() {
-    const getButton = name => this.elem.querySelector(`#menu-${ name }`)
+    const selectButton = name => this.elem.querySelector(`#menu-${ name }`)
     
-    getButton('start').addEventListener('pointerdown', this.start);
-    getButton('about').addEventListener('pointerdown', this.about);
-    getButton('home').addEventListener('pointerdown', this.home);
+    selectButton('start').addEventListener('pointerdown', this.start);
+    selectButton('about').addEventListener('pointerdown', this.about);
+    selectButton('home').addEventListener('pointerdown', this.home);
   }
   
   start = () => {

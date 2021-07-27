@@ -63,7 +63,7 @@ export default class Round {
     caller.style.display = 'inline';
   }
   
-  onСallerClickEvent() {
+  onСallerClickEvent = () => {
     const deckFallDownUponZone = document.querySelector('.deck').animate({
       transform: [
         'scale( 2 ) rotate( 180deg )', 
@@ -136,6 +136,7 @@ export default class Round {
         composite: 'replace'
       });
     }
+    deckFallDownUponZone.onfinish = this.newCardDealer;
     deckFallDownUponZone.persist();
     callerDimDown.persist();
     tableShakes.persist();
@@ -146,12 +147,12 @@ export default class Round {
   
   newCardPlayer( cardOnSpawnProperties ) {
     this.splitModeState
-      ? this.modeSplit( cardOnSpawnProperties )
-      : this.modeNormal( cardOnSpawnProperties )
+      ? this.initGamemodeSplit( cardOnSpawnProperties )
+      : this.initGamemodeNormal( cardOnSpawnProperties )
   }
   
-  modeSplit( cardOnSpawnProperties ) {
-    const subHand = cardOnSpawnProperties.below.closest('.subhand');
+  initGamemodeSplit( cardProps ) {
+    const subHand = cardProps.below.closest('.subhand');
     const subHandRect = subHand.getBoundingClientRect();
     const subHandCardCount = subHand.classList.contains('subhand__left') 
       ? this.playerCardsCount.left++ 
@@ -162,15 +163,15 @@ export default class Round {
       holder: subHandRect,
       count: subHandCardCount,
       card: {
-        elem: cardOnSpawnProperties.card.elem,
-        props: cardOnSpawnProperties,
+        elem: cardProps.card.elem,
+        props: cardProps,
         margin: 18
       }
     }
     this.newCardPlayerTransition( animationContext );
   }
   
-  modeNormal( cardOnSpawnProperties ) {
+  initGamemodeNormal( cardProps ) {
     const playerHand = document.querySelector('.hand__player');
     const playerHandRect = playerHand.getBoundingClientRect();
     const playerHandCardCount = this.playerCardsCount.normal;
@@ -180,8 +181,8 @@ export default class Round {
       holder: playerHandRect,
       count: playerHandCardCount,
       card: {
-        elem: cardOnSpawnProperties.card.elem,
-        props: cardOnSpawnProperties,
+        elem: cardProps.card.elem,
+        props: cardProps,
         margin: 60
       }
     }
@@ -208,7 +209,7 @@ export default class Round {
     this.newCardMovement( card.elem, shiftX, shiftY );
   }
   
-  newCardDealer() {
+  newCardDealer = () => {
     const card = this.deck.topCardData();
     
     document.querySelector(`.hand__dealer`).append( card.elem );
