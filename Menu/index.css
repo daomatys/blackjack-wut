@@ -4,6 +4,11 @@
   filter: opacity(99%);
 }
 
+.menu__button-array {
+  position: relative;
+  left: 50%;
+}
+
 .menu__button {
   display: inline-block;
 }

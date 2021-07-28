@@ -166,48 +166,55 @@ export default class Panel {
   
   actAdder = idRaw => {
     const id = idRaw.slice(6);
+    const num = this.arrChips.indexOf( parseInt( id, 10 ) );
     
     const slot = document.getElementById(`slot-${ id }`);
-    
     const chipBet = document.querySelector(`.chip-${ id }`).cloneNode( true );
     const chipArmed = document.querySelector(`.chip-armed.chip-${ id }`);
     
     chipBet.classList.replace('chip-armed', 'chip-bet');
     
-    slot.append( chipBet );
+    Object.assign( chipBet.style, {
+      left: this.defineRect( chipBet ).left + 'px',
+      top: this.defineRect( chipBet ).top + 'px',
+    })
     
+    slot.append( chipBet );
+
     Object.assign( chipBet.style, {
       left: parseInt( this.defineRect( chipArmed ).left, 10 ) - parseInt( this.defineRect( chipBet ).left, 10 ) + 'px',
       top: parseInt( this.defineRect( chipArmed ).top, 10 ) - parseInt( this.defineRect( chipBet ).top, 10 ) + 'px',
     });
-    
-    const num = this.arrChips.indexOf( parseInt( id, 10 ) );
     
     const shiftX = 0.5 * ++this.arrChipsCounters[ num ] - parseInt( chipBet.style.left, 10 ) + 'px';
     const shiftY = - 2 * this.arrChipsCounters[ num ] - parseInt( chipBet.style.top, 10 ) + 'px';
     
     const chipBetJump = chipBet.animate({
       transform: [
-        'scale(1)',
-        'perspective( 500px ) translate(10px, -80px) rotate3d(-1, -0.33, 0, 190deg) scale(1.26)',
+        'scale( 1 )',
+        'perspective( 500px ) translate( 10px, -80px ) rotate3d( -1, -0.33, 0, 190deg ) scale( 1.26 )',
         `translate( ${ shiftX }, ${ shiftY } )`
       ]
     }, {
-      easing: 'cubic-bezier(0.01, -0.2, 0.28, 1.08)',
+      easing: 'cubic-bezier( 0.01, -0.2, 0.28, 1.08 )',
       duration: 800,
       fill: 'both',
       composite: 'add'
     });
-    chipBetJump.persist();
     
     const chipArmedEject = chipArmed.animate({
-      transform: ['translateY(90px) rotate(-90deg)', 'translateY(0px)']
+      transform: [
+        'translateY( 90px ) rotate( -90deg )',
+        'translateY( 0px )'
+      ]
     }, {
       easing: 'cubic-bezier(0.25, 1, 0.5, 1)',
       duration: 800,
       fill: 'forwards',
-      composite: 'add'
+      composite: 'replace'
     });
+    
+    chipBetJump.persist();
     chipArmedEject.persist();
     
     if ( !this.firstChipBet ) {
