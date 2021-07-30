@@ -157,7 +157,7 @@ export default class Round {
   }
   
   initStageDealerDraw = () => {
-    
+    this.dealerDrawInterval = setInterval( this.newCardDealerTransition, 1000 );
   }
   
   initStageGameResults() {
@@ -189,7 +189,7 @@ export default class Round {
     
     if ( ++this.playerCardsCount.normal < 8 ) this.playerCardsValue.normal += this.calcCardValue( cardProps.card, this.playerCardsValue.normal );
     
-    if ( this.playerCardsValue.normal > 20 ) document.body.dispatchEvent( new CustomEvent('end-of-player-draw'));
+    if ( this.playerCardsValue.normal > 20 ) document.body.dispatchEvent( new CustomEvent('end-of-player-draw', { bubbles: true }) );
     
     console.log( this.playerCardsValue.normal )
   }
@@ -250,9 +250,12 @@ export default class Round {
     
     this.newCardMovement( card.elem, shiftX, shiftY );
     
-    if ( this.dealerCardsCount < 7 ) this.dealerCardsValue += this.calcCardValue( card, this.dealerCardsCount++ );
+    if ( ++this.dealerCardsCount < 8 ) this.dealerCardsValue += this.calcCardValue( card, this.dealerCardsValue );
     
-    if ( this.dealerCardsValue > 20 ) this.initStageGameResults();
+    if ( this.dealerCardsValue > 20 ) {
+       this.initStageGameResults();
+       clearInterval( this.dealerDrawInterval );
+    }
   }
   
   newCardMovement( elem, shiftX, shiftY ) {
@@ -271,8 +274,6 @@ export default class Round {
   }
   
   calcCardValue( card, currentValue ) {
-    
-    console.log(card.rank)
     if ( typeof( card.rank ) === 'number' ) return card.rank;
     
     if ( card.rank === 'A' ) return currentValue + 11 < 22 ? 11 : 1 ;
