@@ -121,14 +121,3 @@ img {
   width: inherit;
   height: inherit;
 }
-
-
-
-.block-mode {
-  opacity: 1;
-}
-
-.pierce-mode {
-  opacity: 0;
-  pointer-events: none;
-}

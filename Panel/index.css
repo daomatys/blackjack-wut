@@ -70,6 +70,7 @@
 }
 
 
+
 .panel__adders {
   position: absolute;
   display: grid;
@@ -102,4 +103,15 @@
 .adder {
   height: inherit;
   width: inherit;
+}
+
+
+
+.block-mode {
+  opacity: 1;
+}
+
+.pierce-mode {
+  opacity: 0;
+  pointer-events: none;
 }
