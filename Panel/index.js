@@ -30,15 +30,20 @@ export default class Panel {
       
     const layoutAdderBar = this.arrChips 
       .map( code => `
-        <div class="adder tap" id="adder-${ code }">
-          <img src="/assets/buttons/adder_off.png" style="display: inline">
-          <img src="/assets/buttons/adder_on.png" style="display: none">
+        <div class="adder__container adder-${code}">
+          <div class="adder tap" id="adder-${ code }">
+            <img src="/assets/buttons/adder_off.png" style="display: inline">
+            <img src="/assets/buttons/adder_on.png" style="display: none">
+          </div>
+          <div class="adder__fake pierce-mode">
+            <img src="/assets/buttons/adder_inactive.png">
+          </div>
         </div>`)
       .join('');
       
     return `
       <div class="panel__clickers">
-      ${ layoutPanelButtons }
+        ${ layoutPanelButtons }
       </div>
       <div class="panel__chip-machine">
         <div class="panel__chips">
@@ -51,54 +56,47 @@ export default class Panel {
   }
   
   eventListeners() {
-    const clickers = this.elem.querySelectorAll('.clicker');
-    const adders = this.elem.querySelectorAll('.adder');
+    const taps = this.elem.querySelectorAll('.tap');
     
-    for (let clicker of clickers) clicker.addEventListener('pointerdown', this.actsOfButtons);
-    for (let adder of adders) adder.addEventListener('pointerdown', this.actsOfButtons);
-    
-    document.body.addEventListener('end-of-bet', () => {
-      for (let adder of adders) adder.removeEventListener('pointerdown', this.actsOfButtons);
-    }, { 
-      once: true 
-    });
+    for (let tap of taps) tap.addEventListener('pointerdown', this.actsOfButtons);
   }
   
   changeButtonDisplayState = id => {
     const btn = this.elem.querySelector(`#${ id }`);
     
     const btnClickIllusion = () => {
-      const imgOn = btn.firstElementChild.style;
-      const imgOff = btn.lastElementChild.style;
+      const imgOff = btn.firstElementChild;
+      const imgOn = btn.lastElementChild;
       
-      imgOn.display === 'none'
-      ? ( imgOn.display = 'inline', imgOff.display = 'none' )
-      : ( imgOn.display = 'none', imgOff.display = 'inline' ); 
+      imgOn.style.display === 'none'
+      ? ( imgOn.style.display = 'inline', imgOff.style.display = 'none' )
+      : ( imgOn.style.display = 'none', imgOff.style.display = 'inline' );
     }
     btnClickIllusion();
     
-    document.body.addEventListener('pointerup', btnClickIllusion, { once: true } );
+    document.addEventListener('pointerup', btnClickIllusion, { once: true } );
   }
   
   actsOfButtons = event => {
     event.preventDefault();
     
-    const id = event.target.closest('.tap').id;
+    const aim = event.target;
     
-    this.changeButtonDisplayState( id );
-    
-    switch ( id ) {
-      case 'doubled': this.actDoubled(); break;
-      case 'check': this.actCheck(); break;
-      case 'split': this.actSplit(); break;
-      case 'hover': this.actHover(); break;
-      default: this.actAdder( id ); break;
+    if ( aim.classList.contains('tap') ) {
+      this.changeButtonDisplayState( aim.id );
+      
+      switch ( aim.id ) {
+        case 'doubled': this.actDoubled(); break;
+        case 'check': this.actCheck(); break;
+        case 'split': this.actSplit(); break;
+        case 'hover': this.actHover(); break;
+        default: this.actAdder( aim.id ); break;
+      }
     }
   }
   
   actDoubled = () => {
     const chips = document.querySelectorAll('chip-bet');
-    
   }
   
   actCheck = () => {
@@ -178,7 +176,7 @@ export default class Panel {
     Object.assign( chipBet.style, {
       left: this.defineRect( chipBet ).left + 'px',
       top: this.defineRect( chipBet ).top + 'px',
-    })
+    });
     
     slot.append( chipBet );
     

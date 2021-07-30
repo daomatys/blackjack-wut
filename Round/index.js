@@ -3,12 +3,13 @@ import Deck from '../Deck/index.js';
 export default class Round {
   
   constructor() {
-    this.deck = new Deck();
-    
     this.initRound();
+    this.initRegularListeners();
   }
   
-  initRound() {
+  initRound = () => {
+    this.initTempListeners();
+    
     this.dealerCardsCount = 0;
     this.dealerCardsValue = 0;
     
@@ -17,22 +18,28 @@ export default class Round {
       right: 1,
       left: 1
     };
+    
     this.playerCardsValue = {
       normal: 0,
       right: 0,
       left: 0
     };
+    
     this.splitModeState = false;
     
-    this.initListeners();
+    this.deck = new Deck();
+    
+    document.querySelector('[data-zone-deck]').append( this.deck.elem );
   }
   
-  initListeners() {
+  initRegularListeners() {
     this.deck.elem.addEventListener(
       'card-placed',
       ({ detail: cardOnSpawnProperties }) => this.newCardPlayer( cardOnSpawnProperties )
     );
-    
+  }
+  
+  initTempListeners() {
     document.addEventListener(
       'split', 
       () => this.splitModeState = true, 
@@ -74,7 +81,11 @@ export default class Round {
   }
   
   initStagePlayerDraw = () => {
-    const deckFallDownUponZone = document.querySelector('.deck').animate({
+    const fakeAdders = document.querySelectorAll('.adder__fake');
+    
+    for ( let fake of fakeAdders ) this.toggleBlockOrPierce( fake );
+    
+    this.deckFallDownUponZone = document.querySelector('.deck').animate({
       transform: [
         'scale( 2 ) rotate( 180deg )', 
         'translate( 280px, 600px ) scale( 1 ) rotate( -360deg )'
@@ -127,33 +138,12 @@ export default class Round {
       composite: 'add'
     });
     
-    const adders = document.querySelectorAll('.adder');
+    this.deckFallDownUponZone.onfinish = this.newCardDealerTransition;
+    this.deckFallDownUponZone.persist();
     
-    for ( let adder of adders ) {
-      adder.lastElementChild.src = '/assets/buttons/adder_inactive.png';
-      
-      Object.assign( adder.lastElementChild.style, {
-        display: 'inline',
-        opacity: 0
-      });
-      
-      adder.lastElementChild.animate({
-        opacity: 1
-      }, {
-        easing: 'ease',
-        duration: 500,
-        fill: 'both',
-        composite: 'replace'
-      });
-    }
-    deckFallDownUponZone.onfinish = this.newCardDealerTransition;
-    
-    deckFallDownUponZone.persist();
     callerDimDown.persist();
     tableShakes.persist();
     bankMoves.persist();
-    
-    document.body.dispatchEvent( new CustomEvent('end-of-bet', { bubbles: true }) );
   }
   
   initStageDealerDraw = () => {
@@ -161,7 +151,28 @@ export default class Round {
   }
   
   initStageGameResults() {
+    const cards = document.querySelectorAll('.card')
+    const fakeAdders = document.querySelectorAll('.adder__fake');
     
+    for ( let card of cards ) {
+      if ( card.parentNode ) {
+        card.parentNode.removeChild( card );
+      }
+    }
+    
+    for ( let fake of fakeAdders ) this.toggleBlockOrPierce( fake );
+    
+    this.deckFallDownUponZone.cancel();
+    
+    document.removeEventListener(
+      'split', 
+      () => this.splitModeState = true, 
+      { once: true }
+    );
+    
+    setTimeout( this.deck.remove, 2000 );
+    
+    this.initRound();
   }
   
   newCardPlayer( cardOnSpawnProperties ) {
@@ -256,7 +267,6 @@ export default class Round {
        this.initStageGameResults();
        clearInterval( this.dealerDrawInterval );
     }
-    
     console.log( 'dealer:', this.dealerCardsValue )
   }
   
@@ -304,4 +314,8 @@ export default class Round {
   }
   
   defineRect = sel => document.querySelector( sel ).getBoundingClientRect();
+  
+  toggleBlockOrPierce = item => item.classList.contains('block-mode')
+    ? item.classList.replace('block-mode', 'pierce-mode')
+    : item.classList.replace('pierce-mode', 'block-mode');
 }

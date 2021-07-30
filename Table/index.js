@@ -5,17 +5,17 @@ import Menu from '../Menu/index.js';
 export default class Table {
 
   constructor() {
-    this.round = new Round();
-    this.panel = new Panel();
-    this.menu = new Menu();
-    
-    this.deck = this.round.deck;
-    
+    this.createNewRound();
     this.render();
   }
   
+  createNewRound = () => {
+    this.round = new Round();
+    this.panel = new Panel();
+    this.menu = new Menu();
+  }
+  
   render() {
-    document.querySelector('[data-zone-deck]').append( this.deck.elem );
     document.querySelector('[data-panel]').append( this.panel.elem );
     document.querySelector('[data-menu]').append( this.menu.elem );
   }
