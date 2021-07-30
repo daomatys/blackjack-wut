@@ -97,11 +97,12 @@ export default class Panel {
   }
   
   actDoubled = () => {
+    const chips = document.querySelectorAll('chip-bet');
     
   }
   
   actCheck = () => {
-    
+    document.body.dispatchEvent( new CustomEvent('end-of-player-draw', { bubbles: true }) );
   }
   
   actSplit = () => {
@@ -180,7 +181,7 @@ export default class Panel {
     })
     
     slot.append( chipBet );
-
+    
     Object.assign( chipBet.style, {
       left: parseInt( this.defineRect( chipArmed ).left, 10 ) - parseInt( this.defineRect( chipBet ).left, 10 ) + 'px',
       top: parseInt( this.defineRect( chipArmed ).top, 10 ) - parseInt( this.defineRect( chipBet ).top, 10 ) + 'px',

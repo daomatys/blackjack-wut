@@ -9,14 +9,18 @@ export default class Round {
   }
   
   initRound() {
-    this.dealerCardsValue = 0;
     this.dealerCardsCount = 0;
+    this.dealerCardsValue = 0;
     
-    this.playerCardsValue = 0;
     this.playerCardsCount = { 
       normal: 0,
       right: 1,
       left: 1
+    };
+    this.playerCardsValue = {
+      normal: 0,
+      right: 0,
+      left: 0
     };
     this.splitModeState = false;
     
@@ -43,7 +47,13 @@ export default class Round {
     
     document.querySelector('.caller-bank').addEventListener(
       'click',
-      this.onСallerClickEvent,
+      this.initStagePlayerDraw,
+      { once: true }
+    );
+    
+    document.addEventListener(
+      'end-of-player-draw',
+      this.initStageDealerDraw,
       { once: true }
     );
   }
@@ -63,7 +73,7 @@ export default class Round {
     caller.style.display = 'inline';
   }
   
-  onСallerClickEvent = () => {
+  initStagePlayerDraw = () => {
     const deckFallDownUponZone = document.querySelector('.deck').animate({
       transform: [
         'scale( 2 ) rotate( 180deg )', 
@@ -118,7 +128,7 @@ export default class Round {
     });
     
     const adders = document.querySelectorAll('.adder');
-
+    
     for ( let adder of adders ) {
       adder.lastElementChild.src = '/assets/buttons/adder_inactive.png';
       
@@ -136,42 +146,31 @@ export default class Round {
         composite: 'replace'
       });
     }
-    deckFallDownUponZone.onfinish = this.newCardDealer;
+    deckFallDownUponZone.onfinish = this.newCardDealerTransition;
+    
     deckFallDownUponZone.persist();
     callerDimDown.persist();
     tableShakes.persist();
     bankMoves.persist();
     
-    document.body.dispatchEvent( new CustomEvent('end-of-bet', {bubbles: true}) );
+    document.body.dispatchEvent( new CustomEvent('end-of-bet', { bubbles: true }) );
+  }
+  
+  initStageDealerDraw = () => {
+    
+  }
+  
+  initStageGameResults() {
+    
   }
   
   newCardPlayer( cardOnSpawnProperties ) {
     this.splitModeState
-      ? this.initGamemodeSplit( cardOnSpawnProperties )
-      : this.initGamemodeNormal( cardOnSpawnProperties )
+      ? this.initPlayerDrawSplit( cardOnSpawnProperties )
+      : this.initPlayerDrawNormal( cardOnSpawnProperties )
   }
   
-  initGamemodeSplit( cardProps ) {
-    const subHand = cardProps.below.closest('.subhand');
-    const subHandRect = subHand.getBoundingClientRect();
-    const subHandCardCount = subHand.classList.contains('subhand__left') 
-      ? this.playerCardsCount.left++ 
-      : this.playerCardsCount.right++;
-    
-    const animationContext = {
-      parent: subHand,
-      holder: subHandRect,
-      count: subHandCardCount,
-      card: {
-        elem: cardProps.card.elem,
-        props: cardProps,
-        margin: 18
-      }
-    }
-    this.newCardPlayerTransition( animationContext );
-  }
-  
-  initGamemodeNormal( cardProps ) {
+  initPlayerDrawNormal( cardProps ) {
     const playerHand = document.querySelector('.hand__player');
     const playerHandRect = playerHand.getBoundingClientRect();
     const playerHandCardCount = this.playerCardsCount.normal;
@@ -188,9 +187,33 @@ export default class Round {
     }
     this.newCardPlayerTransition( animationContext );
     
-    this.playerCardsCount.normal < 7 
-      ? this.playerCardsCount.normal++
-      : this.deck.sub('top').removeEventListener('pointerdown', this.deck.onPointerDown);
+    if ( ++this.playerCardsCount.normal < 8 ) this.playerCardsValue.normal += this.calcCardValue( cardProps.card, this.playerCardsValue.normal );
+    
+    if ( this.playerCardsValue.normal > 20 ) document.body.dispatchEvent( new CustomEvent('end-of-player-draw'));
+    
+    console.log( this.playerCardsValue.normal )
+  }
+  
+  initPlayerDrawSplit( cardProps ) {
+    const subHand = cardProps.below.closest('.subhand');
+    const subHandRect = subHand.getBoundingClientRect();
+    const subHandCardCount = subHand.classList.contains('subhand__left') ? this.playerCardsCount.left++ : this.playerCardsCount.right++ ;
+    
+    const defineSide = value => subHand.classList.contains('subhand__left') ? value.left : value.right ;
+    
+    const animationContext = {
+      parent: subHand,
+      holder: subHandRect,
+      count: subHandCardCount,
+      card: {
+        elem: cardProps.card.elem,
+        props: cardProps,
+        margin: 18
+      }
+    }
+    this.newCardPlayerTransition( animationContext );
+    
+    if ( defineSide( this.playerCardsValue ) > 20 ) this.initStageDealerDraw();
   }
   
   newCardPlayerTransition( animationContext ) {
@@ -209,7 +232,7 @@ export default class Round {
     this.newCardMovement( card.elem, shiftX, shiftY );
   }
   
-  newCardDealer = () => {
+  newCardDealerTransition = () => {
     const card = this.deck.topCardData();
     
     document.querySelector(`.hand__dealer`).append( card.elem );
@@ -227,7 +250,9 @@ export default class Round {
     
     this.newCardMovement( card.elem, shiftX, shiftY );
     
-    if ( this.dealerCardsCount < 7 ) this.dealerCardsCount++;
+    if ( this.dealerCardsCount < 7 ) this.dealerCardsValue += this.calcCardValue( card, this.dealerCardsCount++ );
+    
+    if ( this.dealerCardsValue > 20 ) this.initStageGameResults();
   }
   
   newCardMovement( elem, shiftX, shiftY ) {
@@ -246,6 +271,8 @@ export default class Round {
   }
   
   calcCardValue( card, currentValue ) {
+    
+    console.log(card.rank)
     if ( typeof( card.rank ) === 'number' ) return card.rank;
     
     if ( card.rank === 'A' ) return currentValue + 11 < 22 ? 11 : 1 ;

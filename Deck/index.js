@@ -9,8 +9,7 @@ export default class Deck {
     this.elem.ondragstart = () => false;
     
     this.deckGenerate();
-    
-    this.topCardDrawEvents();
+    this.deckEventListeners();
   }
   
   deckLayout() {
@@ -39,8 +38,12 @@ export default class Deck {
     }
   }
   
-  topCardDrawEvents() {
-    this.elem.querySelector('.deck__top').addEventListener('pointerdown', this.onPointerDown);
+  deckEventListeners() {
+    const deckTop = this.elem.querySelector('.deck__top');
+    
+    deckTop.addEventListener('pointerdown', this.onPointerDown);
+    
+    document.body.addEventListener('end-of-player-draw', () => deckTop.removeEventListener('pointerdown', this.onPointerDown), { once: true });
   }
   
   onPointerDown = event => {
