@@ -191,7 +191,7 @@ export default class Round {
     
     if ( this.playerCardsValue.normal > 20 ) document.body.dispatchEvent( new CustomEvent('end-of-player-draw', { bubbles: true }) );
     
-    console.log( this.playerCardsValue.normal )
+    console.log( 'playa:', this.playerCardsValue.normal )
   }
   
   initPlayerDrawSplit( cardProps ) {
@@ -252,10 +252,12 @@ export default class Round {
     
     if ( ++this.dealerCardsCount < 8 ) this.dealerCardsValue += this.calcCardValue( card, this.dealerCardsValue );
     
-    if ( this.dealerCardsValue > 20 ) {
+    if ( this.dealerCardsValue > 19 ) {
        this.initStageGameResults();
        clearInterval( this.dealerDrawInterval );
     }
+    
+    console.log( 'dealer:', this.dealerCardsValue )
   }
   
   newCardMovement( elem, shiftX, shiftY ) {
@@ -273,12 +275,32 @@ export default class Round {
     shift.persist();
   }
   
-  calcCardValue( card, currentValue ) {
-    if ( typeof( card.rank ) === 'number' ) return card.rank;
+  calcCardValue( card, inputValue ) {
+    let outputValue = 10;
     
-    if ( card.rank === 'A' ) return currentValue + 11 < 22 ? 11 : 1 ;
+    if ( typeof( card.rank ) === 'number' ) outputValue = card.rank;
     
-    return 10;
+    if ( card.rank === 'A' ) {
+      if ( inputValue + 11 < 22 ) {
+        card.elem.closest('.hand__player') ? this.playerMaxValuedAce = true : this.dealerMaxValuedAce = true ;
+        outputValue = 11; 
+      } else {
+        outputValue = 1;
+      }
+    }
+    
+    if ( outputValue + inputValue > 21 ) {
+      if ( card.elem.closest('.hand__player') && this.playerMaxValuedAce ) {
+        this.playerMaxValuedAce = false;
+         outputValue -= 10;
+      }
+      if ( card.elem.closest('.hand__dealer') && this.dealerMaxValuedAce ) {
+        this.dealerMaxValuedAce = false;
+        outputValue -= 10;
+      }
+    }
+    
+    return outputValue;
   }
   
   defineRect = sel => document.querySelector( sel ).getBoundingClientRect();
