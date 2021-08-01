@@ -9,7 +9,8 @@ export default class Deck {
     this.elem.ondragstart = () => false;
     
     this.deckGenerate();
-    this.deckEventListeners();
+    this.initialPosition();
+    this.eventListeners();
   }
   
   deckLayout() {
@@ -38,7 +39,16 @@ export default class Deck {
     }
   }
   
-  deckEventListeners() {
+  initialPosition() {
+    const initHiddenPosition = this.elem.animate({
+        transform: 'translate( -280px, -600px )'
+      }, {
+        fill: 'forwards',
+        composite: 'replace'
+      });
+  }
+  
+  eventListeners() {
     const deckTop = this.elem.querySelector('.deck__top');
     
     deckTop.addEventListener('pointerdown', this.onPointerDown);

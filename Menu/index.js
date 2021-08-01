@@ -33,12 +33,5 @@ export default class Menu {
     document.querySelector('#blackjack-table').style.display = 'inline';
     document.querySelector('#start-screen-menu').style.display = 'none';
     
-    const deckInitHiddenPosition = document.querySelector('.deck').animate({
-      transform: 'translate( -280px, -600px )'
-    }, {
-      fill: 'forwards',
-      composite: 'add'
-    });
-    deckInitHiddenPosition.persist();
   }
 }

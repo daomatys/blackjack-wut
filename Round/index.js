@@ -1,8 +1,11 @@
 import Deck from '../Deck/index.js';
+import animations from './animations.js';
 
 export default class Round {
   
   constructor() {
+    this.animations = animations;
+    
     this.initRound();
     this.initRegularListeners();
   }
@@ -85,65 +88,28 @@ export default class Round {
     
     for ( let fake of fakeAdders ) this.toggleBlockOrPierce( fake );
     
-    this.deckFallDownUponZone = document.querySelector('.deck').animate({
-      transform: [
-        'scale( 2 ) rotate( 180deg )', 
-        'translate( 280px, 600px ) scale( 1 ) rotate( -360deg )'
-      ]
-    }, {
-      easing: 'cubic-bezier(0.68, -0.6, 0.32, 1.1)',
-      duration: 800,
-      fill: 'forwards',
-      composite: 'add'
-    });
-    
-    const callerDimDown = document.querySelector('.caller-bank').animate({
-      opacity: 0
-    },{
-      duration: 300,
-      fill: 'forwards',
-      composite: 'replace'
-    });
-    
-    const tableShakes = document.querySelector('html').animate({
-      transform: [
-        'translate(0px, 0px) rotate(0deg)',
-        'translate(1px, 1px) rotate(0deg)',
-        'translate(-1px, -2px) rotate(-1deg)',
-        'translate(-3px, 0px) rotate(1deg)',
-        'translate(3px, 2px) rotate(0deg)',
-        'translate(1px, -1px) rotate(1deg)',
-        'translate(-1px, 2px) rotate(-1deg)',
-        'translate(-3px, 1px) rotate(0deg)',
-        'translate(3px, 1px) rotate(-1deg)',
-        'translate(-1px, -1px) rotate(1deg)',
-        'translate(1px, 2px) rotate(0deg)',
-        'translate(1px, -2px) rotate(-1deg)',
-        'translate(0px, 0px) rotate(0deg)'
-      ]
-    }, {
-      easing: 'ease',
-      delay: 710,
-      duration: 200,
-      fill: 'both',
-      composite: 'add'
-    });
-    
-    const bankMoves = document.querySelector('.bank').animate({
-      transform: 'translateY(-100px)'
-    }, {
-      easing: 'ease',
-      duration: 500,
-      fill: 'both',
-      composite: 'add'
-    });
-    
+    this.deckFallDownUponZone = document.querySelector('.deck').animate( 
+      this.animations.deck.fall.action,
+      this.animations.deck.fall.props 
+    );
+    const callerDimDown = document.querySelector('.caller-bank').animate(
+      this.animations.bankcaller.dim.action,
+      this.animations.bankcaller.dim.props 
+    );
+    const tableShakes = document.querySelector('html').animate(
+      this.animations.table.shake.action,
+      this.animations.table.shake.props
+    );
+    const bankShifts = document.querySelector('.bank').animate(
+      this.animations.bank.shift.action,
+      this.animations.bank.shift.props
+    );
     this.deckFallDownUponZone.onfinish = this.newCardDealerTransition;
     this.deckFallDownUponZone.persist();
     
     callerDimDown.persist();
     tableShakes.persist();
-    bankMoves.persist();
+    bankShifts.persist();
   }
   
   initStageDealerDraw = () => {
@@ -151,29 +117,23 @@ export default class Round {
   }
   
   initStageGameResults() {
-    const cards = document.querySelectorAll('.card')
+    const drawnCards = document.querySelectorAll('.card');
     const fakeAdders = document.querySelectorAll('.adder__fake');
+    const betChips = document.querySelectorAll('.chip-bet');
     
-    for ( let card of cards ) {
-      if ( card.parentNode ) {
-        card.parentNode.removeChild( card );
-      }
+    function elementRemover( elem ) { 
+      if ( elem.parentNode ) elem.parentNode.removeChild( elem ); 
     }
+    for ( let card of drawnCards ) elementRemover( card );
+    for ( let chip of betChips ) elementRemover( chip );
+    for ( let adder of fakeAdders ) this.toggleBlockOrPierce( adder );
     
-    for ( let fake of fakeAdders ) this.toggleBlockOrPierce( fake );
-    
-    this.deckFallDownUponZone.cancel();
-    
-    document.removeEventListener(
-      'split', 
-      () => this.splitModeState = true, 
-      { once: true }
-    );
-    
-    setTimeout( this.deck.remove, 2000 );
+    this.deck = new Deck();
     
     this.initRound();
   }
+  
+  //carddraw functions
   
   newCardPlayer( cardOnSpawnProperties ) {
     this.splitModeState
@@ -309,9 +269,10 @@ export default class Round {
         outputValue -= 10;
       }
     }
-    
     return outputValue;
   }
+  
+  //end of carddraw functions
   
   defineRect = sel => document.querySelector( sel ).getBoundingClientRect();
   
