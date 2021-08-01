@@ -16,7 +16,31 @@ export default {
     }
   },
   
+  bank: {
+    shift: {
+      action: {
+        transform: 'translateY(-100px)'
+      },
+      props: {
+        easing: 'ease',
+        duration: 500,
+        fill: 'both',
+        composite: 'add'
+      }
+    }
+  },
+  
   bankcaller: {
+    autodim: {
+      action: {
+        opacity: [ 0, 1, 0 ]
+      },
+      props: {
+        duration: 4000,
+        iterations: Infinity
+      }
+    },
+    
     dim: {
       action: {
         opacity: 0
@@ -52,20 +76,6 @@ export default {
         easing: 'ease',
         delay: 710,
         duration: 200,
-        fill: 'both',
-        composite: 'add'
-      }
-    }
-  },
-  
-  bank: {
-    shift: {
-      action: {
-        transform: 'translateY(-100px)'
-      },
-      props: {
-        easing: 'ease',
-        duration: 500,
         fill: 'both',
         composite: 'add'
       }

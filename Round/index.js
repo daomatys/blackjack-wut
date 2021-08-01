@@ -21,13 +21,11 @@ export default class Round {
       right: 1,
       left: 1
     };
-    
     this.playerCardsValue = {
       normal: 0,
       right: 0,
       left: 0
     };
-    
     this.splitModeState = false;
     
     this.deck = new Deck();
@@ -68,18 +66,12 @@ export default class Round {
     );
   }
   
-  onFirstChipEvent() {
+  onFirstChipEvent = () => {
     const caller = document.querySelector('.caller-bank');
-    const callerAutoDimmer = caller.animate([
-      { opacity: 0 },
-      { opacity: 1 },
-      { opacity: 0 }
-    ], {
-      duration: 4000,
-      iterations: Infinity
-    });
-    callerAutoDimmer.persist();
-    
+    const callerAutoDimmer = caller.animate(
+      this.animations.bankcaller.autodim.action,
+      this.animations.bankcaller.autodim.props
+    );
     caller.style.display = 'inline';
   }
   
@@ -88,7 +80,7 @@ export default class Round {
     
     for ( let fake of fakeAdders ) this.toggleBlockOrPierce( fake );
     
-    const deckFallsUponZone = document.querySelector('.deck').animate( 
+    const deckFalls = document.querySelector('.deck').animate( 
       this.animations.deck.fall.action,
       this.animations.deck.fall.props 
     );
@@ -104,9 +96,9 @@ export default class Round {
       this.animations.bank.shift.action,
       this.animations.bank.shift.props
     );
-    deckFallsUponZone.onfinish = this.newCardDealerTransition;
+    deckFalls.onfinish = this.newCardDealerTransition;
     
-    deckFallsUponZone.persist();
+    deckFalls.persist();
     callerDims.persist();
     tableShakes.persist();
     bankShifts.persist();
@@ -231,7 +223,7 @@ export default class Round {
   }
   
   newCardMovement( elem, shiftX, shiftY ) {
-    const shift = elem.animate({
+    const flight = elem.animate({
       transform: [
         'scale( 1.05 )',
         `perspective( 900px ) scale( 1 ) translate( ${ shiftX }, ${ shiftY } ) rotateY( 0.5turn )`
@@ -242,7 +234,7 @@ export default class Round {
       fill: 'both',
       composite: 'replace'
     });
-    shift.persist();
+    flight.persist();
   }
   
   calcCardValue( card, inputValue ) {
