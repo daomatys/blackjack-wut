@@ -3,15 +3,15 @@ export default {
     fall: {
       action: {
         transform: [
-          'scale( 2 ) rotate( 180deg )', 
-          'translate( 280px, 600px ) scale( 1 ) rotate( -360deg )'
+          'translate( -280px, -600px ) scale( 2 )',
+          'translate( 0px, 0px ) scale( 1 ) rotate( 360deg )'
         ]
       },
       props: {
-        easing: 'cubic-bezier(0.68, -0.6, 0.32, 1.1)',
+        easing: 'cubic-bezier( 0.68, -0.6, 0.32, 1.1 )',
         duration: 800,
         fill: 'forwards',
-        composite: 'add'
+        composite: 'replace'
       }
     }
   },
@@ -58,19 +58,19 @@ export default {
     shake: {
       action: {
         transform: [
-          'translate(0px, 0px) rotate(0deg)',
-          'translate(1px, 1px) rotate(0deg)',
-          'translate(-1px, -2px) rotate(-1deg)',
-          'translate(-3px, 0px) rotate(1deg)',
-          'translate(3px, 2px) rotate(0deg)',
-          'translate(1px, -1px) rotate(1deg)',
-          'translate(-1px, 2px) rotate(-1deg)',
-          'translate(-3px, 1px) rotate(0deg)',
-          'translate(3px, 1px) rotate(-1deg)',
-          'translate(-1px, -1px) rotate(1deg)',
-          'translate(1px, 2px) rotate(0deg)',
-          'translate(1px, -2px) rotate(-1deg)',
-          'translate(0px, 0px) rotate(0deg)'
+          'translate( 0px, 0px ) rotate( 0deg )',
+          'translate( 1px, 1px ) rotate( 0deg )',
+          'translate( -1px, -2px ) rotate( -1deg )',
+          'translate( -3px, 0px ) rotate( 1deg )',
+          'translate( 3px, 2px ) rotate( 0deg )',
+          'translate( 1px, -1px ) rotate( 1deg )',
+          'translate( -1px, 2px ) rotate( -1deg )',
+          'translate( -3px, 1px ) rotate( 0deg )',
+          'translate( 3px, 1px ) rotate( -1deg )',
+          'translate( -1px, -1px ) rotate( 1deg )',
+          'translate( 1px, 2px ) rotate( 0deg )',
+          'translate( 1px, -2px ) rotate( -1deg )',
+          'translate( 0px, 0px ) rotate( 0deg )'
         ]
       },
       props: {
