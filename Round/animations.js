@@ -37,7 +37,8 @@ export default {
       },
       props: {
         duration: 4000,
-        iterations: Infinity
+        iterations: Infinity,
+        composite: 'replace'
       }
     },
     
@@ -47,7 +48,7 @@ export default {
       },
       props: {
         duration: 300,
-        fill: 'forwards',
+        fill: 'both',
         composite: 'replace'
       }
     }

@@ -10,7 +10,6 @@ export default class Panel {
   
   layout = () => {
     this.arrClickers = [ 'doubled', 'check', 'split', 'hover' ];
-    this.arrChipsCounters = [ 0, 0, 0, 0, 0 ];
     this.arrChips = [ 1, 5, 10, 25, 100 ];
     
     const layoutPanelButtons = this.arrClickers
@@ -98,7 +97,7 @@ export default class Panel {
   }
   
   actDoubled = () => {
-    const chips = document.querySelectorAll('chip-bet');
+    
   }
   
   actCheck = () => {

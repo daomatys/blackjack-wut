@@ -1,17 +1,34 @@
 import Deck from '../Deck/index.js';
+import Panel from '../Panel/index.js';
+import Menu from '../Menu/index.js';
+
 import animations from './animations.js';
 
 export default class Round {
   
   constructor() {
+    this.init();
+    this.initRound();
+    this.initRoundListeners();
+  }
+  
+  init() {
     this.animations = animations;
     
-    this.initRound();
-    this.initRegularListeners();
+    this.panel = new Panel();
+    this.menu = new Menu();
+    
+    document.querySelector('[data-panel]').append( this.panel.elem );
+    document.querySelector('[data-menu]').append( this.menu.elem );
   }
   
   initRound = () => {
-    this.initTempListeners();
+    this.deck = new Deck();
+    
+    document.querySelector('[data-zone-deck]').append( this.deck.elem );
+    
+    this.panel.arrChipsCounters = [ 0, 0, 0, 0, 0 ];
+    this.panel.firstChipBet = false;
     
     this.dealerCardsCount = 0;
     this.dealerCardsValue = 0;
@@ -27,29 +44,23 @@ export default class Round {
       left: 0
     };
     this.splitModeState = false;
-    
-    this.deck = new Deck();
-    
-    document.querySelector('[data-zone-deck]').append( this.deck.elem );
   }
   
-  initRegularListeners() {
+  initRoundListeners() {
     this.deck.elem.addEventListener(
       'card-placed',
       ({ detail: cardOnSpawnProperties }) => this.newCardPlayer( cardOnSpawnProperties )
     );
-  }
-  
-  initTempListeners() {
+    
     document.addEventListener(
       'split', 
-      () => this.splitModeState = true, 
+      this.splitModeStateSwitcher, 
       { once: true }
     );
     
     document.addEventListener(
       'first-chip-bet',
-      this.onFirstChipEvent,
+      this.initStageDeckReadyToLand,
       { once: true }
     );
     
@@ -66,9 +77,22 @@ export default class Round {
     );
   }
   
-  onFirstChipEvent = () => {
+  killEventListeners() {
+    this.deck.elem.removeEventListener(
+      'card-placed',
+      ({ detail: cardOnSpawnProperties }) => this.newCardPlayer( cardOnSpawnProperties )
+    );
+    
+    document.removeEventListener(
+      'split', 
+      this.splitModeStateSwitcher, 
+      { once: true }
+    );
+  }
+  
+  initStageDeckReadyToLand = () => {
     const caller = document.querySelector('.caller-bank');
-    const callerAutoDimmer = caller.animate(
+    this.callerAutoDimmer = caller.animate(
       this.animations.bankcaller.autodim.action,
       this.animations.bankcaller.autodim.props
     );
@@ -77,31 +101,29 @@ export default class Round {
   
   initStagePlayerDraw = () => {
     const fakeAdders = document.querySelectorAll('.adder__fake');
+    const caller = document.querySelector('.caller-bank');
     
     for ( let fake of fakeAdders ) this.toggleBlockOrPierce( fake );
     
-    const deckFalls = document.querySelector('.deck').animate( 
+    this.deckFalls = document.querySelector('.deck').animate( 
       this.animations.deck.fall.action,
       this.animations.deck.fall.props 
     );
-    const callerDims = document.querySelector('.caller-bank').animate(
+    this.callerDims = document.querySelector('.caller-bank').animate(
       this.animations.bankcaller.dim.action,
       this.animations.bankcaller.dim.props 
     );
-    const tableShakes = document.querySelector('html').animate(
+    this.tableShakes = document.querySelector('html').animate(
       this.animations.table.shake.action,
       this.animations.table.shake.props
     );
-    const bankShifts = document.querySelector('.bank').animate(
+    this.bankShifts = document.querySelector('.bank').animate(
       this.animations.bank.shift.action,
       this.animations.bank.shift.props
     );
-    deckFalls.onfinish = this.newCardDealerTransition;
-    
-    deckFalls.persist();
-    callerDims.persist();
-    tableShakes.persist();
-    bankShifts.persist();
+    this.deckFalls.persist();
+    this.deckFalls.onfinish = this.newCardDealerTransition;
+    this.callerDims.onfinish = () => caller.style.display = 'none';
   }
   
   initStageDealerDraw = () => {
@@ -120,12 +142,23 @@ export default class Round {
     for ( let chip of betChips ) elementRemover( chip );
     for ( let adder of fakeAdders ) this.toggleBlockOrPierce( adder );
     
-    this.deck = new Deck();
+    this.deckFalls.cancel();
+    this.tableShakes.cancel();
+    this.bankShifts.cancel();
+    
+    this.killEventListeners();
+    
+    document.querySelector('[data-zone-deck]').removeChild( this.deck.elem );
     
     this.initRound();
+    this.initRoundListeners();
   }
   
   //carddraw functions
+  
+  splitModeStateSwitcher() {
+    this.splitModeState = !this.splitModeState;
+  }
   
   newCardPlayer( cardOnSpawnProperties ) {
     this.splitModeState
@@ -192,7 +225,7 @@ export default class Round {
     const shiftX = -parseInt( card.elem.style.left, 10 ) + animationContext.count * animationContext.card.margin + 'px';
     const shiftY = -parseInt( card.elem.style.top, 10 ) + 'px';
     
-    this.newCardMovement( card.elem, shiftX, shiftY );
+    this.newCardFlightAnimation( card.elem, shiftX, shiftY );
   }
   
   newCardDealerTransition = () => {
@@ -211,7 +244,7 @@ export default class Round {
     const shiftX = -parseInt( cardStyleRight, 10 ) + this.dealerCardsCount * 60 + 'px';
     const shiftY = -parseInt( cardStyleTop, 10 ) + 'px';
     
-    this.newCardMovement( card.elem, shiftX, shiftY );
+    this.newCardFlightAnimation( card.elem, shiftX, shiftY );
     
     if ( ++this.dealerCardsCount < 8 ) this.dealerCardsValue += this.calcCardValue( card, this.dealerCardsValue );
     
@@ -222,7 +255,7 @@ export default class Round {
     console.log( 'dealer:', this.dealerCardsValue )
   }
   
-  newCardMovement( elem, shiftX, shiftY ) {
+  newCardFlightAnimation( elem, shiftX, shiftY ) {
     const flight = elem.animate({
       transform: [
         'scale( 1.05 )',
