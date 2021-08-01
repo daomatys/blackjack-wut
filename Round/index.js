@@ -88,11 +88,11 @@ export default class Round {
     
     for ( let fake of fakeAdders ) this.toggleBlockOrPierce( fake );
     
-    this.deckFallDownUponZone = document.querySelector('.deck').animate( 
+    const deckFallsUponZone = document.querySelector('.deck').animate( 
       this.animations.deck.fall.action,
       this.animations.deck.fall.props 
     );
-    const callerDimDown = document.querySelector('.caller-bank').animate(
+    const callerDims = document.querySelector('.caller-bank').animate(
       this.animations.bankcaller.dim.action,
       this.animations.bankcaller.dim.props 
     );
@@ -104,10 +104,10 @@ export default class Round {
       this.animations.bank.shift.action,
       this.animations.bank.shift.props
     );
-    this.deckFallDownUponZone.onfinish = this.newCardDealerTransition;
-    this.deckFallDownUponZone.persist();
+    deckFallsUponZone.onfinish = this.newCardDealerTransition;
     
-    callerDimDown.persist();
+    deckFallsUponZone.persist();
+    callerDims.persist();
     tableShakes.persist();
     bankShifts.persist();
   }

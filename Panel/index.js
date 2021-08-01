@@ -41,7 +41,7 @@ export default class Panel {
         </div>`)
       .join('');
       
-    return `
+    const layoutAssembled = `
       <div class="panel__clickers">
         ${ layoutPanelButtons }
       </div>
@@ -53,6 +53,8 @@ export default class Panel {
           ${ layoutAdderBar }
         </div>
       </div>`;
+    
+    return layoutAssembled;
   }
   
   eventListeners() {
