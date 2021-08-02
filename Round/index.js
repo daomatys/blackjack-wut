@@ -232,7 +232,8 @@ export default class Round {
     
     if ( this.dealerCardsValue > 19 ) {
        clearInterval( this.dealerDrawInterval );
-       setTimeout( this.initStageRoundResults, 2000 );
+       
+       this.initStageRoundResults;
     }
     console.log( 'dealer:', this.dealerCardsValue )
   }
