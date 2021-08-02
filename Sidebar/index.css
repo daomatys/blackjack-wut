@@ -1,0 +1,11 @@
+.sidebar {
+  position: absolute;
+  left: -142px;
+  top: 90px;
+}
+
+.sidebar__button-array {
+  position: absolute;
+  top: 10px;
+  left: 14px;
+}

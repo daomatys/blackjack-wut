@@ -50,51 +50,26 @@ export default class Round {
   }
   
   initNewRoundEventListeners() {
-    this.deck.elem.addEventListener(
-      'card-placed',
-      ({ detail: cardOnSpawnProperties }) => this.newCardPlayer( cardOnSpawnProperties )
-    );
+    this.deck.elem.addEventListener('card-placed', ({ detail: cardOnSpawnProperties }) => this.newCardPlayer( cardOnSpawnProperties ));
     
-    document.addEventListener(
-      'split', 
-      this.splitModeStateSwitcher, 
-      { once: true }
-    );
+    document.addEventListener('split', this.splitModeStateSwitcher, { once: true });
     
-    document.addEventListener(
-      'first-chip-bet',
-      this.initStageDeckReadyToLand,
-      { once: true }
-    );
+    document.addEventListener('first-chip-bet', this.initStageDeckReadyToLand, { once: true });
     
-    document.querySelector('.caller-bank').addEventListener(
-      'click',
-      this.initStagePlayerDraw,
-      { once: true }
-    );
+    document.addEventListener('end-of-player-draw', this.initStageDealerDraw, { once: true });
     
-    document.addEventListener(
-      'end-of-player-draw',
-      this.initStageDealerDraw,
-      { once: true }
-    );
+    document.querySelector('.caller-bank').addEventListener('click', this.initStagePlayerDraw, { once: true });
   }
   
-  killOldRoundEventListeners() {
-    this.deck.elem.removeEventListener(
-      'card-placed',
-      ({ detail: cardOnSpawnProperties }) => this.newCardPlayer( cardOnSpawnProperties )
-    );
+  killLastRoundEventListeners() {
+    this.deck.elem.removeEventListener('card-placed', ({ detail: cardOnSpawnProperties }) => this.newCardPlayer( cardOnSpawnProperties ));
     
-    document.removeEventListener(
-      'split', 
-      this.splitModeStateSwitcher, 
-      { once: true }
-    );
+    document.removeEventListener('split', this.splitModeStateSwitcher, { once: true });
   }
   
   initStageDeckReadyToLand = () => {
     const caller = document.querySelector('.caller-bank');
+    
     this.callerAutoDimmer = caller.animate(
       this.animations.bankcaller.autodim.action,
       this.animations.bankcaller.autodim.props
@@ -133,7 +108,11 @@ export default class Round {
     this.dealerDrawInterval = setInterval( this.newCardDealerTransition, 1000 );
   }
   
-  initStageGameResults = () => {
+  initStageRoundResults = () => {
+    document.addEventListener('end-of-round', this.initStageRoundReset, { once: true })
+  }
+  
+  initStageRoundReset = () => {
     const drawnCards = document.querySelectorAll('.card');
     const fakeAdders = document.querySelectorAll('.adder__fake');
     const betChips = document.querySelectorAll('.chip-bet');
@@ -149,7 +128,7 @@ export default class Round {
     this.tableShakes.cancel();
     this.bankShifts.cancel();
     
-    this.killOldRoundEventListeners();
+    this.killLastRoundEventListeners();
     
     document.querySelector('[data-zone-deck]').removeChild( this.deck.elem );
     
@@ -253,7 +232,7 @@ export default class Round {
     
     if ( this.dealerCardsValue > 19 ) {
        clearInterval( this.dealerDrawInterval );
-       setTimeout( this.initStageGameResults, 2000 );
+       setTimeout( this.initStageRoundResults, 2000 );
     }
     console.log( 'dealer:', this.dealerCardsValue )
   }

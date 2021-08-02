@@ -6,11 +6,13 @@ export default class Sidebar {
     this.elem.insertAdjacentHTML('afterbegin', this.layout());
     
     this.eventListeners();
+    
+    this.sidebarMovedState = false;
   }
   
   layout() {
     return `
-      <div class="sidebar__background">
+      <div class="sidebar__background" id ="sidebar">
         <img src="/assets/sidebar.png">
       </div>
       <div class="sidebar__button-array">
@@ -31,6 +33,68 @@ export default class Sidebar {
   }
   
   eventListeners() {
+    this.elem.addEventListener('pointerdown', this.actsOfButtons)
+  }
+  
+  changeButtonDisplayState = id => {
+    const btn = this.elem.querySelector(`#${ id }`);
     
+    const btnClickIllusion = () => {
+      const imgOff = btn.firstElementChild;
+      const imgOn = btn.lastElementChild;
+      
+      imgOn.style.display === 'none'
+      ? ( imgOn.style.display = 'inline', imgOff.style.display = 'none' )
+      : ( imgOn.style.display = 'none', imgOff.style.display = 'inline' );
+    }
+    btnClickIllusion();
+    
+    document.addEventListener('pointerup', btnClickIllusion, { once: true } );
+  }
+  
+  actsOfButtons = event => {
+    event.preventDefault();
+    
+    const aim = event.target;
+    
+    this.changeButtonDisplayState( aim.id );
+    
+    switch ( aim.id ) {
+      case 'sidebar': this.scrollSidebar(); break;
+      case 'sidebar-next': this.actNext(); break;
+      case 'sidebar-menu': this.actMenu(); break;
+      case 'sidebar-help': this.actHelp(); break;
+    }
+  }
+  
+  actNext() {
+    this.elem.dispatchEvent( new CustomEvent('end-of-round', {bubbles: true}));
+  }
+  
+  actMenu() {
+    document.querySelector('#blackjack-table').style.display = 'none';
+    document.querySelector('#start-screen-menu').style.display = 'inline';
+  }
+  
+  actHelp() {
+    
+  }
+  
+  scrollSidebar() {
+    this.sidebarMovedState = !this.sidebarMovedState;
+    
+    this.sidebarMovedState
+      ? this.sidebarShift = '142px'
+      : this.sidebarShift = '0px';
+    
+    const sidebarAnimation = this.elem.animate({
+      transform: `translateX(${ this.sidebarShift })`
+    }, {
+      easing: 'ease',
+      duration: 600,
+      fill: 'forwards',
+      composite: 'replace'
+    });
+    sidebarAnimation.persist();
   }
 }
