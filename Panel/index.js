@@ -1,9 +1,13 @@
+import animations from '../Round/animations.js';
+
 export default class Panel {
   
   constructor() {
     this.elem = document.createElement('div');
     this.elem.classList.add('panel');
     this.elem.insertAdjacentHTML('afterbegin', this.layout());
+    
+    this.animations = animations;
     
     this.eventListeners();
   }
@@ -131,17 +135,10 @@ export default class Panel {
     
     rightCard.style.top = cardSplitted.top;
     
-    const splitting = rightCard.animate({
-      transform: [
-        'translateX( 270px )',
-        'translateX( 60px )',
-      ]
-    }, {
-      easing: 'ease',
-      duration: 800,
-      fill: 'both',
-      composite: 'add'
-    });
+    const splitting = rightCard.animate(
+      this.animations.card.splitting.action,
+      this.animations.card.splitting.props,
+    );
     splitting.persist();
   }
   
@@ -151,19 +148,10 @@ export default class Panel {
       .querySelectorAll('.card');
     
     const onHoverRotation = card => {
-      
-      const rotation = card.animate({
-        transform: [
-          'scale( 1 )',
-          'scale( 1.1 )',
-          'perspective( 900px ) rotateY( 0.5turn ) scale( 1 )'
-        ]
-      }, {
-        easing: 'ease',
-        duration: 800,
-        fill: 'both',
-        composite: 'add'
-      });
+      const rotation = card.animate(
+        this.animations.card.onhover.action,
+        this.animations.card.onhover.props,
+      );
       rotation.persist();
     }
     for (let card of cards) card.addEventListener('pointerover', () => onHoverRotation( card ), { once: true });
@@ -207,17 +195,10 @@ export default class Panel {
       composite: 'add'
     });
     
-    const chipArmedEject = chipArmed.animate({
-      transform: [
-        'translateY( 90px ) rotate( -90deg )',
-        'translateY( 0px )'
-      ]
-    }, {
-      easing: 'cubic-bezier(0.25, 1, 0.5, 1)',
-      duration: 800,
-      fill: 'forwards',
-      composite: 'replace'
-    });
+    const chipArmedEject = chipArmed.animate(
+      this.animations.chip.eject.action,
+      this.animations.chip.eject.props
+    );
     
     chipBetJump.persist();
     chipArmedEject.persist();

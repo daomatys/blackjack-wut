@@ -16,6 +16,39 @@ export default {
     }
   },
   
+  card: {
+    onhover: {
+      action: {
+        transform: [
+          'scale( 1 )',
+          'scale( 1.1 )',
+          'perspective( 900px ) rotateY( 0.5turn ) scale( 1 )'
+        ]
+      },
+      props: {
+        easing: 'ease',
+        duration: 800,
+        fill: 'both',
+        composite: 'add'
+      }
+    },
+    
+    splitting: {
+      action: {
+        transform: [
+          'translateX( 270px )',
+          'translateX( 60px )',
+        ]
+      },
+      props: {
+        easing: 'ease',
+        duration: 800,
+        fill: 'both',
+        composite: 'add'
+      }
+    }
+  },
+  
   bank: {
     shift: {
       action: {
@@ -49,6 +82,23 @@ export default {
       props: {
         duration: 300,
         fill: 'both',
+        composite: 'replace'
+      }
+    }
+  },
+  
+  chip: {
+    eject: {
+      action: {
+        transform: [
+          'translateY( 90px ) rotate( -90deg )',
+          'translateY( 0px )'
+        ]
+      },
+      props: {
+        easing: 'cubic-bezier(0.25, 1, 0.5, 1)',
+        duration: 800,
+        fill: 'forwards',
         composite: 'replace'
       }
     }
