@@ -92,7 +92,7 @@ export default class Sidebar {
     }, {
       easing: 'ease',
       duration: 600,
-      fill: 'forwards',
+      fill: 'both',
       composite: 'replace'
     });
     sidebarAnimation.persist();

@@ -10,7 +10,6 @@ export default class Deck {
     
     this.deckGenerate();
     this.initialPosition();
-    this.eventListeners();
   }
   
   deckLayout() {
@@ -48,12 +47,12 @@ export default class Deck {
       });
   }
   
-  eventListeners() {
-    const deckTop = this.elem.querySelector('.deck__top');
-    
-    deckTop.addEventListener('pointerdown', this.onPointerDown);
-    
-    document.body.addEventListener('end-of-player-draw', () => deckTop.removeEventListener('pointerdown', this.onPointerDown), { once: true });
+  initEventListeners() {
+    this.sub('top').addEventListener('pointerdown', this.onPointerDown);
+  }
+  
+  killEventListeners() {
+    this.sub('top').removeEventListener('pointerdown', this.onPointerDown);
   }
   
   onPointerDown = event => {

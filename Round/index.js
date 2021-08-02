@@ -47,10 +47,12 @@ export default class Round {
       left: 0
     };
     this.splitModeState = false;
+    
+    this.freePlayerDrawAfterRoundResults = false;
   }
   
   initNewRoundEventListeners() {
-    this.deck.elem.addEventListener('card-placed', ({ detail: cardOnSpawnProperties }) => this.newCardPlayer( cardOnSpawnProperties ));
+    this.deck.elem.addEventListener('card-placed', ({ detail }) => this.newCardPlayer( detail ));
     
     document.addEventListener('split', this.splitModeStateSwitcher, { once: true });
     
@@ -62,7 +64,7 @@ export default class Round {
   }
   
   killLastRoundEventListeners() {
-    this.deck.elem.removeEventListener('card-placed', ({ detail: cardOnSpawnProperties }) => this.newCardPlayer( cardOnSpawnProperties ));
+    this.deck.elem.removeEventListener('card-placed', ({ detail }) => this.newCardPlayer( detail ));
     
     document.removeEventListener('split', this.splitModeStateSwitcher, { once: true });
   }
@@ -100,7 +102,10 @@ export default class Round {
       this.animations.bank.shift.props
     );
     this.deckFalls.persist();
-    this.deckFalls.onfinish = this.newCardDealerTransition;
+    this.deckFalls.onfinish = () => {
+      this.newCardDealerTransition();
+      this.deck.initEventListeners();
+    }
     this.callerDims.onfinish = () => caller.style.display = 'none';
   }
   
@@ -109,6 +114,10 @@ export default class Round {
   }
   
   initStageRoundResults = () => {
+    this.freePlayerDrawAfterRoundResults = true;
+    
+    this.deck.initEventListeners()
+    
     document.addEventListener('end-of-round', this.initStageRoundReset, { once: true })
   }
   
@@ -129,6 +138,7 @@ export default class Round {
     this.bankShifts.cancel();
     
     this.killLastRoundEventListeners();
+    this.deck.killEventListeners()
     
     document.querySelector('[data-zone-deck]').removeChild( this.deck.elem );
     
@@ -142,7 +152,8 @@ export default class Round {
     this.splitModeState = !this.splitModeState;
   }
   
-  newCardPlayer( cardOnSpawnProperties ) {
+  newCardPlayer( detail ) {
+    const cardOnSpawnProperties = detail;
     this.splitModeState
       ? this.initPlayerDrawSplit( cardOnSpawnProperties )
       : this.initPlayerDrawNormal( cardOnSpawnProperties )
@@ -167,8 +178,11 @@ export default class Round {
     
     if ( ++this.playerCardsCount.normal < 8 ) this.playerCardsValue.normal += this.calcCardValue( cardProps.card, this.playerCardsValue.normal );
     
-    if ( this.playerCardsValue.normal > 20 ) document.body.dispatchEvent( new CustomEvent('end-of-player-draw', { bubbles: true }) );
-    
+    if ( this.playerCardsValue.normal > 20 && !this.freePlayerDrawAfterRoundResults ) {
+      this.deck.killEventListeners();
+      
+      this.initStageDealerDraw();
+    }
     console.log( 'playa:', this.playerCardsValue.normal )
   }
   
@@ -233,7 +247,7 @@ export default class Round {
     if ( this.dealerCardsValue > 19 ) {
        clearInterval( this.dealerDrawInterval );
        
-       this.initStageRoundResults;
+       this.initStageRoundResults();
     }
     console.log( 'dealer:', this.dealerCardsValue )
   }
