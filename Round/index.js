@@ -116,7 +116,7 @@ export default class Round {
   initStageRoundResults = () => {
     this.freePlayerDrawAfterRoundResults = true;
     
-    this.deck.initEventListeners()
+    this.deck.initEventListeners();
     
     document.addEventListener('end-of-round', this.initStageRoundReset, { once: true })
   }

@@ -72,8 +72,10 @@ export default class Sidebar {
   }
   
   actMenu() {
-    document.querySelector('#blackjack-table').style.display = 'none';
-    document.querySelector('#start-screen-menu').style.display = 'inline';
+    this.elem.querySelector('#sidebar-menu').onclick = () => {
+      document.querySelector('#blackjack-table').style.display = 'none';
+      document.querySelector('#start-screen-menu').style.display = 'inline';
+    }
   }
   
   actHelp() {
