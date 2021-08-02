@@ -8,6 +8,11 @@ export default class Panel {
     this.eventListeners();
   }
   
+  initAdditionalValues() {
+    this.arrChipsCounters = [ 0, 0, 0, 0, 0 ];
+    this.firstChipBet = false;
+  }
+  
   layout = () => {
     this.arrClickers = [ 'doubled', 'check', 'split', 'hover' ];
     this.arrChips = [ 1, 5, 10, 25, 100 ];

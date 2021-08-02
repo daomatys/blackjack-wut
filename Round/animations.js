@@ -75,7 +75,7 @@ export default {
       },
       props: {
         easing: 'ease',
-        delay: 710,
+        delay: 700,
         duration: 200,
         fill: 'both',
         composite: 'add'

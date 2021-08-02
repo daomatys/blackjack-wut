@@ -32,6 +32,5 @@ export default class Menu {
   start = () => {
     document.querySelector('#blackjack-table').style.display = 'inline';
     document.querySelector('#start-screen-menu').style.display = 'none';
-    
   }
 }

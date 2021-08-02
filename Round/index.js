@@ -1,34 +1,37 @@
 import Deck from '../Deck/index.js';
 import Panel from '../Panel/index.js';
 import Menu from '../Menu/index.js';
+import Sidebar from '../Sidebar/index.js';
 
 import animations from './animations.js';
 
 export default class Round {
   
   constructor() {
-    this.init();
-    this.initRound();
-    this.initRoundListeners();
+    this.incrustImportedElements();
+    
+    this.initNewRound();
+    this.initNewRoundEventListeners();
   }
   
-  init() {
+  incrustImportedElements() {
     this.animations = animations;
     
     this.panel = new Panel();
     this.menu = new Menu();
+    this.sidebar = new Sidebar();
     
     document.querySelector('[data-panel]').append( this.panel.elem );
     document.querySelector('[data-menu]').append( this.menu.elem );
+    document.querySelector('[data-sidebar]').append( this.sidebar.elem );
   }
   
-  initRound = () => {
+  initNewRound = () => {
     this.deck = new Deck();
     
     document.querySelector('[data-zone-deck]').append( this.deck.elem );
     
-    this.panel.arrChipsCounters = [ 0, 0, 0, 0, 0 ];
-    this.panel.firstChipBet = false;
+    this.panel.initAdditionalValues();
     
     this.dealerCardsCount = 0;
     this.dealerCardsValue = 0;
@@ -46,7 +49,7 @@ export default class Round {
     this.splitModeState = false;
   }
   
-  initRoundListeners() {
+  initNewRoundEventListeners() {
     this.deck.elem.addEventListener(
       'card-placed',
       ({ detail: cardOnSpawnProperties }) => this.newCardPlayer( cardOnSpawnProperties )
@@ -77,7 +80,7 @@ export default class Round {
     );
   }
   
-  killEventListeners() {
+  killOldRoundEventListeners() {
     this.deck.elem.removeEventListener(
       'card-placed',
       ({ detail: cardOnSpawnProperties }) => this.newCardPlayer( cardOnSpawnProperties )
@@ -130,7 +133,7 @@ export default class Round {
     this.dealerDrawInterval = setInterval( this.newCardDealerTransition, 1000 );
   }
   
-  initStageGameResults() {
+  initStageGameResults = () => {
     const drawnCards = document.querySelectorAll('.card');
     const fakeAdders = document.querySelectorAll('.adder__fake');
     const betChips = document.querySelectorAll('.chip-bet');
@@ -146,12 +149,12 @@ export default class Round {
     this.tableShakes.cancel();
     this.bankShifts.cancel();
     
-    this.killEventListeners();
+    this.killOldRoundEventListeners();
     
     document.querySelector('[data-zone-deck]').removeChild( this.deck.elem );
     
-    this.initRound();
-    this.initRoundListeners();
+    this.initNewRound();
+    this.initNewRoundEventListeners();
   }
   
   //carddraw functions
@@ -249,8 +252,8 @@ export default class Round {
     if ( ++this.dealerCardsCount < 8 ) this.dealerCardsValue += this.calcCardValue( card, this.dealerCardsValue );
     
     if ( this.dealerCardsValue > 19 ) {
-       this.initStageGameResults();
        clearInterval( this.dealerDrawInterval );
+       setTimeout( this.initStageGameResults, 2000 );
     }
     console.log( 'dealer:', this.dealerCardsValue )
   }
@@ -283,7 +286,6 @@ export default class Round {
         outputValue = 1;
       }
     }
-    
     if ( outputValue + inputValue > 21 ) {
       if ( card.elem.closest('.hand__player') && this.playerMaxValuedAce ) {
         this.playerMaxValuedAce = false;
