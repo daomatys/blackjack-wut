@@ -46,9 +46,13 @@ export default class Round {
       right: 0,
       left: 0
     };
+    this.indicatorsIndexes = {
+      player: 0,
+      dealer: 0
+    };
     this.splitModeState = false;
     
-    this.freePlayerDrawAfterRoundResults = false;
+    this.forbidDealerDrawAfterResults = false;
   }
   
   initNewRoundEventListeners() {
@@ -114,17 +118,40 @@ export default class Round {
   }
   
   initStageRoundResults = () => {
-    this.freePlayerDrawAfterRoundResults = true;
+    const showWinner = text => {
+      switch( text ) {
+        case 'player': this.indicatorsIndexes = { player: 1, dealer: 2 }; break;
+        case 'dealer': this.indicatorsIndexes = { player: 2, dealer: 1 }; break;
+        case 'tie': this.indicatorsIndexes = { player: 0, dealer: 0 }; break;
+      }
+    }
+    if ( this.playerCardsValue.normal > 21 || this.dealerCardsValue > 21 ) {
+      if ( this.playerCardsValue.normal > 21 ) {
+        showWinner('dealer');
+      }
+      if ( this.dealerCardsValue > 21 ) {
+        showWinner('player');
+      }
+    }
+    if ( this.playerCardsValue.normal < 21 && this.dealerCardsValue < 21 ) {
+      if ( this.dealerCardsValue === this.playerCardsValue.normal && this.dealerCardsCount === this.playerCardsCount.normal ) {
+        showWinner('tie');
+      }
+      if ( this.dealerCardsValue > this.playerCardsValue.normal && this.dealerCardsCount === this.playerCardsCount.normal ) {
+        showWinner('dealer');
+      }
+      if ( this.dealerCardsValue < this.playerCardsValue.normal && this.dealerCardsCount === this.playerCardsCount.normal ) {
+        showWinner('player');
+      }
+    }
+    
+    this.forbidDealerDrawAfterResults = true;
     
     this.deck.initEventListeners();
     
-    this.indicatorsIndexes = {
-      player: 0,
-      dealer: 1
-    }
     this.setProperIndicator( this.indicatorsIndexes, 1 );
     
-    document.addEventListener('end-of-round', this.initStageRoundReset, { once: true })
+    document.addEventListener('end-of-round', this.initStageRoundReset, { once: true });
   }
   
   initStageRoundReset = () => {
@@ -146,7 +173,7 @@ export default class Round {
     this.setProperIndicator( this.indicatorsIndexes, 0 );
     
     this.killLastRoundEventListeners();
-    this.deck.killEventListeners()
+    this.deck.killEventListeners();
     
     document.querySelector('[data-zone-deck]').removeChild( this.deck.elem );
     
@@ -186,7 +213,7 @@ export default class Round {
     
     if ( ++this.playerCardsCount.normal < 8 ) this.playerCardsValue.normal += this.calcCardValue( cardProps.card, this.playerCardsValue.normal );
     
-    if ( this.playerCardsValue.normal > 20 && !this.freePlayerDrawAfterRoundResults ) {
+    if ( this.playerCardsValue.normal > 20 && !this.forbidDealerDrawAfterResults ) {
       this.deck.killEventListeners();
       
       this.initStageDealerDraw();
@@ -252,7 +279,7 @@ export default class Round {
     
     if ( ++this.dealerCardsCount < 8 ) this.dealerCardsValue += this.calcCardValue( card, this.dealerCardsValue );
     
-    if ( this.dealerCardsValue > 20 ) {
+    if ( this.dealerCardsValue > 19 ) {
        clearInterval( this.dealerDrawInterval );
        
        this.initStageRoundResults();
