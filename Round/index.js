@@ -118,6 +118,12 @@ export default class Round {
     
     this.deck.initEventListeners();
     
+    this.indicatorsIndexes = {
+      player: 0,
+      dealer: 1
+    }
+    this.setProperIndicator( this.indicatorsIndexes, 1 );
+    
     document.addEventListener('end-of-round', this.initStageRoundReset, { once: true })
   }
   
@@ -137,6 +143,8 @@ export default class Round {
     this.tableShakes.cancel();
     this.bankShifts.cancel();
     
+    this.setProperIndicator( this.indicatorsIndexes, 0 );
+    
     this.killLastRoundEventListeners();
     this.deck.killEventListeners()
     
@@ -146,7 +154,7 @@ export default class Round {
     this.initNewRoundEventListeners();
   }
   
-  //carddraw functions
+  //card animation methods
   
   splitModeStateSwitcher() {
     this.splitModeState = !this.splitModeState;
@@ -244,7 +252,7 @@ export default class Round {
     
     if ( ++this.dealerCardsCount < 8 ) this.dealerCardsValue += this.calcCardValue( card, this.dealerCardsValue );
     
-    if ( this.dealerCardsValue > 19 ) {
+    if ( this.dealerCardsValue > 20 ) {
        clearInterval( this.dealerDrawInterval );
        
        this.initStageRoundResults();
@@ -293,11 +301,19 @@ export default class Round {
     return outputValue;
   }
   
-  //end of carddraw functions
+  //utilities
   
   defineRect = sel => document.querySelector( sel ).getBoundingClientRect();
   
   toggleBlockOrPierce = item => item.classList.contains('block-mode')
     ? item.classList.replace('block-mode', 'pierce-mode')
     : item.classList.replace('pierce-mode', 'block-mode');
+  
+  setProperIndicator = ( indexes, opacity ) => {
+    const playerIndicators = document.querySelector('.indicator_player').children;
+    const dealerIndicators = document.querySelector('.indicator_dealer').children;
+    
+    playerIndicators[ indexes.player ].style.opacity = opacity;
+    dealerIndicators[ indexes.dealer ].style.opacity = opacity;
+  }
 }

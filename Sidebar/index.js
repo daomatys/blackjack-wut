@@ -33,11 +33,12 @@ export default class Sidebar {
   }
   
   eventListeners() {
-    this.elem.addEventListener('pointerdown', this.actsOfButtons)
+    this.elem.addEventListener('click', this.actsOfButtons);
+    this.elem.addEventListener('pointerdown', this.changeButtonDisplayState);
   }
   
-  changeButtonDisplayState = id => {
-    const btn = this.elem.querySelector(`#${ id }`);
+  changeButtonDisplayState = event => {
+    const btn = this.elem.querySelector(`#${ event.target.id }`);
     
     const btnClickIllusion = () => {
       const imgOff = btn.firstElementChild;
@@ -55,11 +56,7 @@ export default class Sidebar {
   actsOfButtons = event => {
     event.preventDefault();
     
-    const aim = event.target;
-    
-    this.changeButtonDisplayState( aim.id );
-    
-    switch ( aim.id ) {
+    switch ( event.target.id ) {
       case 'sidebar': this.scrollSidebar(); break;
       case 'sidebar-next': this.actNext(); break;
       case 'sidebar-menu': this.actMenu(); break;
@@ -72,10 +69,8 @@ export default class Sidebar {
   }
   
   actMenu() {
-    this.elem.querySelector('#sidebar-menu').onclick = () => {
-      document.querySelector('#blackjack-table').style.display = 'none';
-      document.querySelector('#start-screen-menu').style.display = 'inline';
-    }
+    document.querySelector('#blackjack-table').style.display = 'none';
+    document.querySelector('#start-screen-menu').style.display = 'inline';
   }
   
   actHelp() {
