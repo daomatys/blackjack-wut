@@ -36,7 +36,10 @@ export default class Round {
     this.dealerCardsCount = 0;
     this.dealerCardsValue = 0;
     
-    this.playerCardsCount = { 
+    this.playerMaxValuedAce = false;
+    this.dealerMaxValuedAce = true;
+    
+    this.playerCardsCount = {
       normal: 0,
       right: 1,
       left: 1
@@ -125,26 +128,22 @@ export default class Round {
         case 'tie': this.indicatorsIndexes = { player: 0, dealer: 0 }; break;
       }
     }
-    if ( this.playerCardsValue.normal > 21 || this.dealerCardsValue > 21 ) {
-      if ( this.playerCardsValue.normal > 21 ) {
-        showWinner('dealer');
-      }
-      if ( this.dealerCardsValue > 21 ) {
-        showWinner('player');
-      }
-    }
-    if ( this.playerCardsValue.normal < 21 && this.dealerCardsValue < 21 ) {
-      if ( this.dealerCardsValue === this.playerCardsValue.normal && this.dealerCardsCount === this.playerCardsCount.normal ) {
-        showWinner('tie');
-      }
-      if ( this.dealerCardsValue > this.playerCardsValue.normal && this.dealerCardsCount === this.playerCardsCount.normal ) {
-        showWinner('dealer');
-      }
-      if ( this.dealerCardsValue < this.playerCardsValue.normal && this.dealerCardsCount === this.playerCardsCount.normal ) {
-        showWinner('player');
-      }
-    }
+    const valueDealer = this.dealerCardsValue;
+    const valuePlayer = this.playerCardsValue.normal;
     
+    const countDealer = this.dealerCardsCount;
+    const countPlayer = this.playerCardsCount.normal;
+    
+    if ( valuePlayer > 21 || valueDealer > 21 ) {
+      if ( valuePlayer > 21 ) showWinner('dealer');
+      if ( valueDealer > 21 ) showWinner('player');
+      if ( valuePlayer > 21 && valueDealer > 21 ) showWinner('tie');
+    }
+    if ( valuePlayer < 22 && valueDealer < 22 && countDealer === countPlayer ) {
+      if ( valueDealer > valuePlayer ) showWinner('dealer');
+      if ( valueDealer < valuePlayer ) showWinner('player');
+      if ( valueDealer === valuePlayer ) showWinner('tie');
+    }
     this.forbidDealerDrawAfterResults = true;
     
     this.deck.initEventListeners();
@@ -160,9 +159,15 @@ export default class Round {
     const betChips = document.querySelectorAll('.chip-bet');
     
     function elementRemover( elem ) { 
-      if ( elem.parentNode ) elem.parentNode.removeChild( elem ); 
+      if ( elem.parentNode ) elem.parentNode.removeChild( elem );
     }
-    for ( let card of drawnCards ) elementRemover( card );
+    for ( let card of drawnCards ) {
+      const cardRemove = card.animate(
+        this.animations.card.remove.action,
+        this.animations.card.remove.props 
+      );
+      cardRemove.onfinish = () => elementRemover( card );
+    }
     for ( let chip of betChips ) elementRemover( chip );
     for ( let adder of fakeAdders ) this.toggleBlockOrPierce( adder );
     

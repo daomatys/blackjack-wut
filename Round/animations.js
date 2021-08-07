@@ -46,6 +46,18 @@ export default {
         fill: 'both',
         composite: 'add'
       }
+    },
+    
+    remove: {
+      action: {
+        transform: 'translateX( 2000px )'
+      },
+      props: {
+        easing: 'cubic-bezier(0.36, 0, 0.66, -0.56)',
+        duration: 1000,
+        fill: 'both',
+        composite: 'add'
+      }
     }
   },
   
