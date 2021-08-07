@@ -36,9 +36,10 @@ export default class Round {
     this.dealerCardsCount = 0;
     this.dealerCardsValue = 0;
     
-    this.playerMaxValuedAce = false;
-    this.dealerMaxValuedAce = true;
-    
+    this.aceCount = {
+      player: 0,
+      dealer: 0
+    };
     this.playerCardsCount = {
       normal: 0,
       right: 1,
@@ -314,19 +315,19 @@ export default class Round {
     
     if ( card.rank === 'A' ) {
       if ( inputValue + 11 < 22 ) {
-        card.elem.closest('.hand__player') ? this.playerMaxValuedAce = true : this.dealerMaxValuedAce = true ;
+        card.elem.closest('.hand__player') ? ++this.aceCount.player : ++this.aceCount.dealer ;
         outputValue = 11; 
       } else {
         outputValue = 1;
       }
     }
     if ( outputValue + inputValue > 21 ) {
-      if ( card.elem.closest('.hand__player') && this.playerMaxValuedAce ) {
-        this.playerMaxValuedAce = false;
-         outputValue -= 10;
+      if ( card.elem.closest('.hand__player') && this.aceCount.player > 0 ) {
+        --this.aceCount.player;
+        outputValue -= 10;
       }
-      if ( card.elem.closest('.hand__dealer') && this.dealerMaxValuedAce ) {
-        this.dealerMaxValuedAce = false;
+      if ( card.elem.closest('.hand__dealer') && this.aceCount.dealer > 0 ) {
+        --this.aceCount.dealer;
         outputValue -= 10;
       }
     }
