@@ -36,7 +36,13 @@ export default class Round {
     this.dealerCardsCount = 0;
     this.dealerCardsValue = 0;
     
-    this.aceCount = {
+    this.results = {
+      overdraft: {
+        player: false,
+        dealer: false
+      }
+    };
+    this.maxValuedAcesCount = {
       player: 0,
       dealer: 0
     };
@@ -135,15 +141,22 @@ export default class Round {
     const countDealer = this.dealerCardsCount;
     const countPlayer = this.playerCardsCount.normal;
     
-    if ( valuePlayer > 21 || valueDealer > 21 ) {
-      if ( valuePlayer > 21 ) showWinner('dealer');
-      if ( valueDealer > 21 ) showWinner('player');
-      if ( valuePlayer > 21 && valueDealer > 21 ) showWinner('tie');
-    }
-    if ( valuePlayer < 22 && valueDealer < 22 && countDealer === countPlayer ) {
-      if ( valueDealer > valuePlayer ) showWinner('dealer');
-      if ( valueDealer < valuePlayer ) showWinner('player');
-      if ( valueDealer === valuePlayer ) showWinner('tie');
+    if ( this.results.overdraft.player || this.results.overdraft.dealer ) {
+      if ( this.results.overdraft.player && this.results.overdraft.dealer ) {
+        showWinner('tie');
+      } else {
+        if ( this.results.overdraft.player ) showWinner('dealer');
+        if ( this.results.overdraft.dealer ) showWinner('player');
+      }
+    } else {
+      if ( countPlayer === countDealer ) {
+        if ( valuePlayer === valueDealer ) {
+          showWinner('tie');
+        } else {
+          if ( valuePlayer > valueDealer ) showWinner('player');
+          if ( valuePlayer < valueDealer ) showWinner('dealer');
+        }
+      }
     }
     this.forbidDealerDrawAfterResults = true;
     
@@ -220,8 +233,10 @@ export default class Round {
     if ( ++this.playerCardsCount.normal < 8 ) this.playerCardsValue.normal += this.calcCardValue( cardProps.card, this.playerCardsValue.normal );
     
     if ( this.playerCardsValue.normal > 20 && !this.forbidDealerDrawAfterResults ) {
+      if ( this.playerCardsValue.normal > 21 ) {
+        this.results.overdraft.player = true;
+      }
       this.deck.killEventListeners();
-      
       this.initStageDealerDraw();
     }
     console.log( 'playa:', this.playerCardsValue.normal )
@@ -285,7 +300,10 @@ export default class Round {
     
     if ( ++this.dealerCardsCount < 8 ) this.dealerCardsValue += this.calcCardValue( card, this.dealerCardsValue );
     
-    if ( this.dealerCardsValue > 19 ) {
+    if ( this.dealerCardsValue > 19 || this.results.overdraft.player ) {
+      if ( this.dealerCardsValue > 21 ) {
+        this.results.overdraft.dealer = true;
+      }
        clearInterval( this.dealerDrawInterval );
        
        this.initStageRoundResults();
@@ -315,19 +333,21 @@ export default class Round {
     
     if ( card.rank === 'A' ) {
       if ( inputValue + 11 < 22 ) {
-        card.elem.closest('.hand__player') ? ++this.aceCount.player : ++this.aceCount.dealer ;
+        card.elem.closest('.hand__player')
+          ? ++this.maxValuedAcesCount.player
+          : ++this.maxValuedAcesCount.dealer;
         outputValue = 11; 
       } else {
         outputValue = 1;
       }
     }
     if ( outputValue + inputValue > 21 ) {
-      if ( card.elem.closest('.hand__player') && this.aceCount.player > 0 ) {
-        --this.aceCount.player;
+      if ( card.elem.closest('.hand__player') && this.maxValuedAcesCount.player > 0 ) {
+        --this.maxValuedAcesCount.player;
         outputValue -= 10;
       }
-      if ( card.elem.closest('.hand__dealer') && this.aceCount.dealer > 0 ) {
-        --this.aceCount.dealer;
+      if ( card.elem.closest('.hand__dealer') && this.maxValuedAcesCount.dealer > 0 ) {
+        --this.maxValuedAcesCount.dealer;
         outputValue -= 10;
       }
     }
