@@ -82,15 +82,15 @@ export default class Sidebar {
     
     this.sidebarMovedState
       ? this.sidebarShift = '142px'
-      : this.sidebarShift = '0px';
+      : this.sidebarShift = '-142px';
     
     const sidebarAnimation = this.elem.animate({
       transform: `translateX(${ this.sidebarShift })`
     }, {
-      easing: 'ease',
+      easing: 'cubic-bezier(0.45, 0, 0.55, 1)',
       duration: 600,
       fill: 'both',
-      composite: 'replace'
+      composite: 'add'
     });
     sidebarAnimation.persist();
   }

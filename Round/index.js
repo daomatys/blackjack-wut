@@ -33,28 +33,31 @@ export default class Round {
     
     this.panel.initAdditionalValues();
     
-    this.dealerCardsCount = 0;
-    this.dealerCardsValue = 0;
-    
+    this.drawnCards = {
+      player: {
+        count: {
+          normal: 0,
+          right: 1,
+          left: 1
+        },
+        value: {
+          normal: 0,
+          right: 0,
+          left: 0
+        },
+        topaces: 0
+      },
+      dealer: {
+        count: 0,
+        value: 0,
+        topaces: 0
+      }
+    };
     this.results = {
       overdraft: {
         player: false,
         dealer: false
       }
-    };
-    this.maxValuedAcesCount = {
-      player: 0,
-      dealer: 0
-    };
-    this.playerCardsCount = {
-      normal: 0,
-      right: 1,
-      left: 1
-    };
-    this.playerCardsValue = {
-      normal: 0,
-      right: 0,
-      left: 0
     };
     this.indicatorsIndexes = {
       player: 0,
@@ -124,7 +127,7 @@ export default class Round {
   }
   
   initStageDealerDraw = () => {
-    this.dealerDrawInterval = setInterval( this.newCardDealerTransition, 1000 );
+    this.dealerDrawInterval = setInterval( this.newCardDealerTransition, 700 );
   }
   
   initStageRoundResults = () => {
@@ -135,11 +138,11 @@ export default class Round {
         case 'tie': this.indicatorsIndexes = { player: 0, dealer: 0 }; break;
       }
     }
-    const valueDealer = this.dealerCardsValue;
-    const valuePlayer = this.playerCardsValue.normal;
+    const valueDealer = this.drawnCards.dealer.value;
+    const valuePlayer = this.drawnCards.player.value.normal;
     
-    const countDealer = this.dealerCardsCount;
-    const countPlayer = this.playerCardsCount.normal;
+    const countDealer = this.drawnCards.dealer.count;
+    const countPlayer = this.drawnCards.player.count.normal;
     
     if ( this.results.overdraft.player || this.results.overdraft.dealer ) {
       if ( this.results.overdraft.player && this.results.overdraft.dealer ) {
@@ -216,7 +219,7 @@ export default class Round {
   initPlayerDrawNormal( cardProps ) {
     const playerHand = document.querySelector('.hand__player');
     const playerHandRect = playerHand.getBoundingClientRect();
-    const playerHandCardCount = this.playerCardsCount.normal;
+    const playerHandCardCount = this.drawnCards.player.count.normal;
     
     const animationContext = {
       parent: playerHand,
@@ -230,22 +233,22 @@ export default class Round {
     }
     this.newCardPlayerTransition( animationContext );
     
-    if ( ++this.playerCardsCount.normal < 8 ) this.playerCardsValue.normal += this.calcCardValue( cardProps.card, this.playerCardsValue.normal );
+    if ( ++this.drawnCards.player.count.normal < 8 ) this.drawnCards.player.value.normal += this.calcCardValue( cardProps.card, this.drawnCards.player.value.normal );
     
-    if ( this.playerCardsValue.normal > 20 && !this.forbidDealerDrawAfterResults ) {
-      if ( this.playerCardsValue.normal > 21 ) {
+    if ( this.drawnCards.player.value.normal > 20 && !this.forbidDealerDrawAfterResults ) {
+      if ( this.drawnCards.player.value.normal > 21 ) {
         this.results.overdraft.player = true;
       }
       this.deck.killEventListeners();
       this.initStageDealerDraw();
     }
-    console.log( 'playa:', this.playerCardsValue.normal )
+    console.log( 'playa:', this.drawnCards.player.value.normal )
   }
   
   initPlayerDrawSplit( cardProps ) {
     const subHand = cardProps.below.closest('.subhand');
     const subHandRect = subHand.getBoundingClientRect();
-    const subHandCardCount = subHand.classList.contains('subhand__left') ? this.playerCardsCount.left++ : this.playerCardsCount.right++ ;
+    const subHandCardCount = subHand.classList.contains('subhand__left') ? this.drawnCards.player.count.left++ : this.drawnCards.player.count.right++ ;
     
     const defineSide = value => subHand.classList.contains('subhand__left') ? value.left : value.right ;
     
@@ -261,7 +264,7 @@ export default class Round {
     }
     this.newCardPlayerTransition( animationContext );
     
-    if ( defineSide( this.playerCardsValue ) > 20 ) this.initStageDealerDraw();
+    if ( defineSide( this.drawnCards.player.value ) > 20 ) this.initStageDealerDraw();
   }
   
   newCardPlayerTransition( animationContext ) {
@@ -293,22 +296,22 @@ export default class Round {
       left: cardStyleRight,
       top: cardStyleTop
     });
-    const shiftX = -parseInt( cardStyleRight, 10 ) + this.dealerCardsCount * 60 + 'px';
+    const shiftX = -parseInt( cardStyleRight, 10 ) + this.drawnCards.dealer.count * 60 + 'px';
     const shiftY = -parseInt( cardStyleTop, 10 ) + 'px';
     
     this.newCardFlightAnimation( card.elem, shiftX, shiftY );
     
-    if ( ++this.dealerCardsCount < 8 ) this.dealerCardsValue += this.calcCardValue( card, this.dealerCardsValue );
+    if ( ++this.drawnCards.dealer.count < 8 ) this.drawnCards.dealer.value += this.calcCardValue( card, this.drawnCards.dealer.value );
     
-    if ( this.dealerCardsValue > 19 || this.results.overdraft.player ) {
-      if ( this.dealerCardsValue > 21 ) {
+    if ( this.drawnCards.dealer.value > 19 || this.results.overdraft.player ) {
+      if ( this.drawnCards.dealer.value > 21 ) {
         this.results.overdraft.dealer = true;
       }
-       clearInterval( this.dealerDrawInterval );
-       
-       this.initStageRoundResults();
+      clearInterval( this.dealerDrawInterval );
+      
+      this.initStageRoundResults();
     }
-    console.log( 'dealer:', this.dealerCardsValue )
+    console.log( 'dealer:', this.drawnCards.dealer.value )
   }
   
   newCardFlightAnimation( elem, shiftX, shiftY ) {
@@ -334,20 +337,20 @@ export default class Round {
     if ( card.rank === 'A' ) {
       if ( inputValue + 11 < 22 ) {
         card.elem.closest('.hand__player')
-          ? ++this.maxValuedAcesCount.player
-          : ++this.maxValuedAcesCount.dealer;
+          ? ++this.drawnCards.player.topaces
+          : ++this.drawnCards.dealer.topaces;
         outputValue = 11; 
       } else {
         outputValue = 1;
       }
     }
     if ( outputValue + inputValue > 21 ) {
-      if ( card.elem.closest('.hand__player') && this.maxValuedAcesCount.player > 0 ) {
-        --this.maxValuedAcesCount.player;
+      if ( card.elem.closest('.hand__player') && this.drawnCards.player.topaces > 0 ) {
+        --this.drawnCards.player.topaces;
         outputValue -= 10;
       }
-      if ( card.elem.closest('.hand__dealer') && this.maxValuedAcesCount.dealer > 0 ) {
-        --this.maxValuedAcesCount.dealer;
+      if ( card.elem.closest('.hand__dealer') && this.drawnCards.dealer.topaces > 0 ) {
+        --this.drawnCards.dealer.topaces;
         outputValue -= 10;
       }
     }
