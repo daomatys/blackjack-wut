@@ -13,6 +13,17 @@ export default {
         fill: 'forwards',
         composite: 'replace'
       }
+    },
+    remove: {
+      action: {
+        transform: 'translate( 0px, -600px ) scale( 2 ) rotate( 360deg )'
+      },
+      props: {
+        easing: 'cubic-bezier( 0.68, 0, 0.32, 1.1 )',
+        duration: 800,
+        fill: 'forwards',
+        composite: 'replace'
+      }
     }
   },
   

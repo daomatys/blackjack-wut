@@ -14,25 +14,7 @@ export default class Round {
     this.initNewRoundEventListeners();
   }
   
-  incrustImportedElements() {
-    this.animations = animations;
-    
-    this.panel = new Panel();
-    this.menu = new Menu();
-    this.sidebar = new Sidebar();
-    
-    document.querySelector('[data-panel]').append( this.panel.elem );
-    document.querySelector('[data-menu]').append( this.menu.elem );
-    document.querySelector('[data-sidebar]').append( this.sidebar.elem );
-  }
-  
-  initNewRound = () => {
-    this.deck = new Deck();
-    
-    document.querySelector('[data-zone-deck]').append( this.deck.elem );
-    
-    this.panel.initAdditionalValues();
-    
+  initAdditionalValues() {
     this.drawnCards = {
       player: {
         count: {
@@ -66,6 +48,27 @@ export default class Round {
     this.splitModeState = false;
     
     this.forbidDealerDrawAfterResults = false;
+  }
+  
+  incrustImportedElements() {
+    this.animations = animations;
+    
+    this.panel = new Panel();
+    this.menu = new Menu();
+    this.sidebar = new Sidebar();
+    
+    document.querySelector('[data-panel]').append( this.panel.elem );
+    document.querySelector('[data-menu]').append( this.menu.elem );
+    document.querySelector('[data-sidebar]').append( this.sidebar.elem );
+  }
+  
+  initNewRound = () => {
+    this.deck = new Deck();
+    
+    document.querySelector('[data-zone-deck]').append( this.deck.elem );
+    
+    this.panel.initAdditionalValues();
+    this.initAdditionalValues();
   }
   
   initNewRoundEventListeners() {
@@ -174,10 +177,11 @@ export default class Round {
     const drawnCards = document.querySelectorAll('.card');
     const fakeAdders = document.querySelectorAll('.adder__fake');
     const betChips = document.querySelectorAll('.chip-bet');
+    const usedDeck = this.deck.elem;
     
-    function elementRemover( elem ) { 
-      if ( elem.parentNode ) elem.parentNode.removeChild( elem );
-    }
+    this.killLastRoundEventListeners();
+    this.deck.killEventListeners();
+    
     for ( let card of drawnCards ) {
       const cardRemove = card.animate(
         this.animations.card.remove.action,
@@ -188,19 +192,23 @@ export default class Round {
     for ( let chip of betChips ) elementRemover( chip );
     for ( let adder of fakeAdders ) this.toggleBlockOrPierce( adder );
     
-    this.deckFalls.cancel();
+    const deckRemove = usedDeck.animate(
+      this.animations.deck.remove.action,
+      this.animations.deck.remove.props
+    );
+    deckRemove.onfinish = () => elementRemover( usedDeck );
+    
     this.tableShakes.cancel();
     this.bankShifts.cancel();
     
     this.setProperIndicator( this.indicatorsIndexes, 0 );
     
-    this.killLastRoundEventListeners();
-    this.deck.killEventListeners();
-    
-    document.querySelector('[data-zone-deck]').removeChild( this.deck.elem );
-    
     this.initNewRound();
     this.initNewRoundEventListeners();
+    
+    function elementRemover( elem ) { 
+      if ( elem.parentNode ) elem.parentNode.removeChild( elem );
+    }
   }
   
   //card animation methods
