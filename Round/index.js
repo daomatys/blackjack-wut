@@ -16,35 +16,48 @@ export default class Round {
   
   initAdditionalValues() {
     this.drawnCards = {
-      player: {
-        count: {
-          normal: 0,
-          right: 1,
-          left: 1
-        },
-        value: {
-          normal: 0,
-          right: 0,
-          left: 0
-        },
-        topaces: 0
-      },
+      
       dealer: {
         count: 0,
         value: 0,
         topaces: 0
+      },
+      
+      player: {
+        normal: {
+          count: 0,
+          value: 0,
+          topaces: 0
+        },
+        
+        split: {
+          left: {
+            count: 1,
+            value: 0,
+            topaces: 0
+          },
+          
+          right: {
+            count: 1,
+            value: 0,
+            topaces: 0
+          }
+        }
       }
     };
+    
     this.results = {
       overdraft: {
         player: false,
         dealer: false
       }
     };
+    
     this.indicatorsIndexes = {
       player: 0,
       dealer: 0
     };
+    
     this.splitModeState = false;
     
     this.forbidDealerDrawAfterResults = false;
@@ -142,10 +155,10 @@ export default class Round {
       }
     }
     const valueDealer = this.drawnCards.dealer.value;
-    const valuePlayer = this.drawnCards.player.value.normal;
+    const valuePlayer = this.drawnCards.player.normal.value;
     
     const countDealer = this.drawnCards.dealer.count;
-    const countPlayer = this.drawnCards.player.count.normal;
+    const countPlayer = this.drawnCards.player.normal.count;
     
     if ( this.results.overdraft.player || this.results.overdraft.dealer ) {
       if ( this.results.overdraft.player && this.results.overdraft.dealer ) {
@@ -206,7 +219,7 @@ export default class Round {
     this.initNewRound();
     this.initNewRoundEventListeners();
     
-    function elementRemover( elem ) { 
+    function elementRemover( elem ) {
       if ( elem.parentNode ) elem.parentNode.removeChild( elem );
     }
   }
@@ -218,16 +231,15 @@ export default class Round {
   }
   
   newCardPlayer( detail ) {
-    const cardOnSpawnProperties = detail;
     this.splitModeState
-      ? this.initPlayerDrawSplit( cardOnSpawnProperties )
-      : this.initPlayerDrawNormal( cardOnSpawnProperties )
+      ? this.initPlayerDrawSplit( detail )
+      : this.initPlayerDrawNormal( detail );
   }
   
   initPlayerDrawNormal( cardProps ) {
     const playerHand = document.querySelector('.hand__player');
     const playerHandRect = playerHand.getBoundingClientRect();
-    const playerHandCardCount = this.drawnCards.player.count.normal;
+    const playerHandCardCount = this.drawnCards.player.normal.count;
     
     const animationContext = {
       parent: playerHand,
@@ -241,16 +253,16 @@ export default class Round {
     }
     this.newCardPlayerTransition( animationContext );
     
-    if ( ++this.drawnCards.player.count.normal < 8 ) this.drawnCards.player.value.normal += this.calcCardValue( cardProps.card, this.drawnCards.player.value.normal );
+    if ( ++this.drawnCards.player.normal.count < 8 ) this.drawnCards.player.normal.value += this.calcCardValue( cardProps.card, this.drawnCards.player.normal.value );
     
-    if ( this.drawnCards.player.value.normal > 20 && !this.forbidDealerDrawAfterResults ) {
-      if ( this.drawnCards.player.value.normal > 21 ) {
+    if ( this.drawnCards.player.normal.value > 20 && !this.forbidDealerDrawAfterResults ) {
+      if ( this.drawnCards.player.normal.value > 21 ) {
         this.results.overdraft.player = true;
       }
       this.deck.killEventListeners();
       this.initStageDealerDraw();
     }
-    console.log( 'playa:', this.drawnCards.player.value.normal )
+    console.log( 'playa:', this.drawnCards.player.normal.value );
   }
   
   initPlayerDrawSplit( cardProps ) {
@@ -272,7 +284,6 @@ export default class Round {
     }
     this.newCardPlayerTransition( animationContext );
     
-    if ( defineSide( this.drawnCards.player.value ) > 20 ) this.initStageDealerDraw();
   }
   
   newCardPlayerTransition( animationContext ) {
@@ -319,7 +330,7 @@ export default class Round {
       
       this.initStageRoundResults();
     }
-    console.log( 'dealer:', this.drawnCards.dealer.value )
+    console.log( 'dealer:', this.drawnCards.dealer.value );
   }
   
   newCardFlightAnimation( elem, shiftX, shiftY ) {
@@ -345,7 +356,7 @@ export default class Round {
     if ( card.rank === 'A' ) {
       if ( inputValue + 11 < 22 ) {
         card.elem.closest('.hand__player')
-          ? ++this.drawnCards.player.topaces
+          ? ++this.drawnCards.player.normal.topaces
           : ++this.drawnCards.dealer.topaces;
         outputValue = 11; 
       } else {
@@ -354,7 +365,7 @@ export default class Round {
     }
     if ( outputValue + inputValue > 21 ) {
       if ( card.elem.closest('.hand__player') && this.drawnCards.player.topaces > 0 ) {
-        --this.drawnCards.player.topaces;
+        --this.drawnCards.player.normal.topaces;
         outputValue -= 10;
       }
       if ( card.elem.closest('.hand__dealer') && this.drawnCards.dealer.topaces > 0 ) {
