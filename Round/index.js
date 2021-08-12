@@ -256,9 +256,7 @@ export default class Round {
     if ( ++this.drawnCards.player.normal.count < 8 ) this.drawnCards.player.normal.value += this.calcCardValue( cardProps.card, this.drawnCards.player.normal.value );
     
     if ( this.drawnCards.player.normal.value > 20 && !this.forbidDealerDrawAfterResults ) {
-      if ( this.drawnCards.player.normal.value > 21 ) {
-        this.results.overdraft.player = true;
-      }
+      if ( this.drawnCards.player.normal.value > 21 ) this.results.overdraft.player = true;
       this.deck.killEventListeners();
       this.initStageDealerDraw();
     }
@@ -291,9 +289,12 @@ export default class Round {
     
     animationContext.parent.append( card.elem );
     
+    const cardLeft = parseInt( card.props.left, 10 ) - animationContext.holder.left + 1 + 'px';
+    const cardTop = parseInt( card.props.top, 10 ) - animationContext.holder.top + 1 + 'px';
+    
     Object.assign( card.elem.style, {
-      left: parseInt( card.props.left, 10 ) - animationContext.holder.left + 1 + 'px',
-      top: parseInt( card.props.top, 10 ) - animationContext.holder.top + 1 + 'px'
+      left: cardLeft,
+      top: cardTop
     });
     
     const shiftX = -parseInt( card.elem.style.left, 10 ) + animationContext.count * animationContext.card.margin + 'px';
@@ -315,6 +316,7 @@ export default class Round {
       left: cardStyleRight,
       top: cardStyleTop
     });
+    
     const shiftX = -parseInt( cardStyleRight, 10 ) + this.drawnCards.dealer.count * 60 + 'px';
     const shiftY = -parseInt( cardStyleTop, 10 ) + 'px';
     
@@ -323,11 +325,8 @@ export default class Round {
     if ( ++this.drawnCards.dealer.count < 8 ) this.drawnCards.dealer.value += this.calcCardValue( card, this.drawnCards.dealer.value );
     
     if ( this.drawnCards.dealer.value > 19 || this.results.overdraft.player ) {
-      if ( this.drawnCards.dealer.value > 21 ) {
-        this.results.overdraft.dealer = true;
-      }
+      if ( this.drawnCards.dealer.value > 21 ) this.results.overdraft.dealer = true;
       clearInterval( this.dealerDrawInterval );
-      
       this.initStageRoundResults();
     }
     console.log( 'dealer:', this.drawnCards.dealer.value );
@@ -380,9 +379,9 @@ export default class Round {
   
   defineRect = sel => document.querySelector( sel ).getBoundingClientRect();
   
-  toggleBlockOrPierce = item => item.classList.contains('block-mode')
-    ? item.classList.replace('block-mode', 'pierce-mode')
-    : item.classList.replace('pierce-mode', 'block-mode');
+  toggleBlockOrPierce = item => item.classList.contains('deny-click')
+    ? item.classList.replace('deny-click', 'allow-click')
+    : item.classList.replace('allow-click', 'deny-click');
   
   setProperIndicator = ( indexes, opacity ) => {
     const playerIndicators = document.querySelector('.indicator_player').children;

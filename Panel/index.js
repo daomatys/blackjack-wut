@@ -43,7 +43,7 @@ export default class Panel {
             <img src="/assets/buttons/adder_off.png" style="display: inline">
             <img src="/assets/buttons/adder_on.png" style="display: none">
           </div>
-          <div class="adder__fake pierce-mode">
+          <div class="adder__fake allow-click">
             <img src="/assets/buttons/adder_inactive.png">
           </div>
         </div>`)
