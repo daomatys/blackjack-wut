@@ -157,24 +157,12 @@ export default class Round {
     const valueDealer = this.drawnCards.dealer.value;
     const valuePlayer = this.drawnCards.player.normal.value;
     
-    const countDealer = this.drawnCards.dealer.count;
-    const countPlayer = this.drawnCards.player.normal.count;
-    
     if ( this.results.overdraft.player || this.results.overdraft.dealer ) {
-      if ( this.results.overdraft.player && this.results.overdraft.dealer ) {
-        showWinner('tie');
-      } else {
-        if ( this.results.overdraft.player ) showWinner('dealer');
-        if ( this.results.overdraft.dealer ) showWinner('player');
-      }
+      if ( this.results.overdraft.dealer ) showWinner('player');
+      if ( this.results.overdraft.player ) showWinner('dealer');
     } else {
-      if ( countPlayer === countDealer ) {
-        if ( valuePlayer === valueDealer ) {
-          showWinner('tie');
-        } else {
-          if ( valuePlayer > valueDealer ) showWinner('player');
-          if ( valuePlayer < valueDealer ) showWinner('dealer');
-        }
+      if ( valuePlayer === valueDealer ) {
+        showWinner('tie');
       } else {
         if ( valuePlayer > valueDealer ) showWinner('player');
         if ( valuePlayer < valueDealer ) showWinner('dealer');
