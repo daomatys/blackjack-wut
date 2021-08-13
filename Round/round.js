@@ -54,8 +54,8 @@ export default class Round {
     };
     
     this.indicatorsIndexes = {
-      player: 0,
-      dealer: 0
+      player: 3,
+      dealer: 3
     };
     
     this.splitModeState = false;
@@ -175,6 +175,9 @@ export default class Round {
           if ( valuePlayer > valueDealer ) showWinner('player');
           if ( valuePlayer < valueDealer ) showWinner('dealer');
         }
+      } else {
+        if ( valuePlayer > valueDealer ) showWinner('player');
+        if ( valuePlayer < valueDealer ) showWinner('dealer');
       }
     }
     this.forbidDealerDrawAfterResults = true;
