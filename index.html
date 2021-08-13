@@ -2,25 +2,21 @@
 <html>
 
 <head>
-
   <meta charset="utf-8" />
   
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   
-  <title>TABLE</title>
+  <title>Blackjack "Wut"! Enjoy your stay!</title>
   
-  <link rel="stylesheet" href="./all.css">
-  
+  <link rel="stylesheet" href="./index.css">
 </head>
 
 <body>
-
   <div id="start-screen-menu">
     <div data-menu></div>
   </div>
-
-  <div id="blackjack-table">
   
+  <div id="blackjack-table">
     <div data-bank>
       <img src="/assets/graphics/bank.png">
       <div class="bank">
@@ -68,11 +64,10 @@
     </div>
     
     <div data-sidebar></div>
-    
   </div>
   
   <script type="module">
-    import Round from './index.js';
+    import Round from './Round/round.js';
 
     let round = new Round();
   </script>

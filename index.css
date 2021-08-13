@@ -1,5 +1,5 @@
-/*Main*/
-@import './index.css';
+/*Round*/
+@import './Round/round.css';
 
 /*Card*/
 @import '../Card/card.css';
