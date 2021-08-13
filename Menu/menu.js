@@ -11,7 +11,7 @@ export default class Menu {
   layout() {
     return `
       <div class="menu__logo">
-        <img src="/assets/logos/logo.png">
+        <img src="/assets/graphics/logos/logo.png">
       </div>
       <div class="menu__button-array">
         <div class="menu__button" id="menu-start">START</div>

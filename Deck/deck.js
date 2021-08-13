@@ -15,10 +15,10 @@ export default class Deck {
   deckLayout() {
     return `
       <div class="deck__veiled">
-        <img src="/assets/cards/back_red_deck.png">
+        <img src="/assets/graphics/cards/back_red_deck.png">
       </div>
       <div class="deck__top">
-        <img src="/assets/cards/back_red.png">
+        <img src="/assets/graphics/cards/back_red.png">
       </div>`;
   }
   

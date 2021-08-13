@@ -14,10 +14,10 @@ export default class Card {
   layout() {
     return `
       <div class="card__title">
-        <img src="/assets/cards/${ this.rank + this.suit }.png">
+        <img src="/assets/graphics/cards/${ this.rank + this.suit }.png">
       </div>
       <div class="card__back">
-        <img src="/assets/cards/back_red.png">
+        <img src="/assets/graphics/cards/back_red.png">
       </div>`;
   }
 }

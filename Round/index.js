@@ -3,7 +3,7 @@ import Panel from '../Panel/panel.js';
 import Menu from '../Menu/menu.js';
 import Sidebar from '../Sidebar/sidebar.js';
 
-import animations from './animations.js';
+import animations from '../assets/js-misc/animations.js';
 
 export default class Round {
   

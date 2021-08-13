@@ -13,20 +13,20 @@ export default class Sidebar {
   layout() {
     return `
       <div class="sidebar__background" id ="sidebar">
-        <img src="/assets/sidebar.png">
+        <img src="/assets/graphics/sidebar.png">
       </div>
       <div class="sidebar__button-array">
         <div class="sidebar__button" id="sidebar-next">
-          <img src="/assets/buttons/sidebar-btn_next_off.png" style="display: inline">
-          <img src="/assets/buttons/sidebar-btn_next_on.png" style="display: none">
+          <img src="/assets/graphics/buttons/sidebar-btn_next_off.png" style="display: inline">
+          <img src="/assets/graphics/buttons/sidebar-btn_next_on.png" style="display: none">
         </div>
         <div class="sidebar__button" id="sidebar-menu">
-          <img src="/assets/buttons/sidebar-btn_menu_off.png" style="display: inline">
-          <img src="/assets/buttons/sidebar-btn_menu_on.png" style="display: none">
+          <img src="/assets/graphics/buttons/sidebar-btn_menu_off.png" style="display: inline">
+          <img src="/assets/graphics/buttons/sidebar-btn_menu_on.png" style="display: none">
         </div>
         <div class="sidebar__button" id="sidebar-help">
-          <img src="/assets/buttons/sidebar-btn_help_off.png" style="display: inline">
-          <img src="/assets/buttons/sidebar-btn_help_on.png" style="display: none">
+          <img src="/assets/graphics/buttons/sidebar-btn_help_off.png" style="display: inline">
+          <img src="/assets/graphics/buttons/sidebar-btn_help_on.png" style="display: none">
         </div>
       </div>
     `;

@@ -6,7 +6,7 @@ html {
 
 body {
   position: relative;
-  background-image: url("/assets/table_texture.png");
+  background-image: url("/assets/graphics/table_texture.png");
   box-sizing: border-box;
   margin: 0;
 }
