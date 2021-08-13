@@ -1,17 +1,17 @@
-/*Table*/
+/*Main*/
 @import './index.css';
 
 /*Card*/
-@import '../Card/index.css';
+@import '../Card/card.css';
 
 /*Deck*/
-@import '../Deck/index.css';
+@import '../Deck/deck.css';
 
 /*Panel*/
-@import '../Panel/index.css';
+@import '../Panel/panel.css';
 
 /*Menu*/
-@import '../Menu/index.css';
+@import '../Menu/menu.css';
 
 /*Sidebar*/
-@import '../Sidebar/index.css';
+@import '../Sidebar/sidebar.css';

@@ -1,0 +1,28 @@
+.card {
+  position: absolute;
+  width: 120px;
+  height: 184px;
+  z-index: 18;
+  transform: scale(1.05);
+  transform-style: preserve-3d;
+}
+
+.card img {
+  width: 120px;
+}
+
+.card__back {
+  position: fixed;
+  width: 120px;
+  height: 184px;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+}
+
+.card__title {
+  position: fixed;
+  width: 120px;
+  height: 184px;
+  transform: scaleX(-1);
+  transform-style: preserve-3d;
+}

@@ -1,7 +1,7 @@
-import Deck from '../Deck/index.js';
-import Panel from '../Panel/index.js';
-import Menu from '../Menu/index.js';
-import Sidebar from '../Sidebar/index.js';
+import Deck from '../Deck/deck.js';
+import Panel from '../Panel/panel.js';
+import Menu from '../Menu/menu.js';
+import Sidebar from '../Sidebar/sidebar.js';
 
 import animations from './animations.js';
 
@@ -116,7 +116,7 @@ export default class Round {
     const fakeAdders = document.querySelectorAll('.adder__fake');
     const caller = document.querySelector('.caller-bank');
     
-    for ( let fake of fakeAdders ) this.toggleBlockOrPierce( fake );
+    for ( let fake of fakeAdders ) this.toggleButtonClickPossibility( fake );
     
     this.deckFalls = document.querySelector('.deck').animate( 
       this.animations.deck.fall.action,
@@ -203,7 +203,7 @@ export default class Round {
       cardRemove.onfinish = () => elementRemover( card );
     }
     for ( let chip of betChips ) elementRemover( chip );
-    for ( let adder of fakeAdders ) this.toggleBlockOrPierce( adder );
+    for ( let adder of fakeAdders ) this.toggleButtonClickPossibility( adder );
     
     const deckRemove = usedDeck.animate(
       this.animations.deck.remove.action,
@@ -379,9 +379,10 @@ export default class Round {
   
   defineRect = sel => document.querySelector( sel ).getBoundingClientRect();
   
-  toggleBlockOrPierce = item => item.classList.contains('deny-click')
-    ? item.classList.replace('deny-click', 'allow-click')
-    : item.classList.replace('allow-click', 'deny-click');
+  toggleButtonClickPossibility = item => {
+    item.classList.toggle('deny-click');
+    item.classList.toggle('allow-click');
+  }
   
   setProperIndicator = ( indexes, opacity ) => {
     const playerIndicators = document.querySelector('.indicator_player').children;
