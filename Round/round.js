@@ -154,15 +154,25 @@ export default class Round {
         case 'tie': this.indicatorsIndexes = { player: 0, dealer: 0 }; break;
       }
     }
+    const overdraftDealer = this.results.overdraft.dealer;
+    const overdraftPlayer = this.results.overdraft.player;
+    
     const valueDealer = this.drawnCards.dealer.value;
     const valuePlayer = this.drawnCards.player.normal.value;
     
-    if ( this.results.overdraft.player || this.results.overdraft.dealer ) {
-      if ( this.results.overdraft.dealer ) showWinner('player');
-      if ( this.results.overdraft.player ) showWinner('dealer');
+    const countDealer = this.drawnCards.dealer.count;
+    const countPlayer = this.drawnCards.player.normal.count;
+    
+    if ( overdraftPlayer || overdraftDealer ) {
+      if ( overdraftDealer ) showWinner('player');
+      if ( overdraftPlayer ) showWinner('dealer');
     } else {
       if ( valuePlayer === valueDealer ) {
         showWinner('tie');
+        if ( valuePlayer === 21 ) {
+          if ( countPlayer < countDealer ) showWinner('player');
+          if ( countPlayer > countDealer ) showWinner('dealer');
+        }
       } else {
         if ( valuePlayer > valueDealer ) showWinner('player');
         if ( valuePlayer < valueDealer ) showWinner('dealer');
