@@ -288,7 +288,7 @@ export default class Round {
   newCardPlayerTransition( animationContext ) {
     const card = animationContext.card;
     
-    animationContext.parent.append( card.elem );
+    animationContext.parent.insertAdjacentElement('beforeend', card.elem );
     
     const cardLeft = parseInt( card.props.left, 10 ) - animationContext.holder.left + 1 + 'px';
     const cardTop = parseInt( card.props.top, 10 ) - animationContext.holder.top + 1 + 'px';
@@ -307,7 +307,7 @@ export default class Round {
   newCardDealerTransition = () => {
     const card = this.deck.topCardData();
     
-    document.querySelector(`.hand__dealer`).append( card.elem );
+    document.querySelector(`.hand__dealer`).insertAdjacentElement('afterbegin', card.elem );
     
     const cardStyle = card.elem.style;
     const cardStyleRight = this.defineRect(`.hand__dealer`).right - this.defineRect('[data-zone-deck]').right + 'px';
