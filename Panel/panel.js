@@ -50,6 +50,9 @@ export default class Panel {
       .join('');
       
     const layoutAssembled = `
+      <div class="panel__background">
+        <img src="assets/graphics/panel.png">
+      </div>
       <div class="panel__clickers">
         ${ layoutPanelButtons }
       </div>

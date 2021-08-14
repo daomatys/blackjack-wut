@@ -20,36 +20,33 @@ export default class Round {
       dealer: {
         count: 0,
         value: 0,
-        topaces: 0
+        topaces: 0,
+        overdraft: false
       },
       
       player: {
         normal: {
           count: 0,
           value: 0,
-          topaces: 0
+          topaces: 0,
+          overdraft: false
         },
         
         split: {
           left: {
             count: 1,
             value: 0,
-            topaces: 0
+            topaces: 0,
+            overdraft: false
           },
           
           right: {
             count: 1,
             value: 0,
-            topaces: 0
+            topaces: 0,
+            overdraft: false
           }
         }
-      }
-    };
-    
-    this.results = {
-      overdraft: {
-        player: false,
-        dealer: false
       }
     };
     
@@ -154,28 +151,27 @@ export default class Round {
         case 'tie': this.indicatorsIndexes = { player: 0, dealer: 0 }; break;
       }
     }
-    const overdraftDealer = this.results.overdraft.dealer;
-    const overdraftPlayer = this.results.overdraft.player;
+    const dealerOverdraft = this.drawnCards.dealer.overdraft;
+    const dealerValue = this.drawnCards.dealer.value;
+    const dealerCount = this.drawnCards.dealer.count;
     
-    const valueDealer = this.drawnCards.dealer.value;
-    const valuePlayer = this.drawnCards.player.normal.value;
+    const playerOverdraft = this.drawnCards.player.normal.overdraft;
+    const playerValue = this.drawnCards.player.normal.value;
+    const playerCount = this.drawnCards.player.normal.count;
     
-    const countDealer = this.drawnCards.dealer.count;
-    const countPlayer = this.drawnCards.player.normal.count;
-    
-    if ( overdraftPlayer || overdraftDealer ) {
-      if ( overdraftDealer ) showWinner('player');
-      if ( overdraftPlayer ) showWinner('dealer');
+    if ( playerOverdraft || dealerOverdraft ) {
+      if ( dealerOverdraft ) showWinner('player');
+      if ( playerOverdraft ) showWinner('dealer');
     } else {
-      if ( valuePlayer === valueDealer ) {
+      if ( playerValue === dealerValue ) {
         showWinner('tie');
-        if ( valuePlayer === 21 ) {
-          if ( countPlayer < countDealer ) showWinner('player');
-          if ( countPlayer > countDealer ) showWinner('dealer');
+        if ( playerValue === 21 ) {
+          if ( playerCount < dealerCount ) showWinner('player');
+          if ( playerCount > dealerCount ) showWinner('dealer');
         }
       } else {
-        if ( valuePlayer > valueDealer ) showWinner('player');
-        if ( valuePlayer < valueDealer ) showWinner('dealer');
+        if ( playerValue > dealerValue ) showWinner('player');
+        if ( playerValue < dealerValue ) showWinner('dealer');
       }
     }
     this.forbidDealerDrawAfterResults = true;
@@ -257,7 +253,7 @@ export default class Round {
     if ( ++this.drawnCards.player.normal.count < 8 ) this.drawnCards.player.normal.value += this.calcCardValue( cardProps.card, this.drawnCards.player.normal.value );
     
     if ( this.drawnCards.player.normal.value > 20 && !this.forbidDealerDrawAfterResults ) {
-      if ( this.drawnCards.player.normal.value > 21 ) this.results.overdraft.player = true;
+      if ( this.drawnCards.player.normal.value > 21 ) this.drawnCards.player.overdraft = true;
       this.deck.killEventListeners();
       this.initStageDealerDraw();
     }
@@ -325,8 +321,8 @@ export default class Round {
     
     if ( ++this.drawnCards.dealer.count < 8 ) this.drawnCards.dealer.value += this.calcCardValue( card, this.drawnCards.dealer.value );
     
-    if ( this.drawnCards.dealer.value > 19 || this.results.overdraft.player ) {
-      if ( this.drawnCards.dealer.value > 21 ) this.results.overdraft.dealer = true;
+    if ( this.drawnCards.dealer.value > 19 || this.drawnCards.player.overdraft ) {
+      if ( this.drawnCards.dealer.value > 21 ) this.drawnCards.dealer.overdraft = true;
       clearInterval( this.dealerDrawInterval );
       this.initStageRoundResults();
     }
