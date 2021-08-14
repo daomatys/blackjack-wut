@@ -133,14 +133,14 @@ export default class Round {
     );
     this.deckFalls.persist();
     this.deckFalls.onfinish = () => {
-      this.newCardDealerTransition();
+      this.launchDealerCardTransition();
       this.deck.initEventListeners();
     }
     this.callerDims.onfinish = () => caller.style.display = 'none';
   }
   
   initStageDealerDraw = () => {
-    this.dealerDrawInterval = setInterval( this.newCardDealerTransition, 700 );
+    this.dealerDrawInterval = setInterval( this.launchDealerCardTransition, 700 );
   }
   
   initStageRoundResults = () => {
@@ -223,62 +223,63 @@ export default class Round {
   
   //card animation methods
   
-  splitModeStateSwitcher() {
-    this.splitModeState = !this.splitModeState;
-  }
-  
-  newCardPlayer( detail ) {
-    this.splitModeState
-      ? this.initPlayerDrawSplit( detail )
-      : this.initPlayerDrawNormal( detail );
+  newCardPlayer( cardProps ) {
+    !this.splitModeState
+      ? this.initPlayerDrawNormal( cardProps )
+      : this.initPlayerDrawSplit( cardProps );
   }
   
   initPlayerDrawNormal( cardProps ) {
     const hand = document.querySelector('.hand__player');
     const handRect = hand.getBoundingClientRect();
-    const handCardsCount = this.drawnCards.player.normal.count++;
     const handCards = this.drawnCards.player.normal;
     
     const animationContext = {
       parent: hand,
       holder: handRect,
-      count: handCardsCount,
+      count: handCards.count++,
       card: {
         elem: cardProps.card.elem,
         props: cardProps,
         margin: 60
       }
     }
-    this.newCardPlayerTransition( animationContext );
+    this.initPlayerCardTransition( animationContext );
+    this.initPlayerDrawValueCheck( handCards, cardProps );
     
-    this.drawnCards.player.normal = this.initPlayerDrawValueCheck( handCards, cardProps );
-    
-    if ( this.drawnCards.player.normal.overdraft ) this.initStageDealerDraw();
-    
+    if ( this.drawnCards.player.normal.value > 20 ) {
+      this.initStageDealerDraw();
+    }
     console.log( 'playa:', handCards.value );
   }
   
   initPlayerDrawSplit( cardProps ) {
-    const subHand = cardProps.below.closest('.subhand');
-    const subHandRect = subHand.getBoundingClientRect();
-    const subHandCardCount = subHand.classList.contains('subhand__left') ? this.drawnCards.player.count.left++ : this.drawnCards.player.count.right++ ;
-    
-    const defineSide = value => subHand.classList.contains('subhand__left') ? value.left : value.right ;
+    const subhand = cardProps.below.closest('.subhand');
+    const subhandRect = subhand.getBoundingClientRect();
+    const subhandCards = subhand.classList.contains('subhand__left') 
+      ? this.drawnCards.player.split.left
+      : this.drawnCards.player.split.right;
     
     const animationContext = {
-      parent: subHand,
-      holder: subHandRect,
-      count: subHandCardCount,
+      parent: subhand,
+      holder: subhandRect,
+      count: subhandCards.count++,
       card: {
         elem: cardProps.card.elem,
         props: cardProps,
         margin: 18
       }
     }
-    console.log('under construction!');
+    this.initPlayerCardTransition( animationContext );
+    this.initPlayerDrawValueCheck( subhandCards, cardProps );
+    
+    if ( this.drawnCards.player.split.left.value > 20 && this.drawnCards.player.split.right.value ) {
+      this.initStageDealerDraw();
+    }
+    console.log( 'playa:', subhandCards.value );
   }
   
-  newCardPlayerTransition( animationContext ) {
+  initPlayerCardTransition( animationContext ) {
     const card = animationContext.card;
     
     animationContext.parent.insertAdjacentElement('beforeend', card.elem );
@@ -294,7 +295,7 @@ export default class Round {
     const shiftX = -parseInt( card.elem.style.left, 10 ) + animationContext.count * animationContext.card.margin + 'px';
     const shiftY = -parseInt( card.elem.style.top, 10 ) + 'px';
     
-    this.applyCardFlightAnimation( card.elem, shiftX, shiftY );
+    this.launchCardAnimation( card.elem, shiftX, shiftY );
   }
   
   initPlayerDrawValueCheck( handCards, cardProps ) {
@@ -308,10 +309,9 @@ export default class Round {
         handCards.overdraft = true;
       }
     }
-    return handCards;
   }
   
-  newCardDealerTransition = () => {
+  launchDealerCardTransition = () => {
     const card = this.deck.topCardData();
     
     document.querySelector(`.hand__dealer`).insertAdjacentElement('afterbegin', card.elem );
@@ -328,7 +328,7 @@ export default class Round {
     const shiftX = -parseInt( cardStyleRight, 10 ) + this.drawnCards.dealer.count * 60 + 'px';
     const shiftY = -parseInt( cardStyleTop, 10 ) + 'px';
     
-    this.applyCardFlightAnimation( card.elem, shiftX, shiftY );
+    this.launchCardAnimation( card.elem, shiftX, shiftY );
     
     ++this.drawnCards.dealer.count;
     
@@ -349,7 +349,7 @@ export default class Round {
     this.drawnCards.dealer = handCards;
   }
   
-  applyCardFlightAnimation( elem, shiftX, shiftY ) {
+  launchCardAnimation( elem, shiftX, shiftY ) {
     const flight = elem.animate({
       transform: [
         'scale( 1.05 )',
@@ -393,6 +393,8 @@ export default class Round {
   }
   
   //utilities
+  
+  splitModeStateSwitcher = () => this.splitModeState = !this.splitModeState
   
   defineRect = sel => document.querySelector( sel ).getBoundingClientRect();
   
