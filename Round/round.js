@@ -234,14 +234,15 @@ export default class Round {
   }
   
   initPlayerDrawNormal( cardProps ) {
-    const playerHand = document.querySelector('.hand__player');
-    const playerHandRect = playerHand.getBoundingClientRect();
-    const playerHandCardCount = this.drawnCards.player.normal.count;
+    const hand = document.querySelector('.hand__player');
+    const handRect = hand.getBoundingClientRect();
+    const handCardsCount = this.drawnCards.player.normal.count++;
+    const handCards = this.drawnCards.player.normal;
     
     const animationContext = {
-      parent: playerHand,
-      holder: playerHandRect,
-      count: playerHandCardCount,
+      parent: hand,
+      holder: handRect,
+      count: handCardsCount,
       card: {
         elem: cardProps.card.elem,
         props: cardProps,
@@ -250,14 +251,19 @@ export default class Round {
     }
     this.newCardPlayerTransition( animationContext );
     
-    if ( ++this.drawnCards.player.normal.count < 8 ) this.drawnCards.player.normal.value += this.calcCardValue( cardProps.card, this.drawnCards.player.normal.value );
-    
-    if ( this.drawnCards.player.normal.value > 20 && !this.forbidDealerDrawAfterResults ) {
-      if ( this.drawnCards.player.normal.value > 21 ) this.drawnCards.player.overdraft = true;
+    if ( handCards.count < 8 ) {
+      handCards.value += this.calcCardValue( cardProps.card, handCards.value );
+    }
+    if ( handCards.value > 20 && !this.forbidDealerDrawAfterResults ) {
       this.deck.killEventListeners();
+      
+      if ( handCards.value > 21 ) {
+        handCards.overdraft = true;
+      }
       this.initStageDealerDraw();
     }
-    console.log( 'playa:', this.drawnCards.player.normal.value );
+    console.log( 'playa:', handCards.value );
+    this.drawnCards.player.normal = handCards;
   }
   
   initPlayerDrawSplit( cardProps ) {
@@ -277,8 +283,7 @@ export default class Round {
         margin: 18
       }
     }
-    this.newCardPlayerTransition( animationContext );
-    
+    console.log('under construction!');
   }
   
   newCardPlayerTransition( animationContext ) {
@@ -319,14 +324,23 @@ export default class Round {
     
     this.newCardFlightAnimation( card.elem, shiftX, shiftY );
     
-    if ( ++this.drawnCards.dealer.count < 8 ) this.drawnCards.dealer.value += this.calcCardValue( card, this.drawnCards.dealer.value );
+    ++this.drawnCards.dealer.count;
     
-    if ( this.drawnCards.dealer.value > 19 || this.drawnCards.player.overdraft ) {
-      if ( this.drawnCards.dealer.value > 21 ) this.drawnCards.dealer.overdraft = true;
+    const handCards = this.drawnCards.dealer;
+    
+    if ( handCards.count < 8 ) {
+      handCards.value += this.calcCardValue( card, handCards.value );
+    }
+    if ( handCards.value > 19 || this.drawnCards.player.normal.overdraft ) {
       clearInterval( this.dealerDrawInterval );
+      
+      if ( handCards.value > 21 ) {
+        this.drawnCards.dealer.overdraft = true;
+      }
       this.initStageRoundResults();
     }
-    console.log( 'dealer:', this.drawnCards.dealer.value );
+    console.log( 'dealer:', handCards.value );
+    this.drawnCards.dealer = handCards;
   }
   
   newCardFlightAnimation( elem, shiftX, shiftY ) {
