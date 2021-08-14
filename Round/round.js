@@ -251,19 +251,11 @@ export default class Round {
     }
     this.newCardPlayerTransition( animationContext );
     
-    if ( handCards.count < 8 ) {
-      handCards.value += this.calcCardValue( cardProps.card, handCards.value );
-    }
-    if ( handCards.value > 20 && !this.forbidDealerDrawAfterResults ) {
-      this.deck.killEventListeners();
-      
-      if ( handCards.value > 21 ) {
-        handCards.overdraft = true;
-      }
-      this.initStageDealerDraw();
-    }
+    this.drawnCards.player.normal = this.initPlayerDrawValueCheck( handCards, cardProps );
+    
+    if ( this.drawnCards.player.normal.overdraft ) this.initStageDealerDraw();
+    
     console.log( 'playa:', handCards.value );
-    this.drawnCards.player.normal = handCards;
   }
   
   initPlayerDrawSplit( cardProps ) {
@@ -302,7 +294,21 @@ export default class Round {
     const shiftX = -parseInt( card.elem.style.left, 10 ) + animationContext.count * animationContext.card.margin + 'px';
     const shiftY = -parseInt( card.elem.style.top, 10 ) + 'px';
     
-    this.newCardFlightAnimation( card.elem, shiftX, shiftY );
+    this.applyCardFlightAnimation( card.elem, shiftX, shiftY );
+  }
+  
+  initPlayerDrawValueCheck( handCards, cardProps ) {
+    if ( handCards.count < 8 ) {
+      handCards.value += this.calcCardValue( cardProps.card, handCards.value );
+    }
+    if ( handCards.value > 20 && !this.forbidDealerDrawAfterResults ) {
+      this.deck.killEventListeners();
+      
+      if ( handCards.value > 21 ) {
+        handCards.overdraft = true;
+      }
+    }
+    return handCards;
   }
   
   newCardDealerTransition = () => {
@@ -322,7 +328,7 @@ export default class Round {
     const shiftX = -parseInt( cardStyleRight, 10 ) + this.drawnCards.dealer.count * 60 + 'px';
     const shiftY = -parseInt( cardStyleTop, 10 ) + 'px';
     
-    this.newCardFlightAnimation( card.elem, shiftX, shiftY );
+    this.applyCardFlightAnimation( card.elem, shiftX, shiftY );
     
     ++this.drawnCards.dealer.count;
     
@@ -343,7 +349,7 @@ export default class Round {
     this.drawnCards.dealer = handCards;
   }
   
-  newCardFlightAnimation( elem, shiftX, shiftY ) {
+  applyCardFlightAnimation( elem, shiftX, shiftY ) {
     const flight = elem.animate({
       transform: [
         'scale( 1.05 )',
@@ -374,7 +380,7 @@ export default class Round {
       }
     }
     if ( outputValue + inputValue > 21 ) {
-      if ( card.elem.closest('.hand__player') && this.drawnCards.player.topaces > 0 ) {
+      if ( card.elem.closest('.hand__player') && this.drawnCards.player.normal.topaces > 0 ) {
         --this.drawnCards.player.normal.topaces;
         outputValue -= 10;
       }
