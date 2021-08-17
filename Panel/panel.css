@@ -110,14 +110,3 @@
   height: inherit;
   width: inherit;
 }
-
-
-
-.deny-click {
-  opacity: 1;
-}
-
-.allow-click {
-  opacity: 0;
-  pointer-events: none;
-}

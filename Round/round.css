@@ -38,6 +38,7 @@ img {
 
 .hand {
   position: absolute;
+  pointer-events: none;
   width: 554px;
   height: 202px;
 }
@@ -48,6 +49,7 @@ img {
   top: 9px;
   height: 184px;
   width: 540px;
+  pointer-events: auto;
 }
 
 [data-zone-dealer] {
@@ -141,4 +143,18 @@ img {
 .caller-bank img {
   width: inherit;
   height: inherit;
+}
+
+
+.deny-click {
+  opacity: 1;
+}
+
+.allow-click {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.no-pointer-events {
+  pointer-events: none;
 }

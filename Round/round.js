@@ -21,7 +21,8 @@ export default class Round {
         count: 0,
         value: 0,
         topaces: 0,
-        overdraft: false
+        overdraft: false,
+        forbiddraw: false
       },
       
       player: {
@@ -56,8 +57,6 @@ export default class Round {
     };
     
     this.splitModeState = false;
-    
-    this.forbidDealerDrawAfterResults = false;
   }
   
   incrustImportedElements() {
@@ -99,6 +98,17 @@ export default class Round {
     document.removeEventListener('split', this.splitModeStateSwitcher, { once: true });
   }
   
+  splitModeStateSwitcher = () => {
+    this.splitModeState = !this.splitModeState;
+    
+    const dividedNormalValue = this.drawnCards.player.normal.topaces > 0
+      ? ( this.drawnCards.player.normal.value + 10 ) / 2
+      : this.drawnCards.player.normal.value / 2;
+      
+    this.drawnCards.player.split.left.value = dividedNormalValue;
+    this.drawnCards.player.split.right.value = dividedNormalValue;
+  }
+  
   initStageDeckReadyToLand = () => {
     const caller = document.querySelector('.caller-bank');
     
@@ -113,7 +123,7 @@ export default class Round {
     const fakeAdders = document.querySelectorAll('.adder__fake');
     const caller = document.querySelector('.caller-bank');
     
-    for ( let fake of fakeAdders ) this.toggleButtonClickPossibility( fake );
+    for ( let fake of fakeAdders ) this.toggleClickPossibility( fake );
     
     this.deckFalls = document.querySelector('.deck').animate( 
       this.animations.deck.fall.action,
@@ -174,8 +184,6 @@ export default class Round {
         if ( playerValue < dealerValue ) showWinner('dealer');
       }
     }
-    this.forbidDealerDrawAfterResults = true;
-    
     this.deck.initEventListeners();
     
     this.setProperIndicator( this.indicatorsIndexes, 1 );
@@ -200,7 +208,7 @@ export default class Round {
       cardRemove.onfinish = () => elementRemover( card );
     }
     for ( let chip of betChips ) elementRemover( chip );
-    for ( let adder of fakeAdders ) this.toggleButtonClickPossibility( adder );
+    for ( let adder of fakeAdders ) this.toggleClickPossibility( adder );
     
     const deckRemove = usedDeck.animate(
       this.animations.deck.remove.action,
@@ -245,10 +253,17 @@ export default class Round {
       }
     }
     this.initPlayerCardTransition( animationContext );
-    this.initPlayerDrawValueCheck( handCards, cardProps );
     
-    if ( this.drawnCards.player.normal.value > 20 ) {
+    if ( handCards.count < 8 ) {
+      handCards.value += this.calcCardValue( cardProps.card, handCards.value );
+    }
+    if ( handCards.value > 20 && !this.drawnCards.dealer.forbiddraw ) {
+      this.deck.killEventListeners();
       this.initStageDealerDraw();
+      
+      if ( handCards.value > 21 ) {
+        handCards.overdraft = true;
+      }
     }
     console.log( 'playa:', handCards.value );
   }
@@ -259,7 +274,10 @@ export default class Round {
     const subhandCards = subhand.classList.contains('subhand__left') 
       ? this.drawnCards.player.split.left
       : this.drawnCards.player.split.right;
-    
+    const subsideCards = subhand.classList.contains('subhand__right') 
+      ? this.drawnCards.player.split.left
+      : this.drawnCards.player.split.right;
+      
     const animationContext = {
       parent: subhand,
       holder: subhandRect,
@@ -271,10 +289,17 @@ export default class Round {
       }
     }
     this.initPlayerCardTransition( animationContext );
-    this.initPlayerDrawValueCheck( subhandCards, cardProps );
     
-    if ( this.drawnCards.player.split.left.value > 20 && this.drawnCards.player.split.right.value ) {
+    if ( subhandCards.count < 8 ) {
+      subhandCards.value += this.calcCardValue( cardProps.card, subhandCards.value );
+    }
+    if ( subhandCards.value > 20 && subsideCards.value > 20 ) {
       this.initStageDealerDraw();
+      this.deck.killEventListeners();
+    }
+    if ( subhandCards.value > 21 ) {
+      subhandCards.overdraft = true;
+      subhand.classList.toggle('no-pointer-events');
     }
     console.log( 'playa:', subhandCards.value );
   }
@@ -298,27 +323,14 @@ export default class Round {
     this.launchCardAnimation( card.elem, shiftX, shiftY );
   }
   
-  initPlayerDrawValueCheck( handCards, cardProps ) {
-    if ( handCards.count < 8 ) {
-      handCards.value += this.calcCardValue( cardProps.card, handCards.value );
-    }
-    if ( handCards.value > 20 && !this.forbidDealerDrawAfterResults ) {
-      this.deck.killEventListeners();
-      
-      if ( handCards.value > 21 ) {
-        handCards.overdraft = true;
-      }
-    }
-  }
-  
   launchDealerCardTransition = () => {
     const card = this.deck.topCardData();
     
-    document.querySelector(`.hand__dealer`).insertAdjacentElement('afterbegin', card.elem );
+    document.querySelector('.hand__dealer').insertAdjacentElement('afterbegin', card.elem );
     
     const cardStyle = card.elem.style;
-    const cardStyleRight = this.defineRect(`.hand__dealer`).right - this.defineRect('[data-zone-deck]').right + 'px';
-    const cardStyleTop = this.defineRect(`.hand__dealer`).top - this.defineRect('[data-zone-deck]').top + 'px';
+    const cardStyleRight = this.defineRect('.hand__dealer').right - this.defineRect('[data-zone-deck]').right + 'px';
+    const cardStyleTop = this.defineRect('.hand__dealer').top - this.defineRect('[data-zone-deck]').top + 'px';
     
     Object.assign( cardStyle, {
       left: cardStyleRight,
@@ -339,6 +351,8 @@ export default class Round {
     }
     if ( handCards.value > 19 || this.drawnCards.player.normal.overdraft ) {
       clearInterval( this.dealerDrawInterval );
+      
+      handCards.forbiddraw = true;
       
       if ( handCards.value > 21 ) {
         this.drawnCards.dealer.overdraft = true;
@@ -394,11 +408,9 @@ export default class Round {
   
   //utilities
   
-  splitModeStateSwitcher = () => this.splitModeState = !this.splitModeState
-  
   defineRect = sel => document.querySelector( sel ).getBoundingClientRect();
   
-  toggleButtonClickPossibility = item => {
+  toggleClickPossibility = item => {
     item.classList.toggle('deny-click');
     item.classList.toggle('allow-click');
   }
