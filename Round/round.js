@@ -356,11 +356,11 @@ export default class Round {
   }
   
   defineAdditionalValues() {
-    this.drawnCards = this.defaults.hands;
+    this.drawnCards = this.defaults.hands();
     
-    this.indicatorsIndexes = this.defaults.indicators;
+    this.indicatorsIndexes = this.defaults.indicators();
     
-    this.results = this.defaults.results;
+    this.results = this.defaults.results();
     
     this.splitModeState = false;
   }
