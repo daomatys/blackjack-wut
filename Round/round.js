@@ -16,7 +16,6 @@ export default class Round {
   
   initAdditionalValues() {
     this.drawnCards = {
-      
       dealer: {
         count: 0,
         value: 0,
@@ -33,31 +32,45 @@ export default class Round {
           overdraft: false
         },
         
-        split: {
-          left: {
-            count: 1,
-            value: 0,
-            topaces: 0,
-            overdraft: false
-          },
-          
-          right: {
-            count: 1,
-            value: 0,
-            topaces: 0,
-            overdraft: false
-          }
+        splitleft: {
+          count: 1,
+          value: 0,
+          topaces: 0,
+          overdraft: false
+        },
+        
+        splitright: {
+          count: 1,
+          value: 0,
+          topaces: 0,
+          overdraft: false
         }
       }
     };
+    
     this.indicatorsIndexes = {
       player: 3,
       dealer: 3
     };
+    
     this.results = {
-      normal: '',
-      left: '',
-      right: ''
+      normal: {
+        player: 0,
+        dealer: 0,
+        tie: 0
+      },
+      
+      left: {
+        player: 0,
+        dealer: 0,
+        tie: 0
+      },
+      
+      right: {
+        player: 0,
+        dealer: 0,
+        tie: 0
+      }
     };
     
     this.splitModeState = false;
@@ -109,8 +122,8 @@ export default class Round {
       ? this.drawnCards.player.normal.value / 2
       : 11 ;
     
-    this.drawnCards.player.split.left.value = dividedNormalValue;
-    this.drawnCards.player.split.right.value = dividedNormalValue;
+    this.drawnCards.player.splitleft.value = dividedNormalValue;
+    this.drawnCards.player.splitright.value = dividedNormalValue;
   }
   
   initStageDeckReadyToLand = () => {
@@ -166,8 +179,10 @@ export default class Round {
     if ( !this.splitModeState ) {
       this.results.normal = this.calcRoundResults( this.drawnCards.player.normal );
     } else {
-      this.results.left = this.calcRoundResults( this.drawnCards.player.split.left );
-      this.results.right = this.calcRoundResults( this.drawnCards.player.split.right );
+      this.results.left = this.calcRoundResults( this.drawnCards.player.splitleft );
+      this.results.right = this.calcRoundResults( this.drawnCards.player.splitright );
+      
+      console.log( 'left-', this.results.left, '\n  right-', this.results.right )
       
       Object.assign( this.results.normal, {
         player: this.results.left.player || this.results.right.player,
@@ -175,12 +190,12 @@ export default class Round {
         tie: this.results.left.tie && this.results.right.tie
       });
     }
-    console.log( this.results.normal )
+    console.log( 'normal-', this.results.normal )
     showWinner( this.results.normal );
     
     this.deck.initEventListeners();
     
-    this.setProperIndicator( this.indicatorsIndexes, 1 );
+    this.defineIndicatorsVisibilityByIndex( this.indicatorsIndexes, 1 );
     
     document.addEventListener('end-of-round', this.initStageRoundReset, { once: true });
   }
@@ -224,7 +239,7 @@ export default class Round {
     }
   }
   
-  setProperIndicator = ( indexes, opacity ) => {
+  defineIndicatorsVisibilityByIndex = ( indexes, opacity ) => {
     const playerIndicators = document.querySelector('.indicator_player').children;
     const dealerIndicators = document.querySelector('.indicator_dealer').children;
     
@@ -260,7 +275,7 @@ export default class Round {
     this.tableShakes.cancel();
     this.bankShifts.cancel();
     
-    this.setProperIndicator( this.indicatorsIndexes, 0 );
+    this.defineIndicatorsVisibilityByIndex( this.indicatorsIndexes, 0 );
     
     this.initNewRound();
     this.initNewRoundEventListeners();
@@ -314,12 +329,12 @@ export default class Round {
     const subhandRect = subhand.getBoundingClientRect();
     
     const subhandCards = subhand.classList.contains('subhand__left') 
-      ? this.drawnCards.player.split.left
-      : this.drawnCards.player.split.right;
+      ? this.drawnCards.player.splitleft
+      : this.drawnCards.player.splitright;
     
     const subsideCards = subhand.classList.contains('subhand__right') 
-      ? this.drawnCards.player.split.left
-      : this.drawnCards.player.split.right;
+      ? this.drawnCards.player.splitleft
+      : this.drawnCards.player.splitright;
       
     const animationContext = {
       parent: subhand,
