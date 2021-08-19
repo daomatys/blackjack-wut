@@ -114,22 +114,24 @@ export default class Panel {
   }
   
   actDoubled = () => {
-    
+    this.toggleClickerClickPossibility('doubled');
   }
   
   actCheck = () => {
     document.body.dispatchEvent( new CustomEvent('end-of-player-draw', { bubbles: true }) );
-    this.toggleClickPossibility( document.querySelector('.clicker-check').lastElementChild );
+    
+    this.toggleClickerClickPossibility('check');
   }
   
   actSplit = () => {
     document.body.dispatchEvent( new CustomEvent('split', { bubbles: true }) );
     
+    this.toggleSplitEntitiesClasses( true );
+    this.toggleClickerClickPossibility('split');
+    
     const hand = document.querySelector('.hand__player');
     const subhandLeft = hand.querySelector('.subhand__left');
     const subhandRight = hand.querySelector('.subhand__right');
-    
-    this.toggleSplitEntitiesClasses( true );
     
     const cardSplitted = { 
       left: hand.lastChild.getBoundingClientRect().left,
@@ -224,7 +226,9 @@ export default class Panel {
   
   defineRect = elem => elem.getBoundingClientRect();
   
-  toggleClickPossibility = element => {
+  toggleClickerClickPossibility = suffix => {
+    const element = document.querySelector(`.clicker-${ suffix }`).lastElementChild;
+    
     element.classList.toggle('deny-click');
     element.classList.toggle('allow-click');
   }

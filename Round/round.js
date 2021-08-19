@@ -55,6 +55,8 @@ export default class Round {
     document.removeEventListener('split', this.activateSplitDrawMode, { once: true });
   }
   
+  //round stages section
+  
   initStageDeckReadyToLand = () => {
     const caller = document.querySelector('.caller-bank');
     
@@ -141,8 +143,6 @@ export default class Round {
     this.killLastRoundEventListeners();
     this.deck.killEventListeners();
     
-    console.log( enlightedClickers );
-    
     for ( let clicker of enlightedClickers ) {
       this.toggleClickPossibility( clicker );
     }
@@ -175,13 +175,14 @@ export default class Round {
     }
   }
   
-  //stage side methods
+  //round stage side methods
   
   defineAdditionalValues() {
     this.results = this.defaults.results();
     this.drawnCards = this.defaults.hands();
     this.indicatorsIndexes = this.defaults.indicators();
     
+    this.firstPair = []; 
     this.splitModeState = false;
   }
   
@@ -270,11 +271,18 @@ export default class Round {
     
     switch( handCards.count ) {
       case 1: {
+        this.firstPair[0] = cardProps.card.rank; 
+        
         this.toggleClickPossibility( document.querySelector('.clicker-doubled').lastElementChild );
         this.toggleClickPossibility( document.querySelector('.clicker-hover').lastElementChild );
         break;
       }
       case 2: {
+        this.firstPair[1] = cardProps.card.rank;
+        
+        if ( this.firstPair[0] === this.firstPair[1] ) {
+          this.toggleClickPossibility( document.querySelector('.clicker-split').lastElementChild );
+        }
         this.toggleClickPossibility( document.querySelector('.clicker-doubled').lastElementChild );
         this.toggleClickPossibility( document.querySelector('.clicker-check').lastElementChild );
         break;
