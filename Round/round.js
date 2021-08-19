@@ -123,6 +123,9 @@ export default class Round {
     
     this.deck.initEventListeners();
     
+    if ( this.splitModeState ) {
+      this.panel.toggleSplitEntitiesClasses( false );
+    }
     document.addEventListener('end-of-round', this.initStageRoundReset, { once: true });
   }
   
@@ -131,6 +134,8 @@ export default class Round {
     const fakeAdders = document.querySelectorAll('.adder__fake');
     const betChips = document.querySelectorAll('.chip-bet');
     const usedDeck = this.deck.elem;
+    
+    if ( this.splitModeState ) this.panel.toggleSplitEntitiesClasses( true );
     
     this.killLastRoundEventListeners();
     this.deck.killEventListeners();
@@ -198,24 +203,24 @@ export default class Round {
     const dealer = new winCondition(0, 1, 0);
     const tie = new winCondition(0, 0, 1);
     
-    let result = 'attention';
+    let outputResult = 'attention';
     
     if ( playerOverdraft || dealerOverdraft ) {
-      if ( dealerOverdraft ) result = player;
-      if ( playerOverdraft ) result = dealer;
+      if ( dealerOverdraft ) outputResult = player;
+      if ( playerOverdraft ) outputResult = dealer;
     } else {
       if ( playerValue === dealerValue ) {
-        result = tie;
+        outputResult = tie;
         if ( playerValue === 21 ) {
-          if ( playerCount < dealerCount ) result = player;
-          if ( playerCount > dealerCount ) result = dealer;
+          if ( playerCount < dealerCount ) outputResult = player;
+          if ( playerCount > dealerCount ) outputResult = dealer;
         }
       } else {
-        if ( playerValue > dealerValue ) result = player;
-        if ( playerValue < dealerValue ) result = dealer;
+        if ( playerValue > dealerValue ) outputResult = player;
+        if ( playerValue < dealerValue ) outputResult = dealer;
       }
     }
-    return result;
+    return outputResult;
     
     function winCondition( playerWon, dealerWon, nobodyWon ) {
       this.player = playerWon,
@@ -257,6 +262,18 @@ export default class Round {
     }
     this.initPlayerCardTransition( animationContext );
     
+    switch( handCards.count ) {
+      case 1: {
+        this.toggleClickPossibility( document.querySelector('.clicker-doubled').lastElementChild );
+        this.toggleClickPossibility( document.querySelector('.clicker-hover').lastElementChild );
+        break;
+      }
+      case 2: {
+        this.toggleClickPossibility( document.querySelector('.clicker-doubled').lastElementChild );
+        this.toggleClickPossibility( document.querySelector('.clicker-check').lastElementChild );
+        break;
+      }
+    }
     if ( handCards.count < 8 ) {
       handCards.value += this.calculateCardValue( cardProps.card, handCards.value );
     }
@@ -298,13 +315,15 @@ export default class Round {
     if ( subhandCards.count < 8 ) {
       subhandCards.value += this.calculateCardValue( cardProps.card, subhandCards.value );
     }
-    if ( subhandCards.value > 20 && subsideCards.value > 20 ) {
-      this.initStageDealerDraw();
-      this.deck.killEventListeners();
-    }
-    if ( subhandCards.value > 21 ) {
-      subhandCards.overdraft = true;
-      subhand.classList.toggle('no-pointer-events');
+    if ( !this.drawnCards.dealer.forbiddraw ) {
+      if ( subhandCards.value > 20 && subsideCards.value > 20 ) {
+        this.initStageDealerDraw();
+        this.deck.killEventListeners();
+      }
+      if ( subhandCards.value > 21 ) {
+        subhandCards.overdraft = true;
+        subhand.classList.remove('allow-drop');
+      }
     }
     console.log( 'playa:', subhandCards.value );
   }
@@ -363,7 +382,6 @@ export default class Round {
       this.initStageRoundResults();
     }
     console.log( 'dealer:', handCards.value );
-    this.drawnCards.dealer = handCards;
   }
   
   launchCardAnimation( elem, shiftX, shiftY ) {
@@ -411,10 +429,10 @@ export default class Round {
   
   //utilities
   
-  defineRect = sel => document.querySelector( sel ).getBoundingClientRect();
+  defineRect = selector => document.querySelector( selector ).getBoundingClientRect();
   
-  toggleClickPossibility = item => {
-    item.classList.toggle('deny-click');
-    item.classList.toggle('allow-click');
+  toggleClickPossibility = element => {
+    element.classList.toggle('deny-click');
+    element.classList.toggle('allow-click');
   }
 }

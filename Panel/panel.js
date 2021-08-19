@@ -23,9 +23,14 @@ export default class Panel {
     
     const layoutPanelButtons = this.arrClickers
       .map( suffix => `
-        <div class="clicker tap" id="${ suffix }">
-          <img src="assets/graphics/buttons/button_${ suffix }_off.png" style="display: inline">
-          <img src="assets/graphics/buttons/button_${ suffix }_on.png" style="display: none">
+        <div class="clicker__container clicker-${ suffix }">
+          <div class="clicker tap" id="${ suffix }">
+            <img src="assets/graphics/buttons/button_${ suffix }_off.png" style="display: inline">
+            <img src="assets/graphics/buttons/button_${ suffix }_on.png" style="display: none">
+          </div>
+          <div class="clicker__fake allow-click">
+            <img src="assets/graphics/buttons/button_inactive.png">
+          </div>
         </div>`)
       .join('');
       
@@ -38,7 +43,7 @@ export default class Panel {
       
     const layoutAdderBar = this.arrChips 
       .map( code => `
-        <div class="adder__container adder-${code}">
+        <div class="adder__container adder-${ code }">
           <div class="adder tap" id="adder-${ code }">
             <img src="assets/graphics/buttons/adder_off.png" style="display: inline">
             <img src="assets/graphics/buttons/adder_on.png" style="display: none">
@@ -114,21 +119,26 @@ export default class Panel {
   
   actCheck = () => {
     document.body.dispatchEvent( new CustomEvent('end-of-player-draw', { bubbles: true }) );
+    this.toggleClickPossibility( document.querySelector('.clicker-check').lastElementChild );
   }
   
   actSplit = () => {
     document.body.dispatchEvent( new CustomEvent('split', { bubbles: true }) );
     
     const hand = document.querySelector('.hand__player');
+    const subhandLeft = hand.querySelector('.subhand__left');
+    const subhandRight = hand.querySelector('.subhand__right');
+    
+    this.toggleSplitEntitiesClasses( true );
     
     const cardSplitted = { 
       left: hand.lastChild.getBoundingClientRect().left,
       top: hand.lastChild.getBoundingClientRect().top 
     };
-    hand.querySelector('.subhand__right').append( hand.lastChild );
-    hand.querySelector('.subhand__left').append( hand.lastChild );
+    subhandRight.append( hand.lastChild );
+    subhandLeft.append( hand.lastChild );
     
-    const rightCard = hand.querySelector('.subhand__right').lastChild;
+    const rightCard = subhandRight.lastChild;
     
     rightCard.style.top = cardSplitted.top;
     
@@ -137,6 +147,14 @@ export default class Panel {
       this.animations.card.splitting.props,
     );
     splitting.persist();
+  }
+  
+  toggleSplitEntitiesClasses( includeHandClass ) {
+    if ( includeHandClass ) {
+      document.querySelector('.hand__player').classList.toggle('allow-drop');
+    }
+    document.querySelector('.subhand__left').classList.toggle('allow-drop');
+    document.querySelector('.subhand__right').classList.toggle('allow-drop');
   }
   
   actHover() {
@@ -207,4 +225,9 @@ export default class Panel {
   }
   
   defineRect = elem => elem.getBoundingClientRect();
+  
+  toggleClickPossibility = element => {
+    element.classList.toggle('deny-click');
+    element.classList.toggle('allow-click');
+  }
 }

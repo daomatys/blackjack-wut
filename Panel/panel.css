@@ -24,9 +24,28 @@
   transform: translate(-50%, -50%);
 }
 
-.clicker {
+.clicker__container {
   width: 87px;
   height: 32px;
+}
+
+.clicker__container img {
+  position: absolute;
+  height: inherit;
+  width: inherit;
+}
+
+.clicker__fake {
+  position: absolute;
+  top: 0px;
+  height: inherit;
+  width: inherit;
+  transition: all 1s;
+}
+
+.clicker {
+  width: inherit;
+  height: inherit;
 }
 
 .clicker img {
