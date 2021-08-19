@@ -50,10 +50,14 @@ export default class Round {
         }
       }
     };
-    
     this.indicatorsIndexes = {
       player: 3,
       dealer: 3
+    };
+    this.results = {
+      normal: '',
+      left: '',
+      right: ''
     };
     
     this.splitModeState = false;
@@ -101,10 +105,10 @@ export default class Round {
   splitModeStateSwitcher = () => {
     this.splitModeState = !this.splitModeState;
     
-    const dividedNormalValue = this.drawnCards.player.normal.topaces > 0
-      ? ( this.drawnCards.player.normal.value + 10 ) / 2
-      : this.drawnCards.player.normal.value / 2;
-      
+    const dividedNormalValue = this.drawnCards.player.normal.topaces === 0
+      ? this.drawnCards.player.normal.value / 2
+      : 11 ;
+    
     this.drawnCards.player.split.left.value = dividedNormalValue;
     this.drawnCards.player.split.right.value = dividedNormalValue;
   }
@@ -154,41 +158,73 @@ export default class Round {
   }
   
   initStageRoundResults = () => {
-    const showWinner = text => {
-      switch( text ) {
-        case 'player': this.indicatorsIndexes = { player: 1, dealer: 2 }; break;
-        case 'dealer': this.indicatorsIndexes = { player: 2, dealer: 1 }; break;
-        case 'tie': this.indicatorsIndexes = { player: 0, dealer: 0 }; break;
-      }
+    const showWinner = resultsState => {
+      if ( resultsState.player === 1 ) this.indicatorsIndexes = { player: 1, dealer: 2 };
+      if ( resultsState.dealer === 1 ) this.indicatorsIndexes = { player: 2, dealer: 1 };
+      if ( resultsState.tie === 1 ) this.indicatorsIndexes = { player: 0, dealer: 0 };
     }
-    const dealerOverdraft = this.drawnCards.dealer.overdraft;
-    const dealerValue = this.drawnCards.dealer.value;
-    const dealerCount = this.drawnCards.dealer.count;
-    
-    const playerOverdraft = this.drawnCards.player.normal.overdraft;
-    const playerValue = this.drawnCards.player.normal.value;
-    const playerCount = this.drawnCards.player.normal.count;
-    
-    if ( playerOverdraft || dealerOverdraft ) {
-      if ( dealerOverdraft ) showWinner('player');
-      if ( playerOverdraft ) showWinner('dealer');
+    if ( this.splitModeState ) {
+      this.results.normal = this.calcRoundResults( this.drawnCards.player.normal );
     } else {
-      if ( playerValue === dealerValue ) {
-        showWinner('tie');
-        if ( playerValue === 21 ) {
-          if ( playerCount < dealerCount ) showWinner('player');
-          if ( playerCount > dealerCount ) showWinner('dealer');
-        }
-      } else {
-        if ( playerValue > dealerValue ) showWinner('player');
-        if ( playerValue < dealerValue ) showWinner('dealer');
-      }
+      this.results.left = this.calcRoundResults( this.drawnCards.player.split.left );
+      this.results.right = this.calcRoundResults( this.drawnCards.player.split.right );
+      
+      Object.assign( this.results.normal, {
+        player: this.results.left.player || this.results.right.player,
+        dealer: this.results.left.dealer && this.results.right.dealer,
+        tie: this.results.left.tie && this.results.right.tie
+      });
     }
+    showWinner( this.results.normal );
+    
     this.deck.initEventListeners();
     
     this.setProperIndicator( this.indicatorsIndexes, 1 );
     
     document.addEventListener('end-of-round', this.initStageRoundReset, { once: true });
+  }
+  
+  calcRoundResults( playerCards ) {
+    const dealerOverdraft = this.drawnCards.dealer.overdraft;
+    const dealerValue = this.drawnCards.dealer.value;
+    const dealerCount = this.drawnCards.dealer.count;
+    
+    const playerOverdraft = playerCards.overdraft;
+    const playerValue = playerCards.value;
+    const playerCount = playerCards.count;
+    
+    const player = new winCondition(1, 0, 0);
+    const dealer = new winCondition(0, 1, 0);
+    const tie = new winCondition(0, 0, 1);
+    
+    if ( playerOverdraft || dealerOverdraft ) {
+      if ( dealerOverdraft ) return player;
+      if ( playerOverdraft ) return dealer;
+    } else {
+      if ( playerValue === dealerValue ) {
+        return tie;
+        if ( playerValue === 21 ) {
+          if ( playerCount < dealerCount ) return player;
+          if ( playerCount > dealerCount ) return dealer;
+        }
+      } else {
+        if ( playerValue > dealerValue ) return player;
+        if ( playerValue < dealerValue ) return dealer;
+      }
+    }
+    function winCondition( playerWon, dealerWon, nobodyWon ) {
+      this.player = playerWon,
+      this.dealer = dealerWon,
+      this.tie = nobodyWon
+    }
+  }
+  
+  setProperIndicator = ( indexes, opacity ) => {
+    const playerIndicators = document.querySelector('.indicator_player').children;
+    const dealerIndicators = document.querySelector('.indicator_dealer').children;
+    
+    playerIndicators[ indexes.player ].style.opacity = opacity;
+    dealerIndicators[ indexes.dealer ].style.opacity = opacity;
   }
   
   initStageRoundReset = () => {
@@ -271,9 +307,11 @@ export default class Round {
   initPlayerDrawSplit( cardProps ) {
     const subhand = cardProps.below.closest('.subhand');
     const subhandRect = subhand.getBoundingClientRect();
+    
     const subhandCards = subhand.classList.contains('subhand__left') 
       ? this.drawnCards.player.split.left
       : this.drawnCards.player.split.right;
+    
     const subsideCards = subhand.classList.contains('subhand__right') 
       ? this.drawnCards.player.split.left
       : this.drawnCards.player.split.right;
@@ -413,13 +451,5 @@ export default class Round {
   toggleClickPossibility = item => {
     item.classList.toggle('deny-click');
     item.classList.toggle('allow-click');
-  }
-  
-  setProperIndicator = ( indexes, opacity ) => {
-    const playerIndicators = document.querySelector('.indicator_player').children;
-    const dealerIndicators = document.querySelector('.indicator_dealer').children;
-    
-    playerIndicators[ indexes.player ].style.opacity = opacity;
-    dealerIndicators[ indexes.dealer ].style.opacity = opacity;
   }
 }
