@@ -12,7 +12,7 @@ export default class Panel {
     this.eventListeners();
   }
   
-  initAdditionalValues() {
+  defineAdditionalValues() {
     this.arrChipsCounters = [ 0, 0, 0, 0, 0 ];
     this.firstChipBet = false;
   }
