@@ -4,6 +4,7 @@ import Menu from '../Menu/menu.js';
 import Sidebar from '../Sidebar/sidebar.js';
 
 import animations from '../assets/js-misc/animations.js';
+import defaults from '../assets/js-misc/defaults.js';
 
 export default class Round {
   
@@ -14,70 +15,9 @@ export default class Round {
     this.initNewRoundEventListeners();
   }
   
-  initAdditionalValues() {
-    this.drawnCards = {
-      dealer: {
-        count: 0,
-        value: 0,
-        topaces: 0,
-        overdraft: false,
-        forbiddraw: false
-      },
-      
-      player: {
-        normal: {
-          count: 0,
-          value: 0,
-          topaces: 0,
-          overdraft: false
-        },
-        
-        splitleft: {
-          count: 1,
-          value: 0,
-          topaces: 0,
-          overdraft: false
-        },
-        
-        splitright: {
-          count: 1,
-          value: 0,
-          topaces: 0,
-          overdraft: false
-        }
-      }
-    };
-    
-    this.indicatorsIndexes = {
-      player: 3,
-      dealer: 3
-    };
-    
-    this.results = {
-      normal: {
-        player: 0,
-        dealer: 0,
-        tie: 0
-      },
-      
-      left: {
-        player: 0,
-        dealer: 0,
-        tie: 0
-      },
-      
-      right: {
-        player: 0,
-        dealer: 0,
-        tie: 0
-      }
-    };
-    
-    this.splitModeState = false;
-  }
-  
   incrustImportedElements() {
     this.animations = animations;
+    this.defaults = defaults;
     
     this.panel = new Panel();
     this.menu = new Menu();
@@ -93,14 +33,14 @@ export default class Round {
     
     document.querySelector('[data-zone-deck]').append( this.deck.elem );
     
-    this.panel.initAdditionalValues();
-    this.initAdditionalValues();
+    this.panel.defineAdditionalValues();
+    this.defineAdditionalValues();
   }
   
   initNewRoundEventListeners() {
     this.deck.elem.addEventListener('card-placed', ({ detail }) => this.newCardPlayer( detail ));
     
-    document.addEventListener('split', this.splitModeStateSwitcher, { once: true });
+    document.addEventListener('split', this.activateSplitDrawMode, { once: true });
     
     document.addEventListener('first-chip-bet', this.initStageDeckReadyToLand, { once: true });
     
@@ -112,18 +52,7 @@ export default class Round {
   killLastRoundEventListeners() {
     this.deck.elem.removeEventListener('card-placed', ({ detail }) => this.newCardPlayer( detail ));
     
-    document.removeEventListener('split', this.splitModeStateSwitcher, { once: true });
-  }
-  
-  splitModeStateSwitcher = () => {
-    this.splitModeState = !this.splitModeState;
-    
-    const dividedNormalValue = this.drawnCards.player.normal.topaces === 0
-      ? this.drawnCards.player.normal.value / 2
-      : 11 ;
-    
-    this.drawnCards.player.splitleft.value = dividedNormalValue;
-    this.drawnCards.player.splitright.value = dividedNormalValue;
+    document.removeEventListener('split', this.activateSplitDrawMode, { once: true });
   }
   
   initStageDeckReadyToLand = () => {
@@ -177,10 +106,10 @@ export default class Round {
       if ( resultsState.tie === 1 ) this.indicatorsIndexes = { player: 0, dealer: 0 };
     }
     if ( !this.splitModeState ) {
-      this.results.normal = this.calcRoundResults( this.drawnCards.player.normal );
+      this.results.normal = this.defineRoundResults( this.drawnCards.player.normal );
     } else {
-      this.results.left = this.calcRoundResults( this.drawnCards.player.splitleft );
-      this.results.right = this.calcRoundResults( this.drawnCards.player.splitright );
+      this.results.left = this.defineRoundResults( this.drawnCards.player.splitleft );
+      this.results.right = this.defineRoundResults( this.drawnCards.player.splitright );
       
       console.log( 'left-', this.results.left, '\n  right-', this.results.right )
       
@@ -198,53 +127,6 @@ export default class Round {
     this.defineIndicatorsVisibilityByIndex( this.indicatorsIndexes, 1 );
     
     document.addEventListener('end-of-round', this.initStageRoundReset, { once: true });
-  }
-  
-  calcRoundResults( playerCards ) {
-    const dealerOverdraft = this.drawnCards.dealer.overdraft;
-    const dealerValue = this.drawnCards.dealer.value;
-    const dealerCount = this.drawnCards.dealer.count;
-    
-    const playerOverdraft = playerCards.overdraft;
-    const playerValue = playerCards.value;
-    const playerCount = playerCards.count;
-    
-    const player = new winCondition(1, 0, 0);
-    const dealer = new winCondition(0, 1, 0);
-    const tie = new winCondition(0, 0, 1);
-    
-    let result = 'attention';
-    
-    if ( playerOverdraft || dealerOverdraft ) {
-      if ( dealerOverdraft ) result = player;
-      if ( playerOverdraft ) result = dealer;
-    } else {
-      if ( playerValue === dealerValue ) {
-        result = tie;
-        if ( playerValue === 21 ) {
-          if ( playerCount < dealerCount ) result = player;
-          if ( playerCount > dealerCount ) result = dealer;
-        }
-      } else {
-        if ( playerValue > dealerValue ) result = player;
-        if ( playerValue < dealerValue ) result = dealer;
-      }
-    }
-    return result;
-    
-    function winCondition( playerWon, dealerWon, nobodyWon ) {
-      this.player = playerWon,
-      this.dealer = dealerWon,
-      this.tie = nobodyWon
-    }
-  }
-  
-  defineIndicatorsVisibilityByIndex = ( indexes, opacity ) => {
-    const playerIndicators = document.querySelector('.indicator_player').children;
-    const dealerIndicators = document.querySelector('.indicator_dealer').children;
-    
-    playerIndicators[ indexes.player ].style.opacity = opacity;
-    dealerIndicators[ indexes.dealer ].style.opacity = opacity;
   }
   
   initStageRoundReset = () => {
@@ -471,5 +353,73 @@ export default class Round {
   toggleClickPossibility = item => {
     item.classList.toggle('deny-click');
     item.classList.toggle('allow-click');
+  }
+  
+  defineAdditionalValues() {
+    this.drawnCards = this.defaults.hands;
+    
+    this.indicatorsIndexes = this.defaults.indicators;
+    
+    this.results = this.defaults.results;
+    
+    this.splitModeState = false;
+  }
+  
+  activateSplitDrawMode = () => {
+    this.splitModeState = !this.splitModeState;
+    
+    const dividedNormalValue = this.drawnCards.player.normal.topaces === 0
+      ? this.drawnCards.player.normal.value / 2
+      : 11 ;
+    
+    this.drawnCards.player.splitleft.value = dividedNormalValue;
+    this.drawnCards.player.splitright.value = dividedNormalValue;
+  }
+  
+  defineRoundResults( playerCards ) {
+    const dealerOverdraft = this.drawnCards.dealer.overdraft;
+    const dealerValue = this.drawnCards.dealer.value;
+    const dealerCount = this.drawnCards.dealer.count;
+    
+    const playerOverdraft = playerCards.overdraft;
+    const playerValue = playerCards.value;
+    const playerCount = playerCards.count;
+    
+    const player = new winCondition(1, 0, 0);
+    const dealer = new winCondition(0, 1, 0);
+    const tie = new winCondition(0, 0, 1);
+    
+    let result = 'attention';
+    
+    if ( playerOverdraft || dealerOverdraft ) {
+      if ( dealerOverdraft ) result = player;
+      if ( playerOverdraft ) result = dealer;
+    } else {
+      if ( playerValue === dealerValue ) {
+        result = tie;
+        if ( playerValue === 21 ) {
+          if ( playerCount < dealerCount ) result = player;
+          if ( playerCount > dealerCount ) result = dealer;
+        }
+      } else {
+        if ( playerValue > dealerValue ) result = player;
+        if ( playerValue < dealerValue ) result = dealer;
+      }
+    }
+    return result;
+    
+    function winCondition( playerWon, dealerWon, nobodyWon ) {
+      this.player = playerWon,
+      this.dealer = dealerWon,
+      this.tie = nobodyWon
+    }
+  }
+  
+  defineIndicatorsVisibilityByIndex = ( indexes, opacity ) => {
+    const playerIndicators = document.querySelector('.indicator_player').children;
+    const dealerIndicators = document.querySelector('.indicator_dealer').children;
+    
+    playerIndicators[ indexes.player ].style.opacity = opacity;
+    dealerIndicators[ indexes.dealer ].style.opacity = opacity;
   }
 }
