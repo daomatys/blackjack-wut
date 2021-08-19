@@ -61,7 +61,7 @@ export default class Deck {
     this.shiftX = event.clientX - this.sub('top').getBoundingClientRect().left;
     this.shiftY = event.clientY - this.sub('top').getBoundingClientRect().top;
     
-    document.body.append( this.sub('top') );
+    document.getElementById('blackjack-table').append( this.sub('top') );
     
     this.sub('top').style.opacity = 1;
     
