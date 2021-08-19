@@ -119,13 +119,7 @@ export default class Panel {
   actSplit = () => {
     document.body.dispatchEvent( new CustomEvent('split', { bubbles: true }) );
     
-    const subHands = `
-      <div class="subhand subhand__left"></div>
-      <div class="subhand subhand__right"></div>`;
-    
     const hand = document.querySelector('.hand__player');
-    
-    hand.insertAdjacentHTML('afterbegin', subHands);
     
     const cardSplitted = { 
       left: hand.lastChild.getBoundingClientRect().left,

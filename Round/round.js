@@ -164,198 +164,11 @@ export default class Round {
     }
   }
   
-  //card animation methods
-  
-  choosePlayerDrawMode( cardProps ) {
-    !this.splitModeState
-      ? this.initPlayerDrawNormal( cardProps )
-      : this.initPlayerDrawSplit( cardProps );
-  }
-  
-  initPlayerDrawNormal( cardProps ) {
-    const hand = document.querySelector('.hand__player');
-    const handRect = hand.getBoundingClientRect();
-    const handCards = this.drawnCards.player.normal;
-    
-    const animationContext = {
-      parent: hand,
-      holder: handRect,
-      count: handCards.count++,
-      card: {
-        elem: cardProps.card.elem,
-        props: cardProps,
-        margin: 60
-      }
-    }
-    this.initPlayerCardTransition( animationContext );
-    
-    if ( handCards.count < 8 ) {
-      handCards.value += this.calcCardValue( cardProps.card, handCards.value );
-    }
-    if ( handCards.value > 20 && !this.drawnCards.dealer.forbiddraw ) {
-      this.deck.killEventListeners();
-      this.initStageDealerDraw();
-      
-      if ( handCards.value > 21 ) {
-        handCards.overdraft = true;
-      }
-    }
-    console.log( 'playa:', handCards.value );
-  }
-  
-  initPlayerDrawSplit( cardProps ) {
-    const subhand = cardProps.below.closest('.subhand');
-    const subhandRect = subhand.getBoundingClientRect();
-    
-    const subhandCards = subhand.classList.contains('subhand__left') 
-      ? this.drawnCards.player.splitleft
-      : this.drawnCards.player.splitright;
-    
-    const subsideCards = subhand.classList.contains('subhand__right') 
-      ? this.drawnCards.player.splitleft
-      : this.drawnCards.player.splitright;
-      
-    const animationContext = {
-      parent: subhand,
-      holder: subhandRect,
-      count: subhandCards.count++,
-      card: {
-        elem: cardProps.card.elem,
-        props: cardProps,
-        margin: 18
-      }
-    }
-    this.initPlayerCardTransition( animationContext );
-    
-    if ( subhandCards.count < 8 ) {
-      subhandCards.value += this.calcCardValue( cardProps.card, subhandCards.value );
-    }
-    if ( subhandCards.value > 20 && subsideCards.value > 20 ) {
-      this.initStageDealerDraw();
-      this.deck.killEventListeners();
-    }
-    if ( subhandCards.value > 21 ) {
-      subhandCards.overdraft = true;
-      subhand.classList.toggle('no-pointer-events');
-    }
-    console.log( 'playa:', subhandCards.value );
-  }
-  
-  initPlayerCardTransition( animationContext ) {
-    const card = animationContext.card;
-    
-    animationContext.parent.insertAdjacentElement('beforeend', card.elem );
-    
-    const cardLeft = parseInt( card.props.left, 10 ) - animationContext.holder.left + 1 + 'px';
-    const cardTop = parseInt( card.props.top, 10 ) - animationContext.holder.top + 1 + 'px';
-    
-    Object.assign( card.elem.style, {
-      left: cardLeft,
-      top: cardTop
-    });
-    
-    const shiftX = -parseInt( card.elem.style.left, 10 ) + animationContext.count * animationContext.card.margin + 'px';
-    const shiftY = -parseInt( card.elem.style.top, 10 ) + 'px';
-    
-    this.launchCardAnimation( card.elem, shiftX, shiftY );
-  }
-  
-  launchDealerCardTransition = () => {
-    const card = this.deck.topCardData();
-    
-    document.querySelector('.hand__dealer').insertAdjacentElement('afterbegin', card.elem );
-    
-    const cardStyle = card.elem.style;
-    const cardStyleRight = this.defineRect('.hand__dealer').right - this.defineRect('[data-zone-deck]').right + 'px';
-    const cardStyleTop = this.defineRect('.hand__dealer').top - this.defineRect('[data-zone-deck]').top + 'px';
-    
-    Object.assign( cardStyle, {
-      left: cardStyleRight,
-      top: cardStyleTop
-    });
-    const shiftX = -parseInt( cardStyleRight, 10 ) + this.drawnCards.dealer.count * 60 + 'px';
-    const shiftY = -parseInt( cardStyleTop, 10 ) + 'px';
-    
-    this.launchCardAnimation( card.elem, shiftX, shiftY );
-    
-    ++this.drawnCards.dealer.count;
-    
-    const handCards = this.drawnCards.dealer;
-    
-    if ( handCards.count < 8 ) {
-      handCards.value += this.calcCardValue( card, handCards.value );
-    }
-    if ( handCards.value > 19 || this.drawnCards.player.normal.overdraft ) {
-      clearInterval( this.dealerDrawInterval );
-      
-      handCards.forbiddraw = true;
-      
-      if ( handCards.value > 21 ) {
-        this.drawnCards.dealer.overdraft = true;
-      }
-      this.initStageRoundResults();
-    }
-    console.log( 'dealer:', handCards.value );
-    this.drawnCards.dealer = handCards;
-  }
-  
-  launchCardAnimation( elem, shiftX, shiftY ) {
-    const flight = elem.animate({
-      transform: [
-        'scale( 1.05 )',
-        `perspective( 900px ) scale( 1 ) translate( ${ shiftX }, ${ shiftY } ) rotateY( 0.5turn )`
-      ]
-    }, {
-      easing: 'ease',
-      duration: 1000,
-      fill: 'both',
-      composite: 'replace'
-    });
-    flight.persist();
-  }
-  
-  calcCardValue( card, inputValue ) {
-    let outputValue = 10;
-    
-    if ( typeof( card.rank ) === 'number' ) outputValue = card.rank;
-    
-    if ( card.rank === 'A' ) {
-      if ( inputValue + 11 < 22 ) {
-        card.elem.closest('.hand__player')
-          ? ++this.drawnCards.player.normal.topaces
-          : ++this.drawnCards.dealer.topaces;
-        outputValue = 11; 
-      } else {
-        outputValue = 1;
-      }
-    }
-    if ( outputValue + inputValue > 21 ) {
-      if ( card.elem.closest('.hand__player') && this.drawnCards.player.normal.topaces > 0 ) {
-        --this.drawnCards.player.normal.topaces;
-        outputValue -= 10;
-      }
-      if ( card.elem.closest('.hand__dealer') && this.drawnCards.dealer.topaces > 0 ) {
-        --this.drawnCards.dealer.topaces;
-        outputValue -= 10;
-      }
-    }
-    return outputValue;
-  }
-  
-  //utilities
-  
-  defineRect = sel => document.querySelector( sel ).getBoundingClientRect();
-  
-  toggleClickPossibility = item => {
-    item.classList.toggle('deny-click');
-    item.classList.toggle('allow-click');
-  }
+  //stage side methods
   
   defineAdditionalValues() {
     this.results = this.defaults.results();
-    
     this.drawnCards = this.defaults.hands();
-    
     this.indicatorsIndexes = this.defaults.indicators();
     
     this.splitModeState = false;
@@ -417,5 +230,191 @@ export default class Round {
     
     playerIndicators[ indexes.player ].style.opacity = opacity;
     dealerIndicators[ indexes.dealer ].style.opacity = opacity;
+  }
+  
+  //card animation methods
+  
+  choosePlayerDrawMode( cardProps ) {
+    !this.splitModeState
+      ? this.initPlayerDrawNormal( cardProps )
+      : this.initPlayerDrawSplit( cardProps );
+  }
+  
+  initPlayerDrawNormal( cardProps ) {
+    const hand = document.querySelector('.hand__player');
+    const handRect = hand.getBoundingClientRect();
+    const handCards = this.drawnCards.player.normal;
+    
+    const animationContext = {
+      parent: hand,
+      holder: handRect,
+      count: handCards.count++,
+      card: {
+        elem: cardProps.card.elem,
+        props: cardProps,
+        margin: 60
+      }
+    }
+    this.initPlayerCardTransition( animationContext );
+    
+    if ( handCards.count < 8 ) {
+      handCards.value += this.calculateCardValue( cardProps.card, handCards.value );
+    }
+    if ( handCards.value > 20 && !this.drawnCards.dealer.forbiddraw ) {
+      this.deck.killEventListeners();
+      this.initStageDealerDraw();
+      
+      if ( handCards.value > 21 ) {
+        handCards.overdraft = true;
+      }
+    }
+    console.log( 'playa:', handCards.value );
+  }
+  
+  initPlayerDrawSplit( cardProps ) {
+    const subhand = cardProps.below.closest('.subhand');
+    const subhandRect = subhand.getBoundingClientRect();
+    
+    const subhandCards = subhand.classList.contains('subhand__left') 
+      ? this.drawnCards.player.splitleft
+      : this.drawnCards.player.splitright;
+    
+    const subsideCards = subhand.classList.contains('subhand__right') 
+      ? this.drawnCards.player.splitleft
+      : this.drawnCards.player.splitright;
+      
+    const animationContext = {
+      parent: subhand,
+      holder: subhandRect,
+      count: subhandCards.count++,
+      card: {
+        elem: cardProps.card.elem,
+        props: cardProps,
+        margin: 18
+      }
+    }
+    this.initPlayerCardTransition( animationContext );
+    
+    if ( subhandCards.count < 8 ) {
+      subhandCards.value += this.calculateCardValue( cardProps.card, subhandCards.value );
+    }
+    if ( subhandCards.value > 20 && subsideCards.value > 20 ) {
+      this.initStageDealerDraw();
+      this.deck.killEventListeners();
+    }
+    if ( subhandCards.value > 21 ) {
+      subhandCards.overdraft = true;
+      subhand.classList.toggle('no-pointer-events');
+    }
+    console.log( 'playa:', subhandCards.value );
+  }
+  
+  initPlayerCardTransition( animationContext ) {
+    const card = animationContext.card;
+    
+    animationContext.parent.insertAdjacentElement('beforeend', card.elem );
+    
+    const cardLeft = parseInt( card.props.left, 10 ) - animationContext.holder.left + 1 + 'px';
+    const cardTop = parseInt( card.props.top, 10 ) - animationContext.holder.top + 1 + 'px';
+    
+    Object.assign( card.elem.style, {
+      left: cardLeft,
+      top: cardTop
+    });
+    const shiftX = -parseInt( card.elem.style.left, 10 ) + animationContext.count * animationContext.card.margin + 'px';
+    const shiftY = -parseInt( card.elem.style.top, 10 ) + 'px';
+    
+    this.launchCardAnimation( card.elem, shiftX, shiftY );
+  }
+  
+  launchDealerCardTransition = () => {
+    const card = this.deck.topCardData();
+    
+    document.querySelector('.hand__dealer').insertAdjacentElement('afterbegin', card.elem );
+    
+    const cardStyle = card.elem.style;
+    const cardStyleRight = this.defineRect('.hand__dealer').right - this.defineRect('[data-zone-deck]').right + 'px';
+    const cardStyleTop = this.defineRect('.hand__dealer').top - this.defineRect('[data-zone-deck]').top + 'px';
+    
+    Object.assign( cardStyle, {
+      left: cardStyleRight,
+      top: cardStyleTop
+    });
+    const shiftX = -parseInt( cardStyleRight, 10 ) + this.drawnCards.dealer.count * 60 + 'px';
+    const shiftY = -parseInt( cardStyleTop, 10 ) + 'px';
+    
+    this.launchCardAnimation( card.elem, shiftX, shiftY );
+    
+    ++this.drawnCards.dealer.count;
+    
+    const handCards = this.drawnCards.dealer;
+    
+    if ( handCards.count < 8 ) {
+      handCards.value += this.calculateCardValue( card, handCards.value );
+    }
+    if ( handCards.value > 19 || this.drawnCards.player.normal.overdraft ) {
+      clearInterval( this.dealerDrawInterval );
+      
+      handCards.forbiddraw = true;
+      
+      if ( handCards.value > 21 ) {
+        this.drawnCards.dealer.overdraft = true;
+      }
+      this.initStageRoundResults();
+    }
+    console.log( 'dealer:', handCards.value );
+    this.drawnCards.dealer = handCards;
+  }
+  
+  launchCardAnimation( elem, shiftX, shiftY ) {
+    const flight = elem.animate({
+      transform: [
+        'scale( 1.05 )',
+        `perspective( 900px ) scale( 1 ) translate( ${ shiftX }, ${ shiftY } ) rotateY( 0.5turn )`
+      ]
+    }, {
+      easing: 'ease',
+      duration: 1000,
+      fill: 'both',
+      composite: 'replace'
+    });
+    flight.persist();
+  }
+  
+  calculateCardValue( card, inputValue ) {
+    let outputValue = 10;
+    
+    if ( typeof( card.rank ) === 'number' ) outputValue = card.rank;
+    
+    if ( card.rank === 'A' ) {
+      if ( inputValue + 11 < 22 ) {
+        card.elem.closest('.hand__player')
+          ? ++this.drawnCards.player.normal.topaces
+          : ++this.drawnCards.dealer.topaces;
+        outputValue = 11; 
+      } else {
+        outputValue = 1;
+      }
+    }
+    if ( outputValue + inputValue > 21 ) {
+      if ( card.elem.closest('.hand__player') && this.drawnCards.player.normal.topaces > 0 ) {
+        --this.drawnCards.player.normal.topaces;
+        outputValue -= 10;
+      }
+      if ( card.elem.closest('.hand__dealer') && this.drawnCards.dealer.topaces > 0 ) {
+        --this.drawnCards.dealer.topaces;
+        outputValue -= 10;
+      }
+    }
+    return outputValue;
+  }
+  
+  //utilities
+  
+  defineRect = sel => document.querySelector( sel ).getBoundingClientRect();
+  
+  toggleClickPossibility = item => {
+    item.classList.toggle('deny-click');
+    item.classList.toggle('allow-click');
   }
 }
