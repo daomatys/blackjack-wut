@@ -163,7 +163,7 @@ export default class Round {
       if ( resultsState.dealer === 1 ) this.indicatorsIndexes = { player: 2, dealer: 1 };
       if ( resultsState.tie === 1 ) this.indicatorsIndexes = { player: 0, dealer: 0 };
     }
-    if ( this.splitModeState ) {
+    if ( !this.splitModeState ) {
       this.results.normal = this.calcRoundResults( this.drawnCards.player.normal );
     } else {
       this.results.left = this.calcRoundResults( this.drawnCards.player.split.left );
@@ -175,6 +175,7 @@ export default class Round {
         tie: this.results.left.tie && this.results.right.tie
       });
     }
+    console.log( this.results.normal )
     showWinner( this.results.normal );
     
     this.deck.initEventListeners();
@@ -197,21 +198,25 @@ export default class Round {
     const dealer = new winCondition(0, 1, 0);
     const tie = new winCondition(0, 0, 1);
     
+    let result = 'attention';
+    
     if ( playerOverdraft || dealerOverdraft ) {
-      if ( dealerOverdraft ) return player;
-      if ( playerOverdraft ) return dealer;
+      if ( dealerOverdraft ) result = player;
+      if ( playerOverdraft ) result = dealer;
     } else {
       if ( playerValue === dealerValue ) {
-        return tie;
+        result = tie;
         if ( playerValue === 21 ) {
-          if ( playerCount < dealerCount ) return player;
-          if ( playerCount > dealerCount ) return dealer;
+          if ( playerCount < dealerCount ) result = player;
+          if ( playerCount > dealerCount ) result = dealer;
         }
       } else {
-        if ( playerValue > dealerValue ) return player;
-        if ( playerValue < dealerValue ) return dealer;
+        if ( playerValue > dealerValue ) result = player;
+        if ( playerValue < dealerValue ) result = dealer;
       }
     }
+    return result;
+    
     function winCondition( playerWon, dealerWon, nobodyWon ) {
       this.player = playerWon,
       this.dealer = dealerWon,
