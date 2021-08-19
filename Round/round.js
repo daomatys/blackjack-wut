@@ -38,7 +38,7 @@ export default class Round {
   }
   
   initNewRoundEventListeners() {
-    this.deck.elem.addEventListener('card-placed', ({ detail }) => this.newCardPlayer( detail ));
+    this.deck.elem.addEventListener('card-placed', ({ detail }) => this.choosePlayerDrawMode( detail ));
     
     document.addEventListener('split', this.activateSplitDrawMode, { once: true });
     
@@ -50,7 +50,7 @@ export default class Round {
   }
   
   killLastRoundEventListeners() {
-    this.deck.elem.removeEventListener('card-placed', ({ detail }) => this.newCardPlayer( detail ));
+    this.deck.elem.removeEventListener('card-placed', ({ detail }) => this.choosePlayerDrawMode( detail ));
     
     document.removeEventListener('split', this.activateSplitDrawMode, { once: true });
   }
@@ -101,9 +101,9 @@ export default class Round {
   
   initStageRoundResults = () => {
     const showWinner = resultsState => {
-      if ( resultsState.player === 1 ) this.indicatorsIndexes = { player: 1, dealer: 2 };
-      if ( resultsState.dealer === 1 ) this.indicatorsIndexes = { player: 2, dealer: 1 };
-      if ( resultsState.tie === 1 ) this.indicatorsIndexes = { player: 0, dealer: 0 };
+      if ( resultsState.player ) this.indicatorsIndexes = { player: 1, dealer: 2 };
+      if ( resultsState.dealer ) this.indicatorsIndexes = { player: 2, dealer: 1 };
+      if ( resultsState.tie ) this.indicatorsIndexes = { player: 0, dealer: 0 };
     }
     if ( !this.splitModeState ) {
       this.results.normal = this.defineRoundResults( this.drawnCards.player.normal );
@@ -111,20 +111,17 @@ export default class Round {
       this.results.left = this.defineRoundResults( this.drawnCards.player.splitleft );
       this.results.right = this.defineRoundResults( this.drawnCards.player.splitright );
       
-      console.log( 'left-', this.results.left, '\n  right-', this.results.right )
-      
       Object.assign( this.results.normal, {
         player: this.results.left.player || this.results.right.player,
         dealer: this.results.left.dealer && this.results.right.dealer,
         tie: this.results.left.tie && this.results.right.tie
       });
     }
-    console.log( 'normal-', this.results.normal )
     showWinner( this.results.normal );
     
-    this.deck.initEventListeners();
-    
     this.defineIndicatorsVisibilityByIndex( this.indicatorsIndexes, 1 );
+    
+    this.deck.initEventListeners();
     
     document.addEventListener('end-of-round', this.initStageRoundReset, { once: true });
   }
@@ -169,7 +166,7 @@ export default class Round {
   
   //card animation methods
   
-  newCardPlayer( cardProps ) {
+  choosePlayerDrawMode( cardProps ) {
     !this.splitModeState
       ? this.initPlayerDrawNormal( cardProps )
       : this.initPlayerDrawSplit( cardProps );
@@ -276,7 +273,6 @@ export default class Round {
       left: cardStyleRight,
       top: cardStyleTop
     });
-    
     const shiftX = -parseInt( cardStyleRight, 10 ) + this.drawnCards.dealer.count * 60 + 'px';
     const shiftY = -parseInt( cardStyleTop, 10 ) + 'px';
     
@@ -356,11 +352,11 @@ export default class Round {
   }
   
   defineAdditionalValues() {
+    this.results = this.defaults.results();
+    
     this.drawnCards = this.defaults.hands();
     
     this.indicatorsIndexes = this.defaults.indicators();
-    
-    this.results = this.defaults.results();
     
     this.splitModeState = false;
   }
