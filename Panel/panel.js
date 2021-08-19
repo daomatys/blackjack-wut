@@ -28,7 +28,7 @@ export default class Panel {
             <img src="assets/graphics/buttons/button_${ suffix }_off.png" style="display: inline">
             <img src="assets/graphics/buttons/button_${ suffix }_on.png" style="display: none">
           </div>
-          <div class="clicker__fake allow-click">
+          <div class="clicker__fake deny-click">
             <img src="assets/graphics/buttons/button_inactive.png">
           </div>
         </div>`)
@@ -158,9 +158,7 @@ export default class Panel {
   }
   
   actHover() {
-    const cards = document
-      .querySelector('.hand__player')
-      .querySelectorAll('.card');
+    const cards = document.querySelectorAll('.hand__player .card');
     
     const onHoverRotation = card => {
       const rotation = card.animate(

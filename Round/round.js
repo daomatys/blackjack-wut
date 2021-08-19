@@ -130,6 +130,7 @@ export default class Round {
   }
   
   initStageRoundReset = () => {
+    const enlightedClickers = document.querySelectorAll('.clicker__fake.allow-click');
     const drawnCards = document.querySelectorAll('.card');
     const fakeAdders = document.querySelectorAll('.adder__fake');
     const betChips = document.querySelectorAll('.chip-bet');
@@ -140,6 +141,11 @@ export default class Round {
     this.killLastRoundEventListeners();
     this.deck.killEventListeners();
     
+    console.log( enlightedClickers );
+    
+    for ( let clicker of enlightedClickers ) {
+      this.toggleClickPossibility( clicker );
+    }
     for ( let card of drawnCards ) {
       const cardRemove = card.animate(
         this.animations.card.remove.action,
@@ -325,7 +331,7 @@ export default class Round {
         subhand.classList.remove('allow-drop');
       }
     }
-    console.log( 'playa:', subhandCards.value );
+    console.log('playa:', subhandCards.value);
   }
   
   initPlayerCardTransition( animationContext ) {
@@ -381,7 +387,7 @@ export default class Round {
       }
       this.initStageRoundResults();
     }
-    console.log( 'dealer:', handCards.value );
+    console.log('dealer:', handCards.value);
   }
   
   launchCardAnimation( elem, shiftX, shiftY ) {
