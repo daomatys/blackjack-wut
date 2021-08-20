@@ -273,25 +273,8 @@ export default class Round {
     }
     this.initPlayerCardTransition( animationContext );
     
-    switch( handCards.count ) {
-      case 1: {
-        this.firstPair[0] = cardProps.card.rank; 
-        
-        this.toggleClickPossibility( document.querySelector('.clicker-doubled').lastElementChild );
-        this.toggleClickPossibility( document.querySelector('.clicker-hover').lastElementChild );
-        break;
-      }
-      case 2: {
-        this.firstPair[1] = cardProps.card.rank;
-        
-        if ( this.firstPair[0] === this.firstPair[1] ) {
-          this.toggleClickPossibility( document.querySelector('.clicker-split').lastElementChild );
-        }
-        this.toggleClickPossibility( document.querySelector('.clicker-doubled').lastElementChild );
-        this.toggleClickPossibility( document.querySelector('.clicker-check').lastElementChild );
-        break;
-      }
-    }
+    this.initFirstPairClickerReaction( handCards );
+    
     if ( handCards.count < 8 ) {
       handCards.value += this.calculateCardValue( cardProps.card, handCards.value );
     }
@@ -304,6 +287,34 @@ export default class Round {
       }
     }
     console.log( 'playa:', handCards.value );
+  }
+  
+  initFirstPairClickerReaction = handCards => {
+    const findClicker = suffix => document.querySelector(`.clicker-${ suffix }`).lastElementChild;
+    
+    switch( handCards.count ) {
+      case 1: {
+        this.firstPair[0] = cardProps.card.rank; 
+        
+        this.toggleClickPossibility( findClicker('doubled') );
+        this.toggleClickPossibility( findClicker('hover') );
+        
+        break;
+      }
+      case 2: {
+        this.firstPair[1] = cardProps.card.rank;
+        
+        if ( this.firstPair[0] === this.firstPair[1] ) {
+          this.toggleClickPossibility( findClicker('split') );
+        }
+        if ( document.querySelector('.clicker-doubled .allow-click') ) {
+          this.toggleClickPossibility( findClicker('doubled') );
+        }
+        this.toggleClickPossibility( findClicker('check') );
+        
+        break;
+      }
+    }
   }
   
   initPlayerDrawSplit( cardProps ) {
