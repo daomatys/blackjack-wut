@@ -273,7 +273,7 @@ export default class Round {
     }
     this.initPlayerCardTransition( animationContext );
     
-    this.initFirstPairClickerReaction( handCards );
+    this.initFirstPairClickerReaction( handCards.count, cardProps.card );
     
     if ( handCards.count < 8 ) {
       handCards.value += this.calculateCardValue( cardProps.card, handCards.value );
@@ -289,12 +289,12 @@ export default class Round {
     console.log( 'playa:', handCards.value );
   }
   
-  initFirstPairClickerReaction = handCards => {
+  initFirstPairClickerReaction = ( count, card ) => {
     const findClicker = suffix => document.querySelector(`.clicker-${ suffix }`).lastElementChild;
     
-    switch( handCards.count ) {
+    switch( count ) {
       case 1: {
-        this.firstPair[0] = cardProps.card.rank; 
+        this.firstPair[0] = card.rank; 
         
         this.toggleClickPossibility( findClicker('doubled') );
         this.toggleClickPossibility( findClicker('hover') );
@@ -302,7 +302,7 @@ export default class Round {
         break;
       }
       case 2: {
-        this.firstPair[1] = cardProps.card.rank;
+        this.firstPair[1] = card.rank;
         
         if ( this.firstPair[0] === this.firstPair[1] ) {
           this.toggleClickPossibility( findClicker('split') );
