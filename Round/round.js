@@ -314,6 +314,12 @@ export default class Round {
         
         break;
       }
+      case 3: {
+        if ( document.querySelector('.clicker-split .allow-click') ) {
+          this.toggleClickPossibility( findClicker('split') );
+        }
+        break;
+      }
     }
   }
   
