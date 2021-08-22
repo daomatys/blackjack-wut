@@ -98,10 +98,6 @@ export default class Round {
   }
   
   initStageDealerDraw = () => {
-    const checkClicker = document.querySelector(`.clicker-check`).lastElementChild;
-    
-    this.toggleClickPossibility( checkClicker );
-    
     this.dealerDrawInterval = setInterval( this.launchDealerCardTransition, 700 );
   }
   
