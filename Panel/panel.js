@@ -120,6 +120,9 @@ export default class Panel {
   actCheck = () => {
     document.body.dispatchEvent( new CustomEvent('end-of-player-draw', { bubbles: true }) );
     
+    if ( this.elem.querySelector('.clicker-split .allow-click') ) {
+      this.toggleClickerClickPossibility('split');
+    }
     this.toggleClickerClickPossibility('check');
   }
   
