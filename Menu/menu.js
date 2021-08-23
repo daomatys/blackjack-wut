@@ -16,7 +16,7 @@ export default class Menu {
       <div class="menu__button-array">
         <div class="menu__button" id="menu-start">START</div>
         <div class="menu__button" id="menu-about">ABOUT</div>
-        <div class="menu__button" id="menu-home">HOME</div>
+        <a class="menu__button" href="https://github.com/daomatys/blackjack-wut" id="menu-home">HOME</div>
       </div>
     `;
   }
@@ -26,11 +26,14 @@ export default class Menu {
     
     selectButton('start').addEventListener('pointerdown', this.start);
     selectButton('about').addEventListener('pointerdown', this.about);
-    selectButton('home').addEventListener('pointerdown', this.home);
   }
   
   start = () => {
     document.querySelector('#blackjack-table').style.display = 'inline';
     document.querySelector('#start-screen-menu').style.display = 'none';
+  }
+  
+  about = () => {
+    
   }
 }

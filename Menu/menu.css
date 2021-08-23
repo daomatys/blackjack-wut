@@ -11,4 +11,6 @@
 
 .menu__button {
   display: inline-block;
+  text-decoration: none;
+  color: initial;
 }
