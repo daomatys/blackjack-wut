@@ -1,5 +1,5 @@
 export default function( selector, markup ) {
   document
-    .querySelector( selector )
-    .insertAdjacentHTML( 'afterbegin', markup );
+    .querySelectorAll( selector )
+    .forEach( element => element.insertAdjacentHTML( 'afterbegin', markup ) )
 }
