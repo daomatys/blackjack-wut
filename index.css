@@ -1,17 +1,6 @@
-/*Round*/
 @import 'Round/round.css';
-
-/*Card*/
 @import 'Card/card.css';
-
-/*Deck*/
 @import 'Deck/deck.css';
-
-/*Panel*/
 @import 'Panel/panel.css';
-
-/*Menu*/
 @import 'Menu/menu.css';
-
-/*Sidebar*/
 @import 'Sidebar/sidebar.css';
