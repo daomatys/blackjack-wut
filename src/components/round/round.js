@@ -8,6 +8,7 @@ import Sidebar from '/src/components/sidebar/sidebar.js';
 import animations from '/src/assets/js-misc/animations.js';
 import defaults from '/src/assets/js-misc/defaults.js';
 
+
 export default class Round {
   
   constructor() {

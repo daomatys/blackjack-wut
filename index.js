@@ -1,5 +1,6 @@
 import Round from '/src/components/round/round.js';
 
-( function() {
+
+(function() {
   const round = new Round();
 })();

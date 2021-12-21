@@ -1,5 +1,6 @@
 import renderElement from '/src/assets/js-misc/render-element.js';
 
+
 (function() {
   const bankMarkup = `
     <img src="src/assets/graphics/bank.png">
