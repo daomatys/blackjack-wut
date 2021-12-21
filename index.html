@@ -1,79 +1,74 @@
 <!DOCTYPE html>
+
 <html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Blackjack Wut: Enjoy your stay!</title>
+    <link rel="stylesheet" href="index.css">
+  </head>
 
-<head>
-  <meta charset="utf-8" />
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  
-  <title>Blackjack Wut: Enjoy your stay!</title>
-  
-  <link rel="stylesheet" href="index.css">
-</head>
-
-<body>
-  <div id="start-screen-menu">
-    <div data-menu></div>
-  </div>
-  
-  <div id="blackjack-table">
-    <div data-bank>
-      <img src="assets/graphics/bank.png">
-      <div class="bank">
-        <div class="bank__slot" id="slot-1"></div>
-        <div class="bank__slot" id="slot-5"></div>
-        <div class="bank__slot" id="slot-10"></div>
-        <div class="bank__slot" id="slot-25"></div>
-        <div class="bank__slot" id="slot-100"></div>
-      </div>
+  <body>
+    <div id="start-screen-menu">
+      <div data-menu></div>
     </div>
-  
-    <div data-deck-unit>
-      <div class="indicator indicator_dealer">
-        <img src="assets/graphics/indicators/indicator_tie.png">
-        <img src="assets/graphics/indicators/indicator_win.png">
-        <img src="assets/graphics/indicators/indicator_lose.png">
-        <img src="assets/graphics/indicators/indicator_test.png">
-      </div>
-      <div data-zone-deck>
-        <div class="caller-bank">
-          <img src="assets/graphics/buttons/caller-bank.png">
-        </div>
-        <div class="deck__background">
-          <img src="assets/graphics/zone_deck.png">
+    
+    <div id="blackjack-table">
+      <div data-bank>
+        <img src="assets/graphics/bank.png">
+        <div class="bank">
+          <div class="bank__slot" id="slot-1"></div>
+          <div class="bank__slot" id="slot-5"></div>
+          <div class="bank__slot" id="slot-10"></div>
+          <div class="bank__slot" id="slot-25"></div>
+          <div class="bank__slot" id="slot-100"></div>
         </div>
       </div>
-      <div class="indicator indicator_player">
-        <img src="assets/graphics/indicators/indicator_tie.png">
-        <img src="assets/graphics/indicators/indicator_win.png">
-        <img src="assets/graphics/indicators/indicator_lose.png">
-        <img src="assets/graphics/indicators/indicator_test.png">
+    
+      <div data-deck-unit>
+        <div class="indicator indicator_dealer">
+          <img src="assets/graphics/indicators/indicator_tie.png">
+          <img src="assets/graphics/indicators/indicator_win.png">
+          <img src="assets/graphics/indicators/indicator_lose.png">
+          <img src="assets/graphics/indicators/indicator_test.png">
+        </div>
+        <div data-zone-deck>
+          <div class="caller-bank">
+            <img src="assets/graphics/buttons/caller-bank.png">
+          </div>
+          <div class="deck__background">
+            <img src="assets/graphics/zone_deck.png">
+          </div>
+        </div>
+        <div class="indicator indicator_player">
+          <img src="assets/graphics/indicators/indicator_tie.png">
+          <img src="assets/graphics/indicators/indicator_win.png">
+          <img src="assets/graphics/indicators/indicator_lose.png">
+          <img src="assets/graphics/indicators/indicator_test.png">
+        </div>
       </div>
-    </div>
-    
-    <div data-zone-dealer class="hand hand__player">
-      <img src="assets/graphics/zone_hand.png">
-      <div class="holder hand__dealer"></div>
-    </div>
-    
-    <div data-zone-player class="hand hand__dealer">
-      <img src="assets/graphics/zone_hand.png">
-      <div class="holder hand__player allow-drop">
-        <div class="subhand subhand__left"></div>
-        <div class="subhand subhand__right"></div>
+      
+      <div data-zone-dealer class="hand hand__player">
+        <img src="assets/graphics/zone_hand.png">
+        <div class="holder hand__dealer"></div>
       </div>
+      
+      <div data-zone-player class="hand hand__dealer">
+        <img src="assets/graphics/zone_hand.png">
+        <div class="holder hand__player allow-drop">
+          <div class="subhand subhand__left"></div>
+          <div class="subhand subhand__right"></div>
+        </div>
+      </div>
+      
+      <div data-panel></div>
+      
+      <div data-sidebar></div>
     </div>
     
-    <div data-panel></div>
-    
-    <div data-sidebar></div>
-  </div>
-  
-  <script type="module">
-    import Round from './Round/round.js';
-
-    let round = new Round();
-  </script>
-</body>
-
+    <script type="module">
+      import Round from './Round/round.js';
+      let round = new Round();
+    </script>
+  </body>
 </html>
