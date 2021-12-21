@@ -40,15 +40,7 @@ export default class Deck {
   }
   
   initialPosition() {
-    this.elem.animate(
-      {
-        transform: 'translate( -280px, -600px )'
-      },
-      {
-        fill: 'forwards',
-        composite: 'replace'
-      }
-    );
+    this.elem.style.transform = 'translate( -280px, -600px )';
   }
   
   initEventListeners() {

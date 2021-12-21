@@ -3,7 +3,6 @@
 [daomatys.github.io/blackjack-wut/](http://daomatys.github.io/blackjack-wut/ "daomatys.github.io/blackjack-wut/")
 
 **Кратко:**
--   Работает в Edge и Chrome! Не работает в Firefox!
 -   Все картинки - full-rgb-растр;
 -   Несовместимо с мобильными устройствами;
 -   Версталось все под 720р монитор;
