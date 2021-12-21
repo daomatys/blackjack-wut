@@ -1,4 +1,4 @@
-import Round from './Round/round.js';
+import Round from '/src/components/round/round.js';
 
 ( function() {
   const round = new Round();

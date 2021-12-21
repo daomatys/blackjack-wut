@@ -1,4 +1,4 @@
-import animations from '../assets/js-misc/animations.js';
+import animations from '/src/assets/js-misc/animations.js';
 
 export default class Panel {
   
@@ -25,11 +25,11 @@ export default class Panel {
       .map( suffix => `
         <div class="clicker__container clicker-${ suffix }">
           <div class="clicker tap" id="${ suffix }">
-            <img src="assets/graphics/buttons/button_${ suffix }_off.png" style="display: inline">
-            <img src="assets/graphics/buttons/button_${ suffix }_on.png" style="display: none">
+            <img src="src/assets/graphics/buttons/button_${ suffix }_off.png" style="display: inline">
+            <img src="src/assets/graphics/buttons/button_${ suffix }_on.png" style="display: none">
           </div>
           <div class="clicker__fake deny-click">
-            <img src="assets/graphics/buttons/button_inactive.png">
+            <img src="src/assets/graphics/buttons/button_inactive.png">
           </div>
         </div>`)
       .join('');
@@ -37,7 +37,7 @@ export default class Panel {
     const layoutChipMachine = this.arrChips
       .map( code => `
         <div class="chip chip-armed chip-${ code }">
-          <img src="assets/graphics/chips/chip_${ code }.png">
+          <img src="src/assets/graphics/chips/chip_${ code }.png">
         </div>`)
       .join('');
       
@@ -45,18 +45,18 @@ export default class Panel {
       .map( code => `
         <div class="adder__container adder-${ code }">
           <div class="adder tap" id="adder-${ code }">
-            <img src="assets/graphics/buttons/adder_off.png" style="display: inline">
-            <img src="assets/graphics/buttons/adder_on.png" style="display: none">
+            <img src="src/assets/graphics/buttons/adder_off.png" style="display: inline">
+            <img src="src/assets/graphics/buttons/adder_on.png" style="display: none">
           </div>
           <div class="adder__fake allow-click">
-            <img src="assets/graphics/buttons/adder_inactive.png">
+            <img src="src/assets/graphics/buttons/adder_inactive.png">
           </div>
         </div>`)
       .join('');
       
     const layoutAssembled = `
       <div class="panel__background">
-        <img src="assets/graphics/panel.png">
+        <img src="src/assets/graphics/panel.png">
       </div>
       <div class="panel__clickers">
         ${ layoutPanelButtons }

@@ -1,10 +1,10 @@
-import Deck from '../Deck/deck.js';
-import Panel from '../Panel/panel.js';
-import Menu from '../Menu/menu.js';
-import Sidebar from '../Sidebar/sidebar.js';
+import Deck from '/src/components/deck/deck.js';
+import Panel from '/src/components/panel/panel.js';
+import Menu from '/src/components/menu/menu.js';
+import Sidebar from '/src/components/sidebar/sidebar.js';
 
-import animations from '../assets/js-misc/animations.js';
-import defaults from '../assets/js-misc/defaults.js';
+import animations from '/src/assets/js-misc/animations.js';
+import defaults from '/src/assets/js-misc/defaults.js';
 
 export default class Round {
   
