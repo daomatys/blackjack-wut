@@ -1,3 +1,5 @@
+import '/src/components/bank/bank.js';
+
 import Deck from '/src/components/deck/deck.js';
 import Panel from '/src/components/panel/panel.js';
 import Menu from '/src/components/menu/menu.js';

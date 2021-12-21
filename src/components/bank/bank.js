@@ -1,4 +1,4 @@
-import renderElement from "../../assets/js-misc/render-element";
+import renderElement from '/src/assets/js-misc/render-element.js';
 
 (function() {
   const bankMarkup = `
