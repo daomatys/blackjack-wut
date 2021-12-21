@@ -9,5 +9,5 @@ import renderElement from '/src/assets/js-misc/render-element.js';
     <img src="src/assets/graphics/indicators/indicator_test.png">
   `;
 
-  renderElement( 'indicator', indicatorMarkup );
+  renderElement( '.indicator', indicatorMarkup );
 })();
