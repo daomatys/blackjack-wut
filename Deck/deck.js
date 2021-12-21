@@ -19,7 +19,8 @@ export default class Deck {
       </div>
       <div class="deck__top">
         <img src="assets/graphics/cards/back_red.png">
-      </div>`;
+      </div>
+    `;
   }
   
   deckGenerate() {
@@ -28,8 +29,8 @@ export default class Deck {
     const ranks = [ 'A', 2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K' ];
     const suits = [ 'C', 'D', 'H', 'S' ];
     
-    for (let suit of suits) {
-      for (let rank of ranks) {
+    for ( let suit of suits ) {
+      for ( let rank of ranks ) {
         this.cards.push({
           rank: rank,
           suit: suit,
@@ -39,12 +40,15 @@ export default class Deck {
   }
   
   initialPosition() {
-    const initHiddenPosition = this.elem.animate({
+    this.elem.animate(
+      {
         transform: 'translate( -280px, -600px )'
-      }, {
+      },
+      {
         fill: 'forwards',
         composite: 'replace'
-      });
+      }
+    );
   }
   
   initEventListeners() {
@@ -119,20 +123,23 @@ export default class Deck {
     
     const card = new Card( this.cards[i] );
     
-    this.cards.splice(i, 1);
+    this.cards.splice( i, 1 );
     
     return card;
   }
   
   topCardScaleOnPick( num ) {
-    const zoom = this.sub('top').animate({
-      transform: `scale(${ num })`
-    }, {
-      easing: 'ease',
-      duration: 200,
-      fill: 'both',
-      composite: 'replace'
-    });
+    const zoom = this.sub('top').animate(
+      {
+        transform: `scale(${ num })`
+      },
+      {
+        easing: 'ease',
+        duration: 200,
+        fill: 'both',
+        composite: 'replace'
+      }
+    );
     zoom.persist();
   }
   
