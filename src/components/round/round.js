@@ -35,7 +35,7 @@ export default class Round {
   initNewRound = () => {
     this.deck = new Deck();
     
-    document.querySelector('[data-zone-deck]').append( this.deck.elem );
+    document.querySelector('[data-deck-landing-zone]').append( this.deck.elem );
     
     this.panel.defineAdditionalValues();
     this.defineAdditionalValues();
@@ -383,12 +383,14 @@ export default class Round {
   
   launchDealerCardTransition = () => {
     const card = this.deck.topCardData();
+    const handDealerRect = this.defineRect('.hand__dealer');
+    const deckLandingZoneRect = this.defineRect('[data-deck-landing-zone]');
     
     document.querySelector('.hand__dealer').insertAdjacentElement('afterbegin', card.elem );
     
     const cardStyle = card.elem.style;
-    const cardStyleRight = this.defineRect('.hand__dealer').right - this.defineRect('[data-zone-deck]').right + 'px';
-    const cardStyleTop = this.defineRect('.hand__dealer').top - this.defineRect('[data-zone-deck]').top + 'px';
+    const cardStyleRight = handDealerRect.right - deckLandingZoneRect.right + 'px';
+    const cardStyleTop = handDealerRect.top - deckLandingZoneRect.top + 'px';
     
     Object.assign( cardStyle, {
       left: cardStyleRight,
@@ -398,7 +400,7 @@ export default class Round {
     const shiftY = -parseInt( cardStyleTop, 10 ) + 'px';
     
     this.launchCardAnimation( card.elem, shiftX, shiftY );
-    
+
     ++this.drawnCards.dealer.count;
     
     const handCards = this.drawnCards.dealer;
@@ -406,6 +408,7 @@ export default class Round {
     if ( handCards.count < 8 ) {
       handCards.value += this.calculateCardValue( card, handCards.value );
     }
+
     if ( handCards.value > 19 || this.drawnCards.player.normal.overdraft ) {
       clearInterval( this.dealerDrawInterval );
       
@@ -416,6 +419,7 @@ export default class Round {
       }
       this.initStageRoundResults();
     }
+    
     console.log('dealer:', handCards.value);
   }
   
