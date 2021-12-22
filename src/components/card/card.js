@@ -6,7 +6,7 @@ export default class Card extends MyComponent {
   
   constructor(card) {
     super();
-    
+
     this.rank = card.rank;
     this.suit = card.suit;
     
@@ -14,7 +14,7 @@ export default class Card extends MyComponent {
     this.elem.classList.add('card');
     this.elem.ondragstart = () => false;
 
-    this.incrust();
+    this.render();
   }
   
   markup() {
@@ -24,11 +24,12 @@ export default class Card extends MyComponent {
       </div>
       <div class="card__back">
         <img src="src/assets/graphics/cards/back_red.png">
-      </div>`;
+      </div>
+    `;
   }
 
-  incrust() {
-    super.incrustComponent({
+  render() {
+    super.initializeComponent({
       stylesheet: thatComponentStyleSheet,
       element: this.elem,
       markup: this.markup()

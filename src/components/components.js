@@ -7,22 +7,23 @@ export default class MyComponent {
     ];
   }
 
-  renderMarkup( element, markup ) {
+  applyMarkup( element, markup ) {
     const insertMarkup = function( elem ) {
       elem.insertAdjacentHTML( 'afterbegin', markup );
     }
 
-    if ( typeof selector === 'string' ) {
+    if ( typeof element === 'string' ) {
       document.querySelectorAll( element ).forEach( item => insertMarkup( item ) );
+      console.log(element, 'selector')
     } 
     
-    if ( typeof selector !== 'string' ) {
+    if ( typeof element !== 'string' ) {
       insertMarkup( element );
     }
   }
 
-  incrustComponent( item ) {
+  initializeComponent( item ) {
     this.applyStyleSheet( item.stylesheet );
-    this.renderMarkup( item.element, item.markup )
+    this.applyMarkup( item.element, item.markup )
   }
 }
