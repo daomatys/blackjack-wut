@@ -1,6 +1,6 @@
-import Round from '/src/components/round/round.js';
+import Round from '/src/entities/round/round.js';
 
 
 (function() {
-  const round = new Round();
+  new Round();
 })();
