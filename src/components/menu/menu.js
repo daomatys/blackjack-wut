@@ -1,5 +1,6 @@
 import thatComponentStylesheet from './menu.css' assert { type: 'css' };
 
+
 (function() {
   document.adoptedStyleSheets = [ ...document.adoptedStyleSheets, thatComponentStylesheet ];
 })();
