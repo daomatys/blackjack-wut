@@ -1,3 +1,6 @@
+import './menu.css' assert { type: 'css' };
+
+
 export default class Menu {
 
   constructor() {

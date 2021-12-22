@@ -1,3 +1,6 @@
+import './card.css' assert { type: 'css' };
+
+
 export default class Card {
   
   constructor(card) {

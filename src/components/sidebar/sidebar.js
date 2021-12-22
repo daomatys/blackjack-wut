@@ -1,3 +1,6 @@
+import './sidebar.css' assert { type: 'css' };
+
+
 export default class Sidebar {
   
   constructor() {

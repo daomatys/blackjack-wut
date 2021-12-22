@@ -1,4 +1,6 @@
+import './deck.css' assert { type: 'css' };
 import Card from '../card/card.js';
+
 
 export default class Deck {
   

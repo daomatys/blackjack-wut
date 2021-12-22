@@ -1,4 +1,6 @@
+import './panel.css' assert { type: 'css' };
 import animations from '/src/assets/js-misc/animations.js';
+
 
 export default class Panel {
   

@@ -1,10 +1,3 @@
-@import 'src/components/sidebar/sidebar.css';
-@import 'src/components/panel/panel.css';
-@import 'src/components/card/card.css';
-@import 'src/components/deck/deck.css';
-@import 'src/components/menu/menu.css';
-
-
 html {
   user-select: none;
   overflow: hidden;
