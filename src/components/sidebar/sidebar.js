@@ -1,25 +1,22 @@
-import applyStyleSheet from '../../assets/js-misc/apply-stylesheet.js';
+import MyComponent from '../components.js';
 import thatComponentStyleSheet from './sidebar.css' assert { type: 'css' };
 
 
-(function() {
-  applyStyleSheet( thatComponentStyleSheet );
-})();
-
-
-export default class Sidebar {
+export default class Sidebar extends MyComponent {
   
   constructor() {
+    super();
+
+    this.sidebarMovedState = false;
+
     this.elem = document.createElement('div');
     this.elem.classList.add('sidebar');
-    this.elem.insertAdjacentHTML('afterbegin', this.layout());
     
+    this.render();
     this.eventListeners();
-    
-    this.sidebarMovedState = false;
   }
   
-  layout() {
+  markup() {
     return `
       <div class="sidebar__background" id ="sidebar">
         <img src="src/assets/graphics/sidebar.png">
@@ -39,6 +36,14 @@ export default class Sidebar {
         </div>
       </div>
     `;
+  }
+
+  render() {
+    super.initializeComponent({
+      stylesheet: thatComponentStyleSheet,
+      element: this.elem,
+      markup: this.markup()
+    });
   }
   
   eventListeners() {
