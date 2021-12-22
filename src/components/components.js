@@ -13,8 +13,9 @@ export default class MyComponent {
     }
 
     if ( typeof element === 'string' ) {
-      document.querySelectorAll( element ).forEach( item => insertMarkup( item ) );
-      console.log(element, 'selector')
+      document
+        .querySelectorAll( element )
+        .forEach( item => insertMarkup( item ) );
     } 
     
     if ( typeof element !== 'string' ) {

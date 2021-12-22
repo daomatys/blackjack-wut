@@ -4,7 +4,7 @@ import thatComponentStyleSheet from './card.css' assert { type: 'css' };
 
 export default class Card extends MyComponent {
   
-  constructor(card) {
+  constructor( card ) {
     super();
 
     this.rank = card.rank;
