@@ -1,34 +1,25 @@
-import applyStyleSheet from '../../assets/js-misc/apply-stylesheet.js';
+import MyComponent from '../components.js';
 import thatComponentStyleSheet from './panel.css' assert { type: 'css' };
 import animations from '/src/assets/js-misc/animations.js';
 
 
-(function() {
-  applyStyleSheet( thatComponentStyleSheet );
-})();
-
-
-export default class Panel {
+export default class Panel extends MyComponent {
   
   constructor() {
-    this.elem = document.createElement('div');
-    this.elem.classList.add('panel');
-    this.elem.insertAdjacentHTML('afterbegin', this.layout());
-    
+    super();
+
     this.animations = animations;
-    
-    this.eventListeners();
-  }
-  
-  defineAdditionalValues() {
-    this.arrChipsCounters = [ 0, 0, 0, 0, 0 ];
-    this.firstChipBet = false;
-  }
-  
-  layout = () => {
     this.arrClickers = [ 'doubled', 'check', 'split', 'hover' ];
     this.arrChips = [ 1, 5, 10, 25, 100 ];
     
+    this.elem = document.createElement('div');
+    this.elem.classList.add('panel');
+    
+    this.render();
+    this.eventListeners();
+  }
+
+  markup() {
     const layoutPanelButtons = this.arrClickers
       .map( suffix => `
         <div class="clicker__container clicker-${ suffix }">
@@ -79,6 +70,19 @@ export default class Panel {
       </div>`;
     
     return layoutAssembled;
+  }
+
+  render() {
+    super.initializeComponent({
+      stylesheet: thatComponentStyleSheet,
+      element: this.elem,
+      markup: this.markup()
+    });
+  }
+  
+  defineAdditionalValues() {
+    this.arrChipsCounters = [ 0, 0, 0, 0, 0 ];
+    this.firstChipBet = false;
   }
   
   eventListeners() {
