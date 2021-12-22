@@ -1,4 +1,4 @@
-import applyStyleSheet from '../../assets/js-misc/apply-stylesheet';
+import applyStyleSheet from '../../assets/js-misc/apply-stylesheet.js';
 import thatComponentStyleSheet from './deck.css' assert { type: 'css' };
 import Card from '../card/card.js';
 

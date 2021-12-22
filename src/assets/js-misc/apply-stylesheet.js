@@ -1,6 +1,6 @@
-export default function( componentStylesheet ) {
+export default function( componentStyleSheet ) {
   document.adoptedStyleSheets = [
     ...document.adoptedStyleSheets,
-    componentStylesheet
+    componentStyleSheet
   ];
 }
