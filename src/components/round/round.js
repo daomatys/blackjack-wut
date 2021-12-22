@@ -1,10 +1,9 @@
 import Bank from '/src/components/bank/bank.js';
-import '/src/components/indicator/indicator.js';
-
 import Deck from '/src/components/deck/deck.js';
-import Panel from '/src/components/panel/panel.js';
 import Menu from '/src/components/menu/menu.js';
+import Panel from '/src/components/panel/panel.js';
 import Sidebar from '/src/components/sidebar/sidebar.js';
+import Indicator from '/src/components/indicator/indicator.js';
 
 import animations from '/src/assets/js-misc/animations.js';
 import defaults from '/src/assets/js-misc/defaults.js';
@@ -23,6 +22,7 @@ export default class Round {
     this.animations = animations;
     this.defaults = defaults;
     
+    this.indicator = new Indicator();
     this.bank = new Bank();
     this.panel = new Panel();
     this.menu = new Menu();
