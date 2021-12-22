@@ -1,26 +1,23 @@
-import applyStyleSheet from '../../assets/js-misc/apply-stylesheet.js';
 import thatComponentStyleSheet from './deck.css' assert { type: 'css' };
 import Card from '../card/card.js';
+import MyComponent from '../components.js';
 
 
-(function() {
-  applyStyleSheet( thatComponentStyleSheet );
-})();
-
-
-export default class Deck {
+export default class Deck extends MyComponent {
   
   constructor() {
+    super();
+
     this.elem = document.createElement('div');
     this.elem.classList.add('deck');
-    this.elem.insertAdjacentHTML('afterbegin', this.deckLayout());
     this.elem.ondragstart = () => false;
-    
+
+    this.render();
     this.deckGenerate();
     this.initialPosition();
   }
-  
-  deckLayout() {
+
+  markup() {
     return `
       <div class="deck__veiled">
         <img src="src/assets/graphics/cards/back_red_deck.png">
@@ -29,6 +26,14 @@ export default class Deck {
         <img src="src/assets/graphics/cards/back_red.png">
       </div>
     `;
+  }
+
+  render() {
+    super.initializeComponent({
+      stylesheet: thatComponentStyleSheet,
+      element: this.elem,
+      markup: this.markup()
+    });
   }
   
   deckGenerate() {

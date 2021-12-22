@@ -33,6 +33,6 @@ export default class Card extends MyComponent {
       stylesheet: thatComponentStyleSheet,
       element: this.elem,
       markup: this.markup()
-    })
+    });
   }
 }
