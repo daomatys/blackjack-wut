@@ -23,6 +23,6 @@ export default class Indicator extends MyComponent {
       stylesheet: thatComponentStyleSheet,
       element: '.indicator',
       markup: this.markup()
-    })
+    });
   }
 }

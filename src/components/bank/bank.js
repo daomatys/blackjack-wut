@@ -27,6 +27,6 @@ export default class Bank extends MyComponent {
       stylesheet: thatComponentStyleSheet,
       element: '[data-bank]',
       markup: this.markup()
-    })
+    });
   }
 }
