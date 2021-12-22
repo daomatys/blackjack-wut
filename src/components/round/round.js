@@ -5,8 +5,8 @@ import Panel from '/src/components/panel/panel.js';
 import Sidebar from '/src/components/sidebar/sidebar.js';
 import Indicator from '/src/components/indicator/indicator.js';
 
-import animations from '/src/assets/js-misc/animations.js';
-import defaults from '/src/assets/js-misc/defaults.js';
+import animations from '/src/assets/lib/animations.js';
+import defaults from '/src/assets/lib/defaults.js';
 
 
 export default class Round {

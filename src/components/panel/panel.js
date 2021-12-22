@@ -1,6 +1,6 @@
 import MyComponent from '../components.js';
 import thatComponentStyleSheet from './panel.css' assert { type: 'css' };
-import animations from '/src/assets/js-misc/animations.js';
+import animations from '/src/assets/lib/animations.js';
 
 
 export default class Panel extends MyComponent {
