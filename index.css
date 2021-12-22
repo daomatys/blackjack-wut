@@ -76,22 +76,6 @@ img {
   height: 200px;
 }
 
-.indicator {
-  position: relative;
-  height: 52px;
-  
-}
-
-.indicator img {
-  position: absolute;
-  opacity: 0;
-  transition: all 0.4s cubic-bezier(0.76, 0, 0.24, 1);
-}
-
-.indicator_dealer {
-  transform: rotate( 0.5turn );
-}
-
 [data-panel] {
   position: absolute;
   right: 30px;
@@ -107,24 +91,6 @@ img {
   position: absolute;
   right: 50px;
   bottom: 25%;
-}
-
-.bank {
-  position: absolute;
-  height: 100%;
-  width: 520px;
-  left: 50%;
-  top: 0px;
-  padding: 0px;
-  transform: translateX(-50%);
-}
-
-.bank__slot {
-  position: relative;
-  display: inline-block;
-  width: 92px;
-  height: 100px;
-  top: -30px;
 }
 
 

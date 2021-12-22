@@ -1,0 +1,17 @@
+.bank {
+  position: absolute;
+  height: 100%;
+  width: 520px;
+  left: 50%;
+  top: 0px;
+  padding: 0px;
+  transform: translateX(-50%);
+}
+
+.bank__slot {
+  position: relative;
+  display: inline-block;
+  width: 92px;
+  height: 100px;
+  top: -30px;
+}
