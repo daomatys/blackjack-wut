@@ -1,5 +1,10 @@
-import './panel.css' assert { type: 'css' };
+import thatComponentStylesheet from './panel.css' assert { type: 'css' };
 import animations from '/src/assets/js-misc/animations.js';
+
+
+(function() {
+  document.adoptedStyleSheets = [ ...document.adoptedStyleSheets, thatComponentStylesheet ];
+})();
 
 
 export default class Panel {

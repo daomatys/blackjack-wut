@@ -1,5 +1,10 @@
-import './deck.css' assert { type: 'css' };
+import thatComponentStylesheet from './deck.css' assert { type: 'css' };
 import Card from '../card/card.js';
+
+
+(function() {
+  document.adoptedStyleSheets = [ ...document.adoptedStyleSheets, thatComponentStylesheet ];
+})();
 
 
 export default class Deck {

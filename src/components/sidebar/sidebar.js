@@ -1,4 +1,9 @@
-import './sidebar.css' assert { type: 'css' };
+import thatComponentStylesheet from './sidebar.css' assert { type: 'css' };
+
+
+(function() {
+  document.adoptedStyleSheets = [ ...document.adoptedStyleSheets, thatComponentStylesheet ];
+})();
 
 
 export default class Sidebar {

@@ -1,4 +1,9 @@
-import './card.css' assert { type: 'css' };
+import thatComponentStylesheet from './card.css' assert { type: 'css' };
+
+
+(function() {
+  document.adoptedStyleSheets = [ ...document.adoptedStyleSheets, thatComponentStylesheet ];
+})();
 
 
 export default class Card {

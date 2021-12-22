@@ -1,4 +1,8 @@
-import './menu.css' assert { type: 'css' };
+import thatComponentStylesheet from './menu.css' assert { type: 'css' };
+
+(function() {
+  document.adoptedStyleSheets = [ ...document.adoptedStyleSheets, thatComponentStylesheet ];
+})();
 
 
 export default class Menu {
