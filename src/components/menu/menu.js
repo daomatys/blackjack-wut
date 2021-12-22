@@ -1,23 +1,20 @@
-import applyStyleSheet from '../../assets/js-misc/apply-stylesheet.js';
+import MyComponent from '../components.js';
 import thatComponentStyleSheet from './menu.css' assert { type: 'css' };
 
 
-(function() {
-  applyStyleSheet( thatComponentStyleSheet );
-})();
-
-
-export default class Menu {
+export default class Menu extends MyComponent {
 
   constructor() {
+    super();
+
     this.elem = document.createElement('div');
     this.elem.classList.add('menu');
-    this.elem.insertAdjacentHTML('afterbegin', this.layout());
     
-    this.eventListeners();
+    this.render();
+    this.initEventListeners();
   }
   
-  layout() {
+  markup() {
     return `
       <div class="menu__logo">
         <img src="src/assets/graphics/logos/logo.png">
@@ -29,8 +26,16 @@ export default class Menu {
       </div>
     `;
   }
+
+  render() {
+    super.initializeComponent({
+      stylesheet: thatComponentStyleSheet,
+      element: this.elem,
+      markup: this.markup()
+    });
+  }
   
-  eventListeners() {
+  initEventListeners() {
     const selectButton = name => this.elem.querySelector(`#menu-${ name }`)
     
     selectButton('start').addEventListener('pointerdown', this.start);
@@ -42,7 +47,5 @@ export default class Menu {
     document.querySelector('#start-screen-menu').style.display = 'none';
   }
   
-  about = () => {
-    
-  }
+  about = () => {}
 }
