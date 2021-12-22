@@ -1,26 +1,23 @@
-import applyStyleSheet from '../../assets/js-misc/apply-stylesheet.js';
+import MyComponent from '../components.js';
 import thatComponentStyleSheet from './card.css' assert { type: 'css' };
 
 
-(function() {
-  applyStyleSheet( thatComponentStyleSheet );
-})();
-
-
-export default class Card {
+export default class Card extends MyComponent {
   
   constructor(card) {
+    super();
+    
     this.rank = card.rank;
     this.suit = card.suit;
     
     this.elem = document.createElement('div');
     this.elem.classList.add('card');
-    this.elem.insertAdjacentHTML('afterbegin', this.layout());
-    
     this.elem.ondragstart = () => false;
+
+    this.incrust();
   }
   
-  layout() {
+  markup() {
     return `
       <div class="card__title">
         <img src="src/assets/graphics/cards/${ this.rank + this.suit }.png">
@@ -28,5 +25,13 @@ export default class Card {
       <div class="card__back">
         <img src="src/assets/graphics/cards/back_red.png">
       </div>`;
+  }
+
+  incrust() {
+    super.incrustComponent({
+      stylesheet: thatComponentStyleSheet,
+      element: this.elem,
+      markup: this.markup()
+    })
   }
 }
