@@ -1,9 +1,10 @@
-import thatComponentStylesheet from './panel.css' assert { type: 'css' };
+import applyStyleSheet from '../../assets/js-misc/apply-stylesheet';
+import thatComponentStyleSheet from './panel.css' assert { type: 'css' };
 import animations from '/src/assets/js-misc/animations.js';
 
 
 (function() {
-  document.adoptedStyleSheets = [ ...document.adoptedStyleSheets, thatComponentStylesheet ];
+  applyStyleSheet( thatComponentStyleSheet );
 })();
 
 

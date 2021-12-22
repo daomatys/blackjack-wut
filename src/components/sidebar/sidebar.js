@@ -1,8 +1,9 @@
-import thatComponentStylesheet from './sidebar.css' assert { type: 'css' };
+import applyStyleSheet from '../../assets/js-misc/apply-stylesheet';
+import thatComponentStyleSheet from './sidebar.css' assert { type: 'css' };
 
 
 (function() {
-  document.adoptedStyleSheets = [ ...document.adoptedStyleSheets, thatComponentStylesheet ];
+  applyStyleSheet( thatComponentStyleSheet );
 })();
 
 

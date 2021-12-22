@@ -1,9 +1,10 @@
-import thatComponentStylesheet from './deck.css' assert { type: 'css' };
+import applyStyleSheet from '../../assets/js-misc/apply-stylesheet';
+import thatComponentStyleSheet from './deck.css' assert { type: 'css' };
 import Card from '../card/card.js';
 
 
 (function() {
-  document.adoptedStyleSheets = [ ...document.adoptedStyleSheets, thatComponentStylesheet ];
+  applyStyleSheet( thatComponentStyleSheet );
 })();
 
 
