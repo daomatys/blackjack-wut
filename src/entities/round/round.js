@@ -444,24 +444,19 @@ export default class Round {
   }
   
   launchCardAnimation( elem, shiftX, shiftY ) {
-    const flight = elem.animate({
-      transform: [
-        'scale( 1.05 )',
-        `perspective( 900px ) scale( 1 ) translate( ${ shiftX }, ${ shiftY } ) rotateY( 0.5turn )`
-      ]
-    }, {
-      easing: 'ease',
-      duration: 1000,
-      fill: 'both',
-      composite: 'replace'
-    });
+    const flight = elem.animate(
+      this.animations.card.flight.action( shiftX, shiftY ),
+      this.animations.card.flight.props
+    );
     flight.persist();
   }
   
   calculateCardValue( card, inputValue ) {
     let outputValue = 10;
     
-    if ( typeof card.rank === 'number' ) outputValue = card.rank;
+    if ( typeof card.rank === 'number' ) {
+      outputValue = card.rank;
+    }
     
     if ( card.rank === 'A' ) {
       if ( inputValue + 11 < 22 ) {
@@ -473,6 +468,7 @@ export default class Round {
         outputValue = 1;
       }
     }
+    
     if ( outputValue + inputValue > 21 ) {
       if ( card.elem.closest('.hand__player') && this.drawnCards.player.normal.topaces > 0 ) {
         --this.drawnCards.player.normal.topaces;

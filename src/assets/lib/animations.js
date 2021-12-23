@@ -69,6 +69,21 @@ export default {
         fill: 'both',
         composite: 'add'
       }
+    },
+
+    flight: {
+      action: ( shiftX, shiftY ) => ({
+        transform: [
+          'scale( 1.05 )',
+          `perspective( 900px ) scale( 1 ) translate( ${ shiftX }, ${ shiftY } ) rotateY( 0.5turn )`
+        ]
+      }),
+      props: {
+        easing: 'ease',
+        duration: 1000,
+        fill: 'both',
+        composite: 'replace'
+      }
     }
   },
   
