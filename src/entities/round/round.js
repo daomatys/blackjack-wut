@@ -76,7 +76,7 @@ export default class Round {
     const fakeAdders = document.querySelectorAll('.adder__fake');
     const caller = document.querySelector('.caller-bank');
     
-    for ( let fake of fakeAdders ) this.toggleClickPossibility( fake );
+    fakeAdders.forEach( fake => this.toggleClickPossibility( fake ) );
     
     this.deckFalls = document.querySelector('.deck').animate( 
       this.animations.deck.fall.action,
@@ -94,6 +94,7 @@ export default class Round {
       this.animations.bank.shift.action,
       this.animations.bank.shift.props
     );
+
     this.deckFalls.persist();
     this.deckFalls.onfinish = () => {
       this.launchDealerCardTransition();
@@ -112,9 +113,11 @@ export default class Round {
       if ( resultsState.dealer ) this.indicatorsIndexes = { player: 2, dealer: 1 };
       if ( resultsState.tie ) this.indicatorsIndexes = { player: 0, dealer: 0 };
     }
+
     if ( !this.splitModeState ) {
       this.results.normal = this.defineRoundResults( this.drawnCards.player.normal );
-    } else {
+    }
+    if ( this.splitModeState ) {
       this.results.left = this.defineRoundResults( this.drawnCards.player.splitleft );
       this.results.right = this.defineRoundResults( this.drawnCards.player.splitright );
       
@@ -137,35 +140,42 @@ export default class Round {
   }
   
   initStageRoundReset = () => {
+    const killElement = function( elem ) {
+      if ( elem.parentNode ) {
+        elem.parentNode.removeChild( elem );
+      }
+    }
+
     const enlightedClickers = document.querySelectorAll('.clicker__fake.allow-click');
     const drawnCards = document.querySelectorAll('.card');
     const fakeAdders = document.querySelectorAll('.adder__fake');
     const betChips = document.querySelectorAll('.chip-bet');
     const usedDeck = this.deck.elem;
     
-    if ( this.splitModeState ) this.panel.toggleSplitEntitiesClasses( true );
-    
+    if ( this.splitModeState ) {
+      this.panel.toggleSplitEntitiesClasses( true );
+    }
     this.killLastRoundEventListeners();
     this.deck.killEventListeners();
     
-    for ( let clicker of enlightedClickers ) {
-      this.toggleClickPossibility( clicker );
-    }
-    for ( let card of drawnCards ) {
+    enlightedClickers.forEach( clicker => this.toggleClickPossibility( clicker ) );
+
+    drawnCards.forEach( card => {
       const cardRemove = card.animate(
         this.animations.card.remove.action,
         this.animations.card.remove.props 
       );
-      cardRemove.onfinish = () => elementRemover( card );
-    }
-    for ( let chip of betChips ) elementRemover( chip );
-    for ( let adder of fakeAdders ) this.toggleClickPossibility( adder );
+      cardRemove.onfinish = () => killElement( card );
+    });
+
+    betChips.forEach( chip => killElement( chip ) );
+    fakeAdders.forEach( adder => this.toggleClickPossibility( adder ) );
     
     const deckRemove = usedDeck.animate(
       this.animations.deck.remove.action,
       this.animations.deck.remove.props
     );
-    deckRemove.onfinish = () => elementRemover( usedDeck );
+    deckRemove.onfinish = () => killElement( usedDeck );
     
     this.tableShakes.cancel();
     this.bankShifts.cancel();
@@ -174,10 +184,6 @@ export default class Round {
     
     this.initNewRound();
     this.initNewRoundEventListeners();
-    
-    function elementRemover( elem ) {
-      if ( elem.parentNode ) elem.parentNode.removeChild( elem );
-    }
   }
   
   //round stage side methods
@@ -203,6 +209,12 @@ export default class Round {
   }
   
   defineRoundResults( playerCards ) {
+    const winCondition = function( playerWon, dealerWon, nobodyWon ) {
+      this.player = playerWon,
+      this.dealer = dealerWon,
+      this.tie = nobodyWon
+    }
+
     const dealerOverdraft = this.drawnCards.dealer.overdraft;
     const dealerValue = this.drawnCards.dealer.value;
     const dealerCount = this.drawnCards.dealer.count;
@@ -216,29 +228,31 @@ export default class Round {
     const tie = new winCondition(0, 0, 1);
     
     let outputResult = 'attention';
+
+    const caseOverdraft = playerOverdraft || dealerOverdraft;
     
-    if ( playerOverdraft || dealerOverdraft ) {
+    if ( caseOverdraft ) {
       if ( dealerOverdraft ) outputResult = player;
       if ( playerOverdraft ) outputResult = dealer;
-    } else {
-      if ( playerValue === dealerValue ) {
+    }
+
+    if ( !caseOverdraft ) {
+      const valuesEquivalence = playerValue === dealerValue;
+
+      if ( valuesEquivalence ) {
         outputResult = tie;
         if ( playerValue === 21 ) {
           if ( playerCount < dealerCount ) outputResult = player;
           if ( playerCount > dealerCount ) outputResult = dealer;
         }
-      } else {
+      }
+
+      if ( !valuesEquivalence ){
         if ( playerValue > dealerValue ) outputResult = player;
         if ( playerValue < dealerValue ) outputResult = dealer;
       }
     }
     return outputResult;
-    
-    function winCondition( playerWon, dealerWon, nobodyWon ) {
-      this.player = playerWon,
-      this.dealer = dealerWon,
-      this.tie = nobodyWon
-    }
   }
   
   defineIndicatorsVisibilityByIndex = ( indexes, opacity ) => {
@@ -252,9 +266,14 @@ export default class Round {
   //card animation methods
   
   choosePlayerDrawMode( cardProps ) {
-    !this.splitModeState
-      ? this.initPlayerDrawNormal( cardProps )
-      : this.initPlayerDrawSplit( cardProps );
+    if ( !this.splitModeState ) {
+      this.initPlayerDrawNormal( cardProps );
+      return;
+    }
+
+    if ( this.splitModeState ) {
+      this.initPlayerDrawSplit( cardProps );
+    }
   }
   
   initPlayerDrawNormal( cardProps ) {
