@@ -461,7 +461,7 @@ export default class Round {
   calculateCardValue( card, inputValue ) {
     let outputValue = 10;
     
-    if ( typeof( card.rank ) === 'number' ) outputValue = card.rank;
+    if ( typeof card.rank === 'number' ) outputValue = card.rank;
     
     if ( card.rank === 'A' ) {
       if ( inputValue + 11 < 22 ) {
