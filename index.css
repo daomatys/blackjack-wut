@@ -1,32 +1,24 @@
-html {
+body {
   user-select: none;
   overflow: hidden;
-  margin: 0;
-}
-
-body {
   position: relative;
   background-image: url("src/assets/graphics/table_texture.png");
   box-sizing: border-box;
   margin: 0;
-}
-
-html, body {
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
 }
 
 img {
   pointer-events: none;
+  max-width: 100%;
 }
 
 #start-screen-menu {
-  position: absolute;
-  width: 936px;
-  height: 188px;
-  z-index: 40;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
 }
 
 #blackjack-table {
