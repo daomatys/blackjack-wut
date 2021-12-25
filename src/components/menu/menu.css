@@ -1,4 +1,4 @@
-@import "/src/assets/fonts/neonize/neonize.css";
+@import "/src/assets/fonts/neonize/fonts.css";
 
 .menu {
   display: flex;
@@ -7,16 +7,19 @@
 }
 
 .menu__button-array {
+  padding-top: 12px;
   position: relative;
   display: flex;
   justify-content: center;
   gap: 20px;
   width: 100vw;
-  background-color: aliceblue;
+  background-color: black;
 }
 
 .menu__button {
+  font-size: 48px;
+  font-family: Neonize;
   display: inline-block;
   text-decoration: none;
-  color: initial;
+  color: wheat;
 }
