@@ -4,6 +4,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 20px
 }
 
 .menu__button-array {
@@ -13,7 +14,7 @@
   justify-content: center;
   gap: 20px;
   width: 100vw;
-  background-color: black;
+  background-color: azure;
 }
 
 .menu__button {
@@ -21,5 +22,6 @@
   font-family: Neonize;
   display: inline-block;
   text-decoration: none;
-  color: wheat;
+  color: rgb(207, 0, 155);
+  cursor: pointer;
 }
