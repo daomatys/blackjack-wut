@@ -1,0 +1,7 @@
+@font-face {
+	font-family: 'Neonize';
+	src: url('fonts/Neonize.eot');
+	src: local('☺'), url('fonts/Neonize.woff') format('woff'), url('fonts/Neonize.ttf') format('truetype'), url('fonts/Neonize.svg') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
