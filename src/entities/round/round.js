@@ -43,15 +43,20 @@ export default class Round {
   }
   
   initNewRoundEventListeners() {
-    this.deck.elem.addEventListener('card-placed', ({ detail }) => this.choosePlayerDrawMode( detail ));
+    this.deck.elem
+      .addEventListener('card-placed', ({ detail }) => this.choosePlayerDrawMode( detail ));
     
-    document.addEventListener('split', this.activateSplitDrawMode, { once: true });
+    document
+      .addEventListener('split', this.activateSplitDrawMode, { once: true });
     
-    document.addEventListener('first-chip-bet', this.initStageDeckReadyToLand, { once: true });
+    document
+      .addEventListener('first-chip-bet', this.initStageDeckReadyToLand, { once: true });
     
-    document.addEventListener('end-of-player-draw', this.initStageDealerDraw, { once: true });
+    document
+      .addEventListener('end-of-player-draw', this.initStageDealerDraw, { once: true });
     
-    document.querySelector('.caller-bank').addEventListener('click', this.initStagePlayerDraw, { once: true });
+    document.querySelector('.caller-bank')
+      .addEventListener('click', this.initStagePlayerDraw, { once: true });
   }
   
   killLastRoundEventListeners() {
