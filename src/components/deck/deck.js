@@ -142,7 +142,7 @@ export default class Deck extends MyComponent {
   
   topCardScaleOnPick( num ) {
     const zoom = this.sub('top').animate(
-      this.animations.card.scale.action(),
+      this.animations.card.scale.action( num ),
       this.animations.card.scale.props,
     );
     zoom.persist();
