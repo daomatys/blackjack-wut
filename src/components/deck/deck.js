@@ -8,32 +8,36 @@ export default class Deck extends MyComponent {
   constructor() {
     super();
 
-    this.elem = document.createElement('div');
-    this.elem.classList.add('deck');
-    this.elem.ondragstart = () => false;
-
     this.render();
     this.deckGenerate();
     this.initialPosition();
+
+    this.elem.ondragstart = () => false;
   }
 
   markup() {
     return `
-      <div class="deck__veiled">
-        <img src="src/assets/graphics/cards/back_red_deck.png">
-      </div>
-      <div class="deck__top">
-        <img src="src/assets/graphics/cards/back_red.png">
+      <div class="deck">
+        <div class="deck__veiled">
+          <img src="src/assets/graphics/cards/back_red_deck.png">
+        </div>
+        <div class="deck__top">
+          <img src="src/assets/graphics/cards/back_red.png">
+        </div>
       </div>
     `;
   }
 
   render() {
+    const selector = '[data-deck-socket]';
+
     super.initializeComponent({
       stylesheet: thatComponentStyleSheet,
-      element: this.elem,
+      wrapref: selector,
       markup: this.markup()
     });
+
+    this.elem = this.defineElementByItsWrap( selector );
   }
   
   deckGenerate() {

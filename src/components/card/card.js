@@ -29,7 +29,7 @@ export default class Card extends MyComponent {
   }
 
   render() {
-    const selector = 'hand__player';
+    const selector = '#blackjack-table';
 
     super.initializeComponent({
       stylesheet: thatComponentStyleSheet,
