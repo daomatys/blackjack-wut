@@ -1,5 +1,6 @@
 import MyComponent from '../components.js';
 import thatComponentStyleSheet from './sidebar.css' assert { type: 'css' };
+import animations from '../../assets/lib/animations.js';
 
 
 export default class Sidebar extends MyComponent {
@@ -7,6 +8,7 @@ export default class Sidebar extends MyComponent {
   constructor() {
     super();
 
+    this.animations = animations;
     this.sidebarMovedState = false;
     
     this.render();
@@ -101,14 +103,10 @@ export default class Sidebar extends MyComponent {
       ? this.sidebarShift = '142px'
       : this.sidebarShift = '-142px';
     
-    const sidebarAnimation = this.elem.animate({
-      transform: `translateX(${ this.sidebarShift })`
-    }, {
-      easing: 'cubic-bezier( 0.45, 0, 0.56, 1 )',
-      duration: 600,
-      fill: 'both',
-      composite: 'add'
-    });
+    const sidebarAnimation = this.elem.animate(
+      this.animations.sidebar.shift.action,
+      this.animations.sidebar.shift.props
+    );
     sidebarAnimation.persist();
   }
 }
