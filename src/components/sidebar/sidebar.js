@@ -15,21 +15,23 @@ export default class Sidebar extends MyComponent {
   
   markup() {
     return `
-      <div class="sidebar__background" id ="sidebar">
-        <img src="src/assets/graphics/sidebar.png">
-      </div>
-      <div class="sidebar__button-array">
-        <div class="sidebar__button" id="sidebar-next">
-          <img src="src/assets/graphics/buttons/sidebar-btn_next_off.png" style="display: inline">
-          <img src="src/assets/graphics/buttons/sidebar-btn_next_on.png" style="display: none">
+      <div class="sidebar">
+        <div class="sidebar__background" id ="sidebar">
+          <img src="src/assets/graphics/sidebar.png">
         </div>
-        <div class="sidebar__button" id="sidebar-menu">
-          <img src="src/assets/graphics/buttons/sidebar-btn_menu_off.png" style="display: inline">
-          <img src="src/assets/graphics/buttons/sidebar-btn_menu_on.png" style="display: none">
-        </div>
-        <div class="sidebar__button" id="sidebar-help">
-          <img src="src/assets/graphics/buttons/sidebar-btn_help_off.png" style="display: inline">
-          <img src="src/assets/graphics/buttons/sidebar-btn_help_on.png" style="display: none">
+        <div class="sidebar__button-array">
+          <div class="sidebar__button" id="sidebar-next">
+            <img src="src/assets/graphics/buttons/sidebar-btn_next_off.png" style="display: inline">
+            <img src="src/assets/graphics/buttons/sidebar-btn_next_on.png" style="display: none">
+          </div>
+          <div class="sidebar__button" id="sidebar-menu">
+            <img src="src/assets/graphics/buttons/sidebar-btn_menu_off.png" style="display: inline">
+            <img src="src/assets/graphics/buttons/sidebar-btn_menu_on.png" style="display: none">
+          </div>
+          <div class="sidebar__button" id="sidebar-help">
+            <img src="src/assets/graphics/buttons/sidebar-btn_help_off.png" style="display: inline">
+            <img src="src/assets/graphics/buttons/sidebar-btn_help_on.png" style="display: none">
+          </div>
         </div>
       </div>
     `;
