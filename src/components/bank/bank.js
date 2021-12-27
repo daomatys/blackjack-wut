@@ -25,7 +25,7 @@ export default class Bank extends MyComponent {
   render() {
     super.initializeComponent({
       stylesheet: thatComponentStyleSheet,
-      element: '[data-bank]',
+      wrapref: '[data-bank]',
       markup: this.markup()
     });
   }

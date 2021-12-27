@@ -9,30 +9,34 @@ export default class Card extends MyComponent {
 
     this.rank = card.rank;
     this.suit = card.suit;
-    
-    this.elem = document.createElement('div');
-    this.elem.classList.add('card');
-    this.elem.ondragstart = () => false;
 
     this.render();
+
+    this.elem.ondragstart = () => false;
   }
   
   markup() {
     return `
-      <div class="card__title">
-        <img src="src/assets/graphics/cards/${ this.rank + this.suit }.png">
-      </div>
-      <div class="card__back">
-        <img src="src/assets/graphics/cards/back_red.png">
+      <div class="card">
+        <div class="card__title">
+          <img src="src/assets/graphics/cards/${ this.rank + this.suit }.png">
+        </div>
+        <div class="card__back">
+          <img src="src/assets/graphics/cards/back_red.png">
+        </div>
       </div>
     `;
   }
 
   render() {
+    const selector = 'hand__player';
+
     super.initializeComponent({
       stylesheet: thatComponentStyleSheet,
-      element: this.elem,
+      wrapref: selector,
       markup: this.markup()
     });
+
+    this.elem = this.defineElementByItsWrap( selector );
   }
 }
