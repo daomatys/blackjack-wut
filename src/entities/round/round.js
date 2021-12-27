@@ -29,7 +29,6 @@ export default class Round {
     this.sidebar = new Sidebar();
     
     document.querySelector('[data-panel]').append( this.panel.elem );
-    document.querySelector('[data-menu]').append( this.menu.elem );
     document.querySelector('[data-sidebar]').append( this.sidebar.elem );
   }
   

@@ -7,24 +7,20 @@ export default class MyComponent {
     ];
   }
 
-  applyMarkup( element, markup ) {
-    const insertMarkup = function( elem ) {
-      elem.insertAdjacentHTML( 'afterbegin', markup );
-    }
+  insertMarkup( element, markup ) {
+    element.insertAdjacentHTML( 'afterbegin', markup );
 
-    if ( typeof element === 'string' ) {
-      document
-        .querySelectorAll( element )
-        .forEach( item => insertMarkup( item ) );
-    } 
-    
-    if ( typeof element !== 'string' ) {
-      insertMarkup( element );
-    }
+    this.elem = element.firstChild;
+  }
+
+  applyMarkup( wrapref, markup ) {
+    document
+      .querySelectorAll( wrapref )
+      .forEach( element => this.insertMarkup( element, markup ) );
   }
 
   initializeComponent( item ) {
     this.applyStyleSheet( item.stylesheet );
-    this.applyMarkup( item.element, item.markup )
+    this.applyMarkup( item.wrapref, item.markup )
   }
 }
