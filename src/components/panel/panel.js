@@ -12,9 +12,6 @@ export default class Panel extends MyComponent {
     this.arrClickers = [ 'doubled', 'check', 'split', 'hover' ];
     this.arrChips = [ 1, 5, 10, 25, 100 ];
     
-    this.elem = document.createElement('div');
-    this.elem.classList.add('panel');
-    
     this.render();
     this.eventListeners();
   }
@@ -54,30 +51,37 @@ export default class Panel extends MyComponent {
       .join('');
       
     const layoutAssembled = `
-      <div class="panel__background">
-        <img src="src/assets/graphics/panel.png">
-      </div>
-      <div class="panel__clickers">
-        ${ layoutPanelButtons }
-      </div>
-      <div class="panel__chip-machine">
-        <div class="panel__chips">
-          ${ layoutChipMachine }
+      <div class="panel">
+        <div class="panel__background">
+          <img src="src/assets/graphics/panel.png">
         </div>
-        <div class="panel__adders">
-          ${ layoutAdderBar }
+        <div class="panel__clickers">
+          ${ layoutPanelButtons }
         </div>
-      </div>`;
+        <div class="panel__chip-machine">
+          <div class="panel__chips">
+            ${ layoutChipMachine }
+          </div>
+          <div class="panel__adders">
+            ${ layoutAdderBar }
+          </div>
+        </div>
+      </div>
+    `;
     
     return layoutAssembled;
   }
 
   render() {
+    const selector = '[data-panel]'
+
     super.initializeComponent({
       stylesheet: thatComponentStyleSheet,
-      element: this.elem,
+      wrapref: selector,
       markup: this.markup()
     });
+
+    this.elem = this.defineElementByItsWrap( selector );
   }
   
   defineAdditionalValues() {
@@ -88,7 +92,7 @@ export default class Panel extends MyComponent {
   eventListeners() {
     const taps = this.elem.querySelectorAll('.tap');
     
-    for (let tap of taps) tap.addEventListener('pointerdown', this.actsOfButtons);
+    taps.forEach( tap => tap.addEventListener('pointerdown', this.actsOfButtons) );
   }
   
   changeButtonDisplayState = id => {

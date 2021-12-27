@@ -9,8 +9,6 @@ export default class MyComponent {
 
   insertMarkup( element, markup ) {
     element.insertAdjacentHTML( 'afterbegin', markup );
-
-    this.elem = element.firstChild;
   }
 
   applyMarkup( wrapref, markup ) {
@@ -22,5 +20,9 @@ export default class MyComponent {
   initializeComponent( item ) {
     this.applyStyleSheet( item.stylesheet );
     this.applyMarkup( item.wrapref, item.markup )
+  }
+
+  defineElementByItsWrap( wrapref ) {
+    return document.querySelector( wrapref ).firstElementChild;
   }
 }

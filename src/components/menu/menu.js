@@ -27,11 +27,15 @@ export default class Menu extends MyComponent {
   }
 
   render() {
+    const selector = '[data-menu]';
+
     super.initializeComponent({
       stylesheet: thatComponentStyleSheet,
-      wrapref: '[data-menu]',
+      wrapref: selector,
       markup: this.markup()
     });
+
+    this.elem = this.defineElementByItsWrap( selector );
   }
   
   initEventListeners() {
