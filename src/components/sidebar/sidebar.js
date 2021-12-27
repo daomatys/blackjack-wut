@@ -39,11 +39,15 @@ export default class Sidebar extends MyComponent {
   }
 
   render() {
+    const selector = '[data-sidebar]';
+
     super.initializeComponent({
       stylesheet: thatComponentStyleSheet,
-      element: this.elem,
+      wrapref: selector,
       markup: this.markup()
     });
+
+    this.elem = this.defineElementByItsWrap( selector );
   }
   
   eventListeners() {
