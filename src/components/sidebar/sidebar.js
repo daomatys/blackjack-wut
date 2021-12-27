@@ -8,9 +8,6 @@ export default class Sidebar extends MyComponent {
     super();
 
     this.sidebarMovedState = false;
-
-    this.elem = document.createElement('div');
-    this.elem.classList.add('sidebar');
     
     this.render();
     this.eventListeners();
