@@ -12,21 +12,21 @@ import defaults from '/src/assets/lib/defaults.js';
 export default class Round {
   
   constructor() {
-    this.incrustImportedElements();
+    this.initInitialGameState();
     
     this.initNewRound();
     this.initNewRoundEventListeners();
   }
   
-  incrustImportedElements() {
-    this.animations = animations;
+  initInitialGameState() {
     this.defaults = defaults;
+    this.animations = animations;
     
     this.indicator = new Indicator();
-    this.bank = new Bank();
-    this.panel = new Panel();
-    this.menu = new Menu();
     this.sidebar = new Sidebar();
+    this.panel = new Panel();
+    this.bank = new Bank();
+    this.menu = new Menu();
   }
   
   initNewRound = () => {
