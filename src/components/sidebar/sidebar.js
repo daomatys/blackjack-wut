@@ -8,7 +8,7 @@ export default class Sidebar extends MyComponent {
   constructor() {
     super();
 
-    this.animations = animations;
+    this.animations = animations.sidebar;
     this.sidebarMovedState = false;
     
     this.render();
@@ -104,8 +104,8 @@ export default class Sidebar extends MyComponent {
       : this.sidebarShift = '-142px';
     
     const sidebarAnimation = this.elem.animate(
-      this.animations.sidebar.shift.action( this.sidebarShift ),
-      this.animations.sidebar.shift.props
+      this.animations.shift.action( this.sidebarShift ),
+      this.animations.shift.props
     );
     sidebarAnimation.persist();
   }
