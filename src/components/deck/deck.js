@@ -1,12 +1,15 @@
 import thatComponentStyleSheet from './deck.css' assert { type: 'css' };
 import Card from '../card/card.js';
 import MyComponent from '../components.js';
+import animations from '../../assets/lib/animations.js';
 
 
 export default class Deck extends MyComponent {
   
   constructor() {
     super();
+
+    this.animations = animations;
 
     this.render();
     this.deckGenerate();
@@ -139,15 +142,8 @@ export default class Deck extends MyComponent {
   
   topCardScaleOnPick( num ) {
     const zoom = this.sub('top').animate(
-      {
-        transform: `scale(${ num })`
-      },
-      {
-        easing: 'ease',
-        duration: 200,
-        fill: 'both',
-        composite: 'replace'
-      }
+      this.animations.card.scale.action(),
+      this.animations.card.scale.props,
     );
     zoom.persist();
   }

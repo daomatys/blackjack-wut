@@ -28,6 +28,17 @@ export default {
   },
   
   card: {
+    scale: {
+      action: ( num ) => ({
+        transform: `scale(${ num })`
+      }),
+      props: {
+        easing: 'ease',
+        duration: 200,
+        fill: 'both',
+        composite: 'replace'
+      }
+    },
     onhover: {
       action: {
         transform: [
