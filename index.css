@@ -29,20 +29,6 @@ img {
   height: 100%;
 }
 
-.hand {
-  position: absolute;
-  width: 554px;
-  height: 202px;
-}
-
-.holder {
-  position: absolute;
-  left: 7px;
-  top: 9px;
-  height: 184px;
-  width: 540px;
-}
-
 [data-zone-dealer] {
   top: 20px;
   right: 53px;
