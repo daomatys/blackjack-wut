@@ -13,11 +13,10 @@ export default class DeckUnit extends MyComponent {
     return `
       <div class="indicator indicator__dealer"></div>
 
-      <div data-deck-socket></div>
       <div class="deck-unit__game-starter">
         <img src="src/assets/graphics/buttons/caller-bank.png">
       </div>
-      <div class="deck-unit__background">
+      <div class="deck-unit__deck-socket" data-deck-socket>
         <img src="src/assets/graphics/zone_deck.png">
       </div>
 

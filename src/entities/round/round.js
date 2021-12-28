@@ -410,7 +410,7 @@ export default class Round {
   launchDealerCardTransition = () => {
     const card = this.deck.topCardData();
     const handDealerRect = this.defineRect('.hand__dealer');
-    const deckLandingZoneRect = this.defineRect('.deck-unit__background');
+    const deckLandingZoneRect = this.defineRect('[data-deck-socket]');
     
     document.querySelector('.hand__dealer').insertAdjacentElement('afterbegin', card.elem );
     
