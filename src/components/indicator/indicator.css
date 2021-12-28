@@ -9,6 +9,6 @@
   transition: all 0.4s cubic-bezier(0.76, 0, 0.24, 1);
 }
 
-.indicator_dealer {
+.indicator__dealer {
   transform: rotate( 0.5turn );
 }
