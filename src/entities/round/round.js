@@ -110,6 +110,7 @@ export default class Round {
   }
   
   initStageDealerDraw = () => {
+    this.panel.toggleClickerClickPossibility('check');
     this.dealerDrawInterval = setInterval( this.launchDealerCardTransition, 700 );
   }
   
@@ -204,7 +205,7 @@ export default class Round {
     this.drawnCards = this.defaults.hands();
     this.indicatorsIndexes = this.defaults.indicators();
     
-    this.firstPair = []; 
+    this.firstPairOfCards = []; 
     this.splitModeState = false;
   }
   
@@ -248,9 +249,9 @@ export default class Round {
     }
 
     if ( !caseOverdraft ) {
-      const valuesEquivalence = playerValue === dealerValue;
+      const caseValuesEquivalent = playerValue === dealerValue;
 
-      if ( valuesEquivalence ) {
+      if ( caseValuesEquivalent ) {
         outputResult = tie;
         if ( playerValue === 21 ) {
           if ( playerCount < dealerCount ) outputResult = player;
@@ -258,7 +259,7 @@ export default class Round {
         }
       }
 
-      if ( !valuesEquivalence ){
+      if ( !caseValuesEquivalent ){
         if ( playerValue > dealerValue ) outputResult = player;
         if ( playerValue < dealerValue ) outputResult = dealer;
       }
@@ -304,8 +305,9 @@ export default class Round {
     }
     this.initPlayerCardTransition( animationContext );
     
-    this.initFirstPairClickerReaction( handCards.count, cardProps.card );
-    
+    if ( handCards.count < 4 ) {
+      this.initFirstPairOfCardsClickerReaction( handCards.count, cardProps.card );
+    }
     if ( handCards.count < 8 ) {
       handCards.value += this.calculateCardValue( cardProps.card, handCards.value );
     }
@@ -320,12 +322,12 @@ export default class Round {
     console.log( 'playa:', handCards.value );
   }
   
-  initFirstPairClickerReaction = ( count, card ) => {
+  initFirstPairOfCardsClickerReaction = ( count, card ) => {
     const findClicker = suffix => document.querySelector(`.clicker-${ suffix }`).lastElementChild;
     
     switch( count ) {
       case 1: {
-        this.firstPair[0] = card.rank; 
+        this.firstPairOfCards[0] = card.rank; 
         
         this.toggleClickPossibility( findClicker('doubled') );
         this.toggleClickPossibility( findClicker('hover') );
@@ -333,9 +335,9 @@ export default class Round {
         break;
       }
       case 2: {
-        this.firstPair[1] = card.rank;
+        this.firstPairOfCards[1] = card.rank;
         
-        if ( this.firstPair[0] === this.firstPair[1] ) {
+        if ( this.firstPairOfCards[0] === this.firstPairOfCards[1] ) {
           this.toggleClickPossibility( findClicker('split') );
         }
         if ( document.querySelector('.clicker-doubled .allow-click') ) {
