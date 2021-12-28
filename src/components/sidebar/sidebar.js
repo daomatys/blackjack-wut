@@ -25,13 +25,17 @@ export default class Sidebar extends MyComponent {
 
     const buttonTypeNames = [ 'next', 'menu', 'help' ];
 
+    const buttonsRow = buttonTypeNames
+      .map( typename => defineButtonByTypeName( typename ) )
+      .join('');
+
     return `
       <div class="sidebar">
         <div class="sidebar__background" id ="sidebar">
           <img src="src/assets/graphics/sidebar.png">
         </div>
-        <div class="sidebar__button-array">
-          ${ buttonTypeNames.forEach( typename => defineButtonByTypeName( typename ) ) }
+        <div class="sidebar__buttons-row">
+          ${ buttonsRow }
         </div>
       </div>
     `;
