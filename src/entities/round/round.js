@@ -32,8 +32,6 @@ export default class Round {
   initNewRound = () => {
     this.deck = new Deck();
     
-    document.querySelector('[data-deck-landing-zone]').append( this.deck.elem );
-    
     this.panel.defineAdditionalValues();
     this.defineAdditionalValues();
   }
@@ -257,8 +255,8 @@ export default class Round {
   }
   
   defineIndicatorsVisibilityByIndex = ( indexes, opacity ) => {
-    const playerIndicators = document.querySelector('.indicator_player').children;
-    const dealerIndicators = document.querySelector('.indicator_dealer').children;
+    const playerIndicators = document.querySelector('.indicator__player').children;
+    const dealerIndicators = document.querySelector('.indicator__dealer').children;
     
     playerIndicators[ indexes.player ].style.opacity = opacity;
     dealerIndicators[ indexes.dealer ].style.opacity = opacity;
