@@ -5,6 +5,8 @@ import Panel from '/src/components/panel/panel.js';
 import Sidebar from '/src/components/sidebar/sidebar.js';
 import DeckUnit from '/src/components/deck-unit/deck-unit.js';
 import Indicator from '/src/components/indicator/indicator.js';
+import HandDealer from '/src/components/hand/__dealer/hand__dealer.js';
+import HandPlayer from '/src/components/hand/__player/hand__player.js';
 
 import animations from '/src/assets/lib/animations.js';
 import defaults from '/src/assets/lib/defaults.js';
@@ -23,6 +25,8 @@ export default class Round {
   
   initComponents() {
     //first initialization cart
+    this.handPlayer = new HandPlayer();
+    this.handDealer = new HandDealer();
     this.deckUnit = new DeckUnit();
     this.sidebar = new Sidebar();
     this.panel = new Panel();
