@@ -77,13 +77,13 @@ export default class Sidebar extends MyComponent {
     
     switch ( event.target.id ) {
       case 'sidebar': this.scrollSidebar(); break;
-      case 'sidebar-help': this.actHelp(); break;
+      case 'sidebar-next': this.actNext(); break;
       case 'sidebar-menu': this.actMenu(); break;
       case 'sidebar-help': this.actHelp(); break;
     }
   }
   
-  actHelp() {
+  actNext() {
     this.elem.dispatchEvent( new CustomEvent('end-of-round', {bubbles: true}));
   }
   
