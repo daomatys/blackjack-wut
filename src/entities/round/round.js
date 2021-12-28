@@ -87,11 +87,11 @@ export default class Round {
       this.animations.bankcaller.dim.action,
       this.animations.bankcaller.dim.props 
     );
-    this.tableShakes = document.querySelector('html').animate(
+    this.tableShakes = document.querySelector('body').animate(
       this.animations.table.shake.action,
       this.animations.table.shake.props
     );
-    this.bankShifts = document.querySelector('.bank').animate(
+    this.bankShifts = document.querySelector('.bank__slot-row').animate(
       this.animations.bank.shift.action,
       this.animations.bank.shift.props
     );
