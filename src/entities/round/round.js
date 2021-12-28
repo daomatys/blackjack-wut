@@ -142,7 +142,12 @@ export default class Round {
     if ( this.splitModeState ) {
       this.panel.toggleSplitEntitiesClasses( false );
     }
+
     document.addEventListener('end-of-round', this.initStageRoundReset, { once: true });
+
+    if ( this.sidebar.elem.classList.contains('sidebar_ejected') ) {
+      this.sidebar.shiftSidebar();
+    }
   }
   
   initStageRoundReset = () => {
