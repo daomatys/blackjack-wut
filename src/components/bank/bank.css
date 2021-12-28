@@ -1,11 +1,13 @@
 .bank {
   position: absolute;
-  height: 100%;
-  width: 520px;
-  left: 50%;
-  top: 0px;
-  padding: 0px;
-  transform: translateX(-50%);
+  right: 50%;
+  top: 0;
+  width: 526px;
+  height: 67px;
+  padding: 0;
+  background-image: url('/src/assets/graphics/bank.png');
+  background-repeat: no-repeat;
+  background-position: top center;
 }
 
 .bank__slot {
