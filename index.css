@@ -87,22 +87,6 @@ img {
 }
 
 
-.deck-unit__game-starter {
-  position: absolute;
-  width: 80px;
-  height: 80px;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  opacity: 0;
-}
-
-.deck-unit__game-starter img {
-  width: inherit;
-  height: inherit;
-}
-
-
 .deny-click {
   opacity: 1;
 }
