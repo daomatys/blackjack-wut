@@ -21,7 +21,7 @@ export default class Indicator extends MyComponent {
   render() {
     super.initializeComponent({
       stylesheet: thatComponentStyleSheet,
-      element: '.indicator',
+      wrapref: '.indicator',
       markup: this.markup()
     });
   }
