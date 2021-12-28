@@ -16,10 +16,14 @@ export default class Sidebar extends MyComponent {
   }
   
   markup() {
-    const buttonContent = `
-      <img src="src/assets/graphics/buttons/sidebar-btn_next_off.png" style="display: inline">
-      <img src="src/assets/graphics/buttons/sidebar-btn_next_on.png" style="display: none">
+    const defineButtonByTypeName = typename => `
+      <div class="sidebar__button" id="sidebar-${ typename }">
+        <img src="src/assets/graphics/buttons/sidebar-btn_${ typename }_off.png" style="display: inline">
+        <img src="src/assets/graphics/buttons/sidebar-btn_${ typename }_on.png" style="display: none">
+      </div>
     `;
+
+    const buttonTypeNames = [ 'next', 'menu', 'help' ];
 
     return `
       <div class="sidebar">
@@ -27,15 +31,7 @@ export default class Sidebar extends MyComponent {
           <img src="src/assets/graphics/sidebar.png">
         </div>
         <div class="sidebar__button-array">
-          <div class="sidebar__button" id="sidebar-next">
-            ${ buttonContent }
-          </div>
-          <div class="sidebar__button" id="sidebar-menu">
-            ${ buttonContent }
-          </div>
-          <div class="sidebar__button" id="sidebar-help">
-            ${ buttonContent }
-          </div>
+          ${ buttonTypeNames.forEach( typename => defineButtonByTypeName( typename ) ) }
         </div>
       </div>
     `;
@@ -79,13 +75,13 @@ export default class Sidebar extends MyComponent {
     
     switch ( event.target.id ) {
       case 'sidebar': this.scrollSidebar(); break;
-      case 'sidebar-next': this.actNext(); break;
+      case 'sidebar-help': this.actHelp(); break;
       case 'sidebar-menu': this.actMenu(); break;
       case 'sidebar-help': this.actHelp(); break;
     }
   }
   
-  actNext() {
+  actHelp() {
     this.elem.dispatchEvent( new CustomEvent('end-of-round', {bubbles: true}));
   }
   
