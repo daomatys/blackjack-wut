@@ -3,6 +3,7 @@ import Deck from '/src/components/deck/deck.js';
 import Menu from '/src/components/menu/menu.js';
 import Panel from '/src/components/panel/panel.js';
 import Sidebar from '/src/components/sidebar/sidebar.js';
+import DeckUnit from '/src/components/deck-unit/deck-unit.js';
 import Indicator from '/src/components/indicator/indicator.js';
 
 import animations from '/src/assets/lib/animations.js';
@@ -12,21 +13,23 @@ import defaults from '/src/assets/lib/defaults.js';
 export default class Round {
   
   constructor() {
-    this.initInitialGameState();
+    this.defaults = defaults;
+    this.animations = animations;
     
+    this.initComponents();
     this.initNewRound();
     this.initNewRoundEventListeners();
   }
   
-  initInitialGameState() {
-    this.defaults = defaults;
-    this.animations = animations;
-    
-    this.indicator = new Indicator();
+  initComponents() {
+    //first initialization cart
+    this.deckUnit = new DeckUnit();
     this.sidebar = new Sidebar();
     this.panel = new Panel();
     this.bank = new Bank();
     this.menu = new Menu();
+    //second initialization cart
+    this.indicator = new Indicator();
   }
   
   initNewRound = () => {

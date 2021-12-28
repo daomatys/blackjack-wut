@@ -1,4 +1,4 @@
-import animations from '../assets/lib/animations';
+import animations from '../assets/lib/animations.js';
 
 
 export default class MyComponent {
