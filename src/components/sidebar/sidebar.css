@@ -2,10 +2,15 @@
   position: absolute;
   left: -142px;
   top: 90px;
+  transition: transform .5s ease;
 }
 
 .sidebar__buttons-row {
   position: absolute;
   top: 10px;
   left: 14px;
+}
+
+.sidebar_ejected {
+  transform: translateX(142px);
 }

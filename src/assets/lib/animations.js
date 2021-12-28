@@ -180,19 +180,5 @@ export default {
         composite: 'add'
       }
     }
-  },
-
-  sidebar: {
-    shift: {
-      action: (shift) => ({
-        transform: `translateX(${ shift })`
-      }),
-      props: {
-        easing: 'cubic-bezier( 0.45, 0, 0.56, 1 )',
-        duration: 600,
-        fill: 'both',
-        composite: 'add'
-      }
-    }
   }
 }

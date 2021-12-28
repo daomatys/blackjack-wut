@@ -6,8 +6,6 @@ export default class Sidebar extends MyComponent {
   
   constructor() {
     super();
-
-    this.sidebarMovedState = false;
     
     this.render();
     this.eventListeners();
@@ -76,7 +74,7 @@ export default class Sidebar extends MyComponent {
     event.preventDefault();
     
     switch ( event.target.id ) {
-      case 'sidebar': this.scrollSidebar(); break;
+      case 'sidebar': this.shiftSidebar(); break;
       case 'sidebar-next': this.actNext(); break;
       case 'sidebar-menu': this.actMenu(); break;
       case 'sidebar-help': this.actHelp(); break;
@@ -96,17 +94,7 @@ export default class Sidebar extends MyComponent {
     
   }
   
-  scrollSidebar() {
-    this.sidebarMovedState = !this.sidebarMovedState;
-    
-    this.sidebarMovedState
-      ? this.sidebarShift = '142px'
-      : this.sidebarShift = '-142px';
-    
-    const sidebarAnimation = this.elem.animate(
-      this.animations.sidebar.shift.action( this.sidebarShift ),
-      this.animations.sidebar.shift.props
-    );
-    sidebarAnimation.persist();
+  shiftSidebar() {
+    this.elem.classList.toggle('sidebar_ejected');
   }
 }
