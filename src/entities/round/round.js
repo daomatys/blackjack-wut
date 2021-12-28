@@ -145,7 +145,7 @@ export default class Round {
 
     document.addEventListener('end-of-round', this.initStageRoundReset, { once: true });
 
-    if ( this.sidebar.elem.classList.contains('sidebar_ejected') ) {
+    if ( !this.sidebar.elem.classList.contains('sidebar_ejected') ) {
       this.sidebar.shiftSidebar();
     }
   }
