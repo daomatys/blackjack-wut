@@ -1,15 +1,12 @@
 import thatComponentStyleSheet from './deck.css' assert { type: 'css' };
 import Card from '../card/card.js';
 import MyComponent from '../components.js';
-import animations from '../../assets/lib/animations.js';
 
 
 export default class Deck extends MyComponent {
   
   constructor() {
     super();
-
-    this.animations = animations;
 
     this.render();
     this.deckGenerate();

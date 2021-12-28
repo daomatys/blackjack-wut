@@ -1,4 +1,11 @@
+import animations from '../assets/lib/animations';
+
+
 export default class MyComponent {
+
+  constructor() {
+    this.animations = animations;
+  }
 
   applyStyleSheet( componentStyleSheet ) {
     document.adoptedStyleSheets = [

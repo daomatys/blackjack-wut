@@ -1,6 +1,5 @@
 import MyComponent from '../components.js';
 import thatComponentStyleSheet from './panel.css' assert { type: 'css' };
-import animations from '/src/assets/lib/animations.js';
 
 
 export default class Panel extends MyComponent {
@@ -8,7 +7,6 @@ export default class Panel extends MyComponent {
   constructor() {
     super();
 
-    this.animations = animations;
     this.arrClickers = [ 'doubled', 'check', 'split', 'hover' ];
     this.arrChips = [ 1, 5, 10, 25, 100 ];
     
