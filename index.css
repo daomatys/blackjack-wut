@@ -87,7 +87,7 @@ img {
 }
 
 
-.caller-bank {
+.deck-unit__game-starter {
   position: absolute;
   width: 80px;
   height: 80px;
@@ -97,7 +97,7 @@ img {
   opacity: 0;
 }
 
-.caller-bank img {
+.deck-unit__game-starter img {
   width: inherit;
   height: inherit;
 }

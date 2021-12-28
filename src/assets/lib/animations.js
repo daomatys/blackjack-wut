@@ -112,7 +112,7 @@ export default {
     }
   },
   
-  bankcaller: {
+  starter: {
     autodim: {
       action: {
         opacity: [ 0, 1, 0 ]

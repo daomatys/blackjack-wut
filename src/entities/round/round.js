@@ -49,7 +49,7 @@ export default class Round {
     document
       .addEventListener('end-of-player-draw', this.initStageDealerDraw, { once: true });
     
-    document.querySelector('.caller-bank')
+    document.querySelector('.deck-unit__game-starter')
       .addEventListener('click', this.initStagePlayerDraw, { once: true });
   }
   
@@ -62,18 +62,18 @@ export default class Round {
   //round stages section
   
   initStageDeckReadyToLand = () => {
-    const caller = document.querySelector('.caller-bank');
+    const starter = document.querySelector('.deck-unit__game-starter');
     
-    this.callerAutoDimmer = caller.animate(
-      this.animations.bankcaller.autodim.action,
-      this.animations.bankcaller.autodim.props
+    this.starterAutoDimmer = starter.animate(
+      this.animations.starter.autodim.action,
+      this.animations.starter.autodim.props
     );
-    caller.style.display = 'inline';
+    starter.style.display = 'inline';
   }
   
   initStagePlayerDraw = () => {
     const fakeAdders = document.querySelectorAll('.adder__fake');
-    const caller = document.querySelector('.caller-bank');
+    const starter = document.querySelector('.deck-unit__game-starter');
     
     fakeAdders.forEach( fake => this.toggleClickPossibility( fake ) );
     
@@ -81,9 +81,9 @@ export default class Round {
       this.animations.deck.fall.action,
       this.animations.deck.fall.props 
     );
-    this.callerDims = document.querySelector('.caller-bank').animate(
-      this.animations.bankcaller.dim.action,
-      this.animations.bankcaller.dim.props 
+    this.starterDims = document.querySelector('.deck-unit__game-starter').animate(
+      this.animations.starter.dim.action,
+      this.animations.starter.dim.props 
     );
     this.tableShakes = document.querySelector('body').animate(
       this.animations.table.shake.action,
@@ -99,7 +99,7 @@ export default class Round {
       this.launchDealerCardTransition();
       this.deck.initEventListeners();
     }
-    this.callerDims.onfinish = () => caller.style.display = 'none';
+    this.starterDims.onfinish = () => starter.style.display = 'none';
   }
   
   initStageDealerDraw = () => {
@@ -403,7 +403,7 @@ export default class Round {
   launchDealerCardTransition = () => {
     const card = this.deck.topCardData();
     const handDealerRect = this.defineRect('.hand__dealer');
-    const deckLandingZoneRect = this.defineRect('[data-deck-landing-zone]');
+    const deckLandingZoneRect = this.defineRect('.deck-unit__background');
     
     document.querySelector('.hand__dealer').insertAdjacentElement('afterbegin', card.elem );
     
