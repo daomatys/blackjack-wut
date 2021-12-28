@@ -50,7 +50,7 @@ export default class Panel extends MyComponent {
         </div>`)
       .join('');
       
-    const layoutAssembled = `
+    return `
       <div class="panel">
         <div class="panel__background">
           <img src="src/assets/graphics/panel.png">
@@ -68,8 +68,6 @@ export default class Panel extends MyComponent {
         </div>
       </div>
     `;
-    
-    return layoutAssembled;
   }
 
   render() {
