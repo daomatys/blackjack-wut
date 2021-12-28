@@ -11,8 +11,8 @@
 }
 
 .bank__slot {
-  position: relative;
   display: inline-block;
+  position: relative;
   width: 92px;
   height: 100px;
   top: -30px;
