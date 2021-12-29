@@ -150,6 +150,21 @@ export default {
         fill: 'forwards',
         composite: 'replace'
       }
+    },
+    jump: {
+      action: ( shiftX, shiftY ) => ({
+        transform: [
+          'scale( 1 )',
+          'perspective( 500px ) translate( 10px, -80px ) rotate3d( -1, -0.33, 0, 190deg ) scale( 1.26 )',
+          `translate( ${ shiftX }, ${ shiftY } )`
+        ]
+      }),
+      props: {
+        easing: 'cubic-bezier( 0.01, -0.2, 0.28, 1.08 )',
+        duration: 800,
+        fill: 'both',
+        composite: 'add'
+      }
     }
   },
   

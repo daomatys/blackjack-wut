@@ -7,15 +7,15 @@ export default class Panel extends MyComponent {
   constructor() {
     super();
 
-    this.arrClickers = [ 'doubled', 'check', 'split', 'hover' ];
-    this.arrChips = [ 1, 5, 10, 25, 100 ];
+    this.clickersNames = [ 'doubled', 'check', 'split', 'hover' ];
+    this.chipsValues = [ 1, 5, 10, 25, 100 ];
     
     this.render();
     this.eventListeners();
   }
 
   markup() {
-    const layoutPanelButtons = this.arrClickers
+    const layoutPanelButtons = this.clickersNames
       .map( suffix => `
         <div class="clicker__container clicker-${ suffix }">
           <div class="clicker tap" id="${ suffix }">
@@ -28,14 +28,14 @@ export default class Panel extends MyComponent {
         </div>`)
       .join('');
       
-    const layoutChipMachine = this.arrChips
+    const layoutChipMachine = this.chipsValues
       .map( code => `
         <div class="chip chip-armed chip-${ code }">
           <img src="src/assets/graphics/chips/chip_${ code }.png">
         </div>`)
       .join('');
       
-    const layoutAdderBar = this.arrChips 
+    const layoutAdderBar = this.chipsValues 
       .map( code => `
         <div class="adder__container adder-${ code }">
           <div class="adder tap" id="adder-${ code }">
@@ -81,7 +81,7 @@ export default class Panel extends MyComponent {
   }
   
   defineAdditionalValues() {
-    this.arrChipsCounters = [ 0, 0, 0, 0, 0 ];
+    this.chipsValuesCounters = [ 0, 0, 0, 0, 0 ];
     this.firstChipBet = false;
   }
   
@@ -97,10 +97,17 @@ export default class Panel extends MyComponent {
     const btnClickIllusion = () => {
       const imgOff = btn.firstElementChild;
       const imgOn = btn.lastElementChild;
+
+      const caseDisplayed = imgOn.style.display === 'none'
       
-      imgOn.style.display === 'none'
-      ? ( imgOn.style.display = 'inline', imgOff.style.display = 'none' )
-      : ( imgOn.style.display = 'none', imgOff.style.display = 'inline' );
+      if ( caseDisplayed ) {
+        imgOn.style.display = 'block';
+        imgOff.style.display = 'none';
+      }
+      if ( !caseDisplayed ) {
+        imgOn.style.display = 'none';
+        imgOff.style.display = 'block';
+      }
     }
     btnClickIllusion();
     
@@ -116,11 +123,25 @@ export default class Panel extends MyComponent {
       this.changeButtonDisplayState( aim.id );
       
       switch ( aim.id ) {
-        case 'doubled': this.actDoubled(); break;
-        case 'check': this.actCheck(); break;
-        case 'split': this.actSplit(); break;
-        case 'hover': this.actHover(); break;
-        default: this.actAdder( aim.id ); break;
+        case 'doubled': {
+          this.actDoubled();
+          break;
+        }
+        case 'check': {
+          this.actCheck();
+          break;
+        }
+        case 'split': {
+          this.actSplit();
+          break;
+        }
+        case 'hover': {
+          this.actHover();
+          break;
+        }
+        default: {
+          this.actAdder( aim.id );
+        }
       }
     }
   }
@@ -184,12 +205,12 @@ export default class Panel extends MyComponent {
       );
       rotation.persist();
     }
-    for (let card of cards) card.addEventListener('pointerover', () => onHoverRotation( card ), { once: true });
+    cards.forEach( card => card.addEventListener('pointerover', () => onHoverRotation( card ), { once: true }) );
   }
   
   actAdder = idRaw => {
     const id = idRaw.slice(6);
-    const num = this.arrChips.indexOf( parseInt( id, 10 ) );
+    const num = this.chipsValues.indexOf( parseInt( id, 10 ) );
     
     const slot = document.getElementById(`slot-${ id }`);
     const chipBet = document.querySelector(`.chip-${ id }`).cloneNode( true );
@@ -209,21 +230,13 @@ export default class Panel extends MyComponent {
       top: parseInt( this.defineRect( chipArmed ).top, 10 ) - parseInt( this.defineRect( chipBet ).top, 10 ) + 'px',
     });
     
-    const shiftX = 0.5 * ++this.arrChipsCounters[ num ] - parseInt( chipBet.style.left, 10 ) + 'px';
-    const shiftY = - 2 * this.arrChipsCounters[ num ] - parseInt( chipBet.style.top, 10 ) + 'px';
+    const shiftX = 0.5 * ++this.chipsValuesCounters[ num ] - parseInt( chipBet.style.left, 10 ) + 'px';
+    const shiftY = - 2 * this.chipsValuesCounters[ num ] - parseInt( chipBet.style.top, 10 ) + 'px';
     
-    const chipBetJump = chipBet.animate({
-      transform: [
-        'scale( 1 )',
-        'perspective( 500px ) translate( 10px, -80px ) rotate3d( -1, -0.33, 0, 190deg ) scale( 1.26 )',
-        `translate( ${ shiftX }, ${ shiftY } )`
-      ]
-    }, {
-      easing: 'cubic-bezier( 0.01, -0.2, 0.28, 1.08 )',
-      duration: 800,
-      fill: 'both',
-      composite: 'add'
-    });
+    const chipBetJump = chipBet.animate(
+      this.animations.chip.jump.action( shiftX, shiftY ),
+      this.animations.chip.jump.props
+    );
     
     const chipArmedEject = chipArmed.animate(
       this.animations.chip.eject.action,
