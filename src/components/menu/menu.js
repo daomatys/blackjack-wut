@@ -46,7 +46,7 @@ export default class Menu extends MyComponent {
   }
   
   start = () => {
-    document.querySelector('#blackjack-table').style.display = 'inline';
+    document.querySelector('#blackjack-table').style.display = 'block';
     document.querySelector('#start-screen-menu').style.display = 'none';
   }
   
