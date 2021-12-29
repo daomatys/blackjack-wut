@@ -8,19 +8,19 @@
 }
 
 .menu__button-array {
-  padding-top: 12px;
   position: relative;
   display: flex;
   justify-content: space-evenly;
+  padding-top: 12px;
   width: 100vw;
   background-color: azure;
 }
 
 .menu__button {
+  display: inline-block;
+  color: rgb(207, 0, 155);
   font-size: 48px;
   font-family: Neonize;
-  display: inline-block;
   text-decoration: none;
-  color: rgb(207, 0, 155);
   cursor: pointer;
 }

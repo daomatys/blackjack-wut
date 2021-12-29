@@ -45,10 +45,10 @@ export default class Menu extends MyComponent {
     selectButton('about').addEventListener('pointerdown', this.about);
   }
   
-  start = () => {
+  start() {
     document.querySelector('#blackjack-table').style.display = 'block';
     document.querySelector('#start-screen-menu').style.display = 'none';
   }
   
-  about = () => {}
+  about() {}
 }
