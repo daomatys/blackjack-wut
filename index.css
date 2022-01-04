@@ -3,6 +3,8 @@ body {
   background-image: url("src/assets/graphics/table_texture.png");
   margin: 0;
   box-sizing: border-box;
+  height: 100vh;
+  width: 100vw;
 }
 
 img {
@@ -15,8 +17,8 @@ img {
   display: flex;
   justify-content: center;
   align-items: center;
+  height: 100%;
   background-color: #030303;
-  height: 100vh;
 }
 
 [data-zone-dealer] {
