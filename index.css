@@ -1,10 +1,7 @@
 body {
+  margin: 0;
   user-select: none;
   background-image: url("src/assets/graphics/table_texture.png");
-  margin: 0;
-  box-sizing: border-box;
-  height: 100vh;
-  width: 100vw;
 }
 
 img {
@@ -12,13 +9,22 @@ img {
   max-width: 100%;
 }
 
+#start-screen-menu,
+#blackjack-table {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+}
+
 #start-screen-menu {
-  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100%;
   background-color: #030303;
+}
+
+#blackjack-table {
+  display: none;
 }
 
 [data-zone-dealer] {
@@ -48,15 +54,18 @@ img {
 }
 
 [data-panel] {
-  position: absolute;
+  position: fixed;
   right: 30px;
-  bottom: 0;
+  bottom: 0px;
+  margin: 0;
+  padding: 0;
   height: 142px;
   width: 689px;
+  z-index: 18;
 }
 
 [data-bank] {
-  position: absolute;
+  position: fixed;
   right: 50px;
   bottom: 40%;
 }

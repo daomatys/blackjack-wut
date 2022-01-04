@@ -91,6 +91,7 @@ export default class Sidebar extends MyComponent {
   
   actMenu() {
     document.querySelector('#start-screen-menu').style.display = 'flex';
+    document.querySelector('#blackjack-table').style.display = 'none';
   }
   
   actHelp() {

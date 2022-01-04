@@ -47,6 +47,7 @@ export default class Menu extends MyComponent {
   
   start() {
     document.querySelector('#start-screen-menu').style.display = 'none';
+    document.querySelector('#blackjack-table').style.display = 'flex';
   }
   
   about() {}

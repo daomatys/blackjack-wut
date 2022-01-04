@@ -90,9 +90,9 @@ export default class Round {
     );
     this.starterDims = document.querySelector('.deck-unit__game-starter').animate(
       this.animations.starter.dim.action,
-      this.animations.starter.dim.props 
+      this.animations.starter.dim.props
     );
-    this.tableShakes = document.querySelector('body').animate(
+    this.tableShakes = document.querySelector('#blackjack-table').animate(
       this.animations.table.shake.action,
       this.animations.table.shake.props
     );
