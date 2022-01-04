@@ -1,17 +1,9 @@
-.panel {
-  position: absolute;
-  left: 0px;
-  top: 0px;
-  width: 100%;
-  height: 100%;
-}
-
+.panel,
 .panel__background {
-  position: inherit;
-  height: 100%;
+  position: absolute;
   width: 100%;
+  height: 100%;
 }
-
 
 .panel__clickers {
   position: absolute;
@@ -39,7 +31,7 @@
   top: 0px;
   height: inherit;
   width: inherit;
-  transition: all .5s;
+  transition: opacity .5s;
 }
 
 .clicker {

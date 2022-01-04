@@ -19,7 +19,11 @@ export default class Sidebar extends MyComponent {
       </div>
     `;
 
-    const buttonTypeNames = [ 'next', 'menu', 'help' ];
+    const buttonTypeNames = [
+      'next',
+      'menu',
+      'help'
+    ];
 
     const buttonsRow = buttonTypeNames
       .map( typename => defineButtonByTypeName( typename ) )
@@ -86,7 +90,6 @@ export default class Sidebar extends MyComponent {
   }
   
   actMenu() {
-    document.querySelector('#blackjack-table').style.display = 'none';
     document.querySelector('#start-screen-menu').style.display = 'flex';
   }
   
