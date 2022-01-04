@@ -18,7 +18,7 @@ export default class Round {
     this.animations = animations;
     
     this.initGeneralComponents();
-    
+
     this.initNewRound();
     this.initNewRoundEventListeners();
   }
@@ -232,9 +232,9 @@ export default class Round {
     const playerValue = playerCards.value;
     const playerCount = playerCards.count;
     
-    const player = new winCondition(1, 0, 0);
-    const dealer = new winCondition(0, 1, 0);
-    const tie = new winCondition(0, 0, 1);
+    const player = new winCondition( 1, 0, 0 );
+    const dealer = new winCondition( 0, 1, 0 );
+    const tie = new winCondition( 0, 0, 1 );
     
     let outputResult = 'attention';
 
