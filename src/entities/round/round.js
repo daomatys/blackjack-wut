@@ -4,7 +4,6 @@ import Menu from '/src/components/menu/menu.js';
 import Panel from '/src/components/panel/panel.js';
 import Sidebar from '/src/components/sidebar/sidebar.js';
 import DeckUnit from '/src/components/deck-unit/deck-unit.js';
-import Indicator from '/src/components/indicator/indicator.js';
 import HandDealer from '/src/components/hand/__dealer/hand__dealer.js';
 import HandPlayer from '/src/components/hand/__player/hand__player.js';
 
@@ -18,13 +17,13 @@ export default class Round {
     this.defaults = defaults;
     this.animations = animations;
     
-    this.initComponents();
+    this.initGeneralComponents();
+    
     this.initNewRound();
     this.initNewRoundEventListeners();
   }
   
-  initComponents() {
-    //first initialization cart
+  initGeneralComponents() {
     this.handPlayer = new HandPlayer();
     this.handDealer = new HandDealer();
     this.deckUnit = new DeckUnit();
@@ -32,8 +31,6 @@ export default class Round {
     this.panel = new Panel();
     this.bank = new Bank();
     this.menu = new Menu();
-    //second initialization cart
-    this.indicator = new Indicator();
   }
   
   initNewRound = () => {

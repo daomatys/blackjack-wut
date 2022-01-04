@@ -40,8 +40,8 @@ img {
 
 [data-deck-unit] {
   position: fixed;
-  left: 50%;
   top: 50%;
+  left: 50%;
   transform: translate(-50%, -50%);
   width: 135px;
   height: 304px;
@@ -55,19 +55,16 @@ img {
 
 [data-panel] {
   position: fixed;
+  bottom: 0;
   right: 30px;
-  bottom: 0px;
-  margin: 0;
-  padding: 0;
   height: 142px;
   width: 689px;
-  z-index: 18;
 }
 
 [data-bank] {
   position: fixed;
-  right: 50px;
   bottom: 40%;
+  right: 50px;
 }
 
 

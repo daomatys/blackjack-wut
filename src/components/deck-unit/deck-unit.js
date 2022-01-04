@@ -1,5 +1,6 @@
 import thatComponentStyleSheet from './deck-unit.css' assert { type: 'css' };
 import MyComponent from '../components.js';
+import Indicator from '../indicator/indicator.js';
 
 
 export default class DeckUnit extends MyComponent {
@@ -34,5 +35,11 @@ export default class DeckUnit extends MyComponent {
     });
 
     this.elem = this.defineElementByItsWrap( selector );
+
+    this.initInnerComponents();
+  }
+
+  initInnerComponents() {
+    this.indicator = new Indicator();
   }
 }
