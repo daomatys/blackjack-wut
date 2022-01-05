@@ -18,9 +18,9 @@ export default class Panel extends MyComponent {
     const layoutPanelButtons = this.clickersNames
       .map( suffix => `
         <div class="clicker__container clicker-${ suffix }">
-          <div class="clicker tap" id="${ suffix }">
-            <img src="src/assets/graphics/buttons/button_${ suffix }_off.png" style="display: inline">
-            <img src="src/assets/graphics/buttons/button_${ suffix }_on.png" style="display: none">
+          <div class="clicker js-tappable" id="${ suffix }">
+            <img src="src/assets/graphics/buttons/button_${ suffix }_off.png">
+            <img src="src/assets/graphics/buttons/button_${ suffix }_on.png" class="js-img-on_hidden">
           </div>
           <div class="clicker__fake deny-click">
             <img src="src/assets/graphics/buttons/button_inactive.png">
@@ -38,9 +38,9 @@ export default class Panel extends MyComponent {
     const layoutAdderBar = this.chipsValues 
       .map( code => `
         <div class="adder__container adder-${ code }">
-          <div class="adder tap" id="adder-${ code }">
-            <img src="src/assets/graphics/buttons/adder_off.png" style="display: inline">
-            <img src="src/assets/graphics/buttons/adder_on.png" style="display: none">
+          <div class="adder js-tappable" id="adder-${ code }">
+            <img src="src/assets/graphics/buttons/adder_off.png">
+            <img src="src/assets/graphics/buttons/adder_on.png" class="js-img-on_hidden">
           </div>
           <div class="adder__fake allow-click">
             <img src="src/assets/graphics/buttons/adder_inactive.png">
@@ -86,29 +86,20 @@ export default class Panel extends MyComponent {
   }
   
   eventListeners() {
-    const taps = this.elem.querySelectorAll('.tap');
+    const tappables = this.elem.querySelectorAll('.js-tappable');
     
-    taps.forEach( tap => tap.addEventListener('pointerdown', this.actsOfButtons) );
+    tappables.forEach( tappable => tappable.addEventListener('pointerdown', this.actsOfButtons) );
   }
   
   changeButtonDisplayState = id => {
     const btn = this.elem.querySelector(`#${ id }`);
     
-    const btnClickIllusion = () => {
-      const imgOff = btn.firstElementChild;
+    const btnClickIllusion = function btnImagesDisplayStateSwitcher() {
       const imgOn = btn.lastElementChild;
 
-      const caseDisplayed = imgOn.style.display === 'none'
-      
-      if ( caseDisplayed ) {
-        imgOn.style.display = 'block';
-        imgOff.style.display = 'none';
-      }
-      if ( !caseDisplayed ) {
-        imgOn.style.display = 'none';
-        imgOff.style.display = 'block';
-      }
+      imgOn.classList.toggle('js-img-on_hidden');
     }
+
     btnClickIllusion();
     
     document.addEventListener('pointerup', btnClickIllusion, { once: true } );
@@ -119,7 +110,7 @@ export default class Panel extends MyComponent {
     
     const aim = event.target;
     
-    if ( aim.classList.contains('tap') ) {
+    if ( aim.classList.contains('js-tappable') ) {
       this.changeButtonDisplayState( aim.id );
       
       switch ( aim.id ) {
@@ -254,7 +245,7 @@ export default class Panel extends MyComponent {
   
   defineRect = elem => elem.getBoundingClientRect();
   
-  toggleClickerClickPossibility = suffix => {
+  toggleClickerClickPossibility( suffix ) {
     const element = document.querySelector(`.clicker-${ suffix }`).lastElementChild;
     
     element.classList.toggle('deny-click');
