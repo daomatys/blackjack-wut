@@ -138,23 +138,27 @@ export default class Panel extends MyComponent {
   }
   
   actDoubled = () => {
-    this.toggleClickerClickPossibility('doubled');
+    this.toggleClickPossibility('doubled');
   }
   
   actCheck = () => {
-    document.body.dispatchEvent( new CustomEvent('end-of-player-draw', { bubbles: true }) );
+    document.body.dispatchEvent( 
+      new CustomEvent('end-of-player-draw', { bubbles: true })
+    );
     
     if ( this.elem.querySelector('.clicker-split .allow-click') ) {
-      this.toggleClickerClickPossibility('split');
+      this.toggleClickPossibility('split');
     }
-    this.toggleClickerClickPossibility('check');
+    this.toggleClickPossibility('check');
   }
   
   actSplit = () => {
-    document.body.dispatchEvent( new CustomEvent('split', { bubbles: true }) );
+    document.body.dispatchEvent(
+      new CustomEvent('split', { bubbles: true })
+    );
     
     this.toggleSplitEntitiesClasses( true );
-    this.toggleClickerClickPossibility('split');
+    this.toggleClickPossibility('split');
     
     const hand = document.querySelector('.hand__player');
     const subhandLeft = hand.querySelector('.subhand__left');
@@ -178,8 +182,8 @@ export default class Panel extends MyComponent {
     splitting.persist();
   }
   
-  toggleSplitEntitiesClasses( includeHandClass ) {
-    if ( includeHandClass ) {
+  toggleSplitEntitiesClasses( includedHandClass ) {
+    if ( includedHandClass ) {
       document.querySelector('.hand__player').classList.toggle('allow-drop');
     }
     document.querySelector('.subhand__left').classList.toggle('allow-drop');
@@ -245,7 +249,7 @@ export default class Panel extends MyComponent {
   
   defineRect = elem => elem.getBoundingClientRect();
   
-  toggleClickerClickPossibility( suffix ) {
+  toggleClickPossibility( suffix ) {
     const element = document.querySelector(`.clicker-${ suffix }`).lastElementChild;
     
     element.classList.toggle('deny-click');
