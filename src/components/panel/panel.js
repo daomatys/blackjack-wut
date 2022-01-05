@@ -149,7 +149,6 @@ export default class Panel extends MyComponent {
     if ( this.elem.querySelector('.clicker-split .allow-click') ) {
       this.toggleClickPossibility('split');
     }
-    this.toggleClickPossibility('check');
   }
   
   actSplit = () => {

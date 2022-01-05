@@ -107,7 +107,7 @@ export default class Round {
   }
   
   initStageDealerDraw = () => {
-    this.panel.toggleClickerClickPossibility('check');
+    this.panel.toggleClickPossibility('check');
     this.dealerDrawInterval = setInterval( this.launchDealerCardTransition, 700 );
   }
   
