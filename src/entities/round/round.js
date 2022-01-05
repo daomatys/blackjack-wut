@@ -111,30 +111,7 @@ export default class Round {
     this.dealerDrawInterval = setInterval( this.launchDealerCardTransition, 700 );
   }
   
-  initStageRoundResults = () => {
-    const showWinner = function displayWinnerStateBySettingActiveIndicatorsByTheirIndexes( resultsState ) {
-      if ( resultsState.player ) {
-        this.indicatorsIndexes = {
-          player: 1,
-          dealer: 2
-        };
-        return;
-      }
-      if ( resultsState.dealer ) {
-        this.indicatorsIndexes = {
-          player: 2,
-          dealer: 1
-        };
-        return;
-      }
-      if ( resultsState.tie ) {
-        this.indicatorsIndexes = {
-          player: 0,
-          dealer: 0
-        };
-      }
-    }
-
+  initStageRoundResults() {
     if ( !this.splitModeState ) {
       this.results.normal = this.defineRoundResults( this.drawnCards.player.normal );
     }
@@ -149,7 +126,7 @@ export default class Round {
       });
     }
 
-    showWinner( this.results.normal );
+    this.indicatorsIndexes = this.defineRoundResultsIndication( this.results.normal );
     
     this.defineIndicatorsVisibilityByIndex( this.indicatorsIndexes, 1 );
     
@@ -163,6 +140,27 @@ export default class Round {
 
     if ( !this.sidebar.elem.classList.contains('sidebar_ejected') ) {
       this.sidebar.shiftSidebar();
+    }
+  }
+
+  defineRoundResultsIndication( resultsState ) {
+    if ( resultsState.player ) {
+      return {
+        player: 1,
+        dealer: 2
+      };
+    }
+    if ( resultsState.dealer ) {
+      return {
+        player: 2,
+        dealer: 1
+      };
+    }
+    if ( resultsState.tie ) {
+      return {
+        player: 0,
+        dealer: 0
+      };
     }
   }
   

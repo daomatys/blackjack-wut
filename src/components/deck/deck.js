@@ -10,7 +10,7 @@ export default class Deck extends MyComponent {
 
     this.render();
     this.deckGenerate();
-    this.initialPosition();
+    this.applyInitialPosition();
 
     this.elem.ondragstart = () => false;
   }
@@ -56,7 +56,7 @@ export default class Deck extends MyComponent {
     }
   }
   
-  initialPosition() {
+  applyInitialPosition() {
     this.elem.style.transform = 'translate( -280px, -600px )';
   }
   
