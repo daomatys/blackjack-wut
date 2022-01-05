@@ -79,7 +79,7 @@ export default class Round {
     const fakeAdders = document.querySelectorAll('.adder__fake');
     const starter = document.querySelector('.deck-unit__game-starter');
     
-    fakeAdders.forEach( fake => this.toggleClickPossibility( fake ) );
+    fakeAdders.forEach( fake => this.toggleClickPossibilityOfAnElement( fake ) );
     
     this.deckFalls = document.querySelector('.deck').animate( 
       this.animations.deck.fall.action,
@@ -107,7 +107,7 @@ export default class Round {
   }
   
   initStageDealerDraw = () => {
-    this.panel.toggleClickPossibility('check');
+    this.panel.toggleClickPossibilityOfAnElement('check');
     this.dealerDrawInterval = setInterval( this.launchDealerCardTransition, 700 );
   }
   
@@ -124,6 +124,8 @@ export default class Round {
         dealer: this.results.left.dealer && this.results.right.dealer,
         tie: this.results.left.tie && this.results.right.tie
       });
+
+      this.panel.toggleSplitEntitiesClasses( false );
     }
 
     this.indicatorsIndexes = this.defineRoundResultsIndication( this.results.normal );
@@ -131,10 +133,6 @@ export default class Round {
     this.defineIndicatorsVisibilityByIndex( this.indicatorsIndexes, 1 );
     
     this.deck.initEventListeners();
-    
-    if ( this.splitModeState ) {
-      this.panel.toggleSplitEntitiesClasses( false );
-    }
 
     document.addEventListener('end-of-round', this.initStageRoundReset, { once: true });
 
@@ -183,7 +181,7 @@ export default class Round {
     this.killLastRoundEventListeners();
     this.deck.killEventListeners();
     
-    enlightedClickers.forEach( clicker => this.toggleClickPossibility( clicker ) );
+    enlightedClickers.forEach( clicker => this.toggleClickPossibilityOfAnElement( clicker ) );
 
     drawnCards.forEach( card => {
       const cardRemove = card.animate(
@@ -194,7 +192,7 @@ export default class Round {
     });
 
     betChips.forEach( chip => killElement( chip ) );
-    fakeAdders.forEach( adder => this.toggleClickPossibility( adder ) );
+    fakeAdders.forEach( adder => this.toggleClickPossibilityOfAnElement( adder ) );
     
     const deckRemove = usedDeck.animate(
       this.animations.deck.remove.action,
@@ -250,7 +248,7 @@ export default class Round {
     
     const player = new defineWinner ( 1, 0, 0 );
     const dealer = new defineWinner ( 0, 1, 0 );
-    const tie = new defineWinner ( 0, 0, 1 );
+    const tie =    new defineWinner ( 0, 0, 1 );
     
     let outputResult = 'attention';
 
@@ -339,8 +337,8 @@ export default class Round {
       case 1: {
         this.firstPairOfCards[0] = card.rank; 
         
-        this.toggleClickPossibility( findClicker('doubled') );
-        this.toggleClickPossibility( findClicker('hover') );
+        this.toggleClickPossibilityOfAnElement( findClicker('doubled') );
+        this.toggleClickPossibilityOfAnElement( findClicker('hover') );
         
         break;
       }
@@ -348,18 +346,18 @@ export default class Round {
         this.firstPairOfCards[1] = card.rank;
         
         if ( this.firstPairOfCards[0] === this.firstPairOfCards[1] ) {
-          this.toggleClickPossibility( findClicker('split') );
+          this.toggleClickPossibilityOfAnElement( findClicker('split') );
         }
         if ( document.querySelector('.clicker-doubled .allow-click') ) {
-          this.toggleClickPossibility( findClicker('doubled') );
+          this.toggleClickPossibilityOfAnElement( findClicker('doubled') );
         }
-        this.toggleClickPossibility( findClicker('check') );
+        this.toggleClickPossibilityOfAnElement( findClicker('check') );
         
         break;
       }
       case 3: {
         if ( document.querySelector('.clicker-split .allow-click') ) {
-          this.toggleClickPossibility( findClicker('split') );
+          this.toggleClickPossibilityOfAnElement( findClicker('split') );
         }
         break;
       }
@@ -426,8 +424,8 @@ export default class Round {
   
   launchDealerCardTransition = () => {
     const card = this.deck.topCardData();
-    const handDealerRect = this.defineRect('.hand__dealer');
-    const deckLandingZoneRect = this.defineRect('[data-deck-socket]');
+    const handDealerRect = this.defineRectBySelector('.hand__dealer');
+    const deckLandingZoneRect = this.defineRectBySelector('[data-deck-socket]');
     
     document.querySelector('.hand__dealer').insertAdjacentElement('afterbegin', card.elem );
     
@@ -506,9 +504,11 @@ export default class Round {
   
   //utilities
   
-  defineRect = selector => document.querySelector( selector ).getBoundingClientRect();
+  defineRectBySelector( selector ) {
+    return document.querySelector( selector ).getBoundingClientRect();
+  }
   
-  toggleClickPossibility = element => {
+  toggleClickPossibilityOfAnElement( element ) {
     element.classList.toggle('deny-click');
     element.classList.toggle('allow-click');
   }
