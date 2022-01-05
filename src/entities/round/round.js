@@ -112,10 +112,27 @@ export default class Round {
   }
   
   initStageRoundResults = () => {
-    const showWinner = resultsState => {
-      if ( resultsState.player ) this.indicatorsIndexes = { player: 1, dealer: 2 };
-      if ( resultsState.dealer ) this.indicatorsIndexes = { player: 2, dealer: 1 };
-      if ( resultsState.tie ) this.indicatorsIndexes = { player: 0, dealer: 0 };
+    const showWinner = function displayWinnerStateBySettingActiveIndicatorsByTheirIndexes( resultsState ) {
+      if ( resultsState.player ) {
+        this.indicatorsIndexes = {
+          player: 1,
+          dealer: 2
+        };
+        return;
+      }
+      if ( resultsState.dealer ) {
+        this.indicatorsIndexes = {
+          player: 2,
+          dealer: 1
+        };
+        return;
+      }
+      if ( resultsState.tie ) {
+        this.indicatorsIndexes = {
+          player: 0,
+          dealer: 0
+        };
+      }
     }
 
     if ( !this.splitModeState ) {
@@ -131,6 +148,7 @@ export default class Round {
         tie: this.results.left.tie && this.results.right.tie
       });
     }
+
     showWinner( this.results.normal );
     
     this.defineIndicatorsVisibilityByIndex( this.indicatorsIndexes, 1 );
@@ -149,7 +167,7 @@ export default class Round {
   }
   
   initStageRoundReset = () => {
-    const killElement = function( elem ) {
+    const killElement = function removeDOMElementFromDOMTree( elem ) {
       if ( elem.parentNode ) {
         elem.parentNode.removeChild( elem );
       }
@@ -218,7 +236,7 @@ export default class Round {
   }
   
   defineRoundResults( playerCards ) {
-    const winCondition = function( playerWon, dealerWon, nobodyWon ) {
+    const defineWinner = function( playerWon, dealerWon, nobodyWon ) {
       this.player = playerWon,
       this.dealer = dealerWon,
       this.tie = nobodyWon
@@ -232,9 +250,9 @@ export default class Round {
     const playerValue = playerCards.value;
     const playerCount = playerCards.count;
     
-    const player = new winCondition( 1, 0, 0 );
-    const dealer = new winCondition( 0, 1, 0 );
-    const tie = new winCondition( 0, 0, 1 );
+    const player = new defineWinner ( 1, 0, 0 );
+    const dealer = new defineWinner ( 0, 1, 0 );
+    const tie = new defineWinner ( 0, 0, 1 );
     
     let outputResult = 'attention';
 
@@ -244,7 +262,6 @@ export default class Round {
       if ( dealerOverdraft ) outputResult = player;
       if ( playerOverdraft ) outputResult = dealer;
     }
-
     if ( !caseOverdraft ) {
       const caseValuesEquivalent = playerValue === dealerValue;
 
@@ -255,7 +272,6 @@ export default class Round {
           if ( playerCount > dealerCount ) outputResult = dealer;
         }
       }
-
       if ( !caseValuesEquivalent ){
         if ( playerValue > dealerValue ) outputResult = player;
         if ( playerValue < dealerValue ) outputResult = dealer;
@@ -279,7 +295,6 @@ export default class Round {
       this.initPlayerDrawNormal( cardProps );
       return;
     }
-
     if ( this.splitModeState ) {
       this.initPlayerDrawSplit( cardProps );
     }
@@ -449,7 +464,6 @@ export default class Round {
       }
       this.initStageRoundResults();
     }
-    
     console.log('dealer:', handCards.value);
   }
   
