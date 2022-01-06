@@ -65,9 +65,13 @@ export default class Sidebar extends MyComponent {
       const imgOff = btn.firstElementChild;
       const imgOn = btn.lastElementChild;
       
-      imgOn.style.display === 'none'
-      ? ( imgOn.style.display = 'inline', imgOff.style.display = 'none' )
-      : ( imgOn.style.display = 'none', imgOff.style.display = 'inline' );
+      if ( imgOn.style.display === 'none' ) {
+        imgOn.style.display = 'inline';
+        imgOff.style.display = 'none';
+      } else {
+        imgOn.style.display = 'none';
+        imgOff.style.display = 'inline';
+      }
     }
     btnClickIllusion();
     
@@ -78,10 +82,22 @@ export default class Sidebar extends MyComponent {
     event.preventDefault();
     
     switch ( event.target.id ) {
-      case 'sidebar': this.shiftSidebar(); break;
-      case 'sidebar-next': this.actNext(); break;
-      case 'sidebar-menu': this.actMenu(); break;
-      case 'sidebar-help': this.actHelp(); break;
+      case 'sidebar': {
+        this.shiftSidebar();
+        break;
+      }
+      case 'sidebar-next': {
+        this.actNext();
+        break;
+      }
+      case 'sidebar-menu': {
+        this.actMenu();
+        break;
+      }
+      case 'sidebar-help': {
+        this.actHelp();
+        break;
+      }
     }
   }
   
