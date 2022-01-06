@@ -253,19 +253,22 @@ export default class Round {
     let outputResult = 'attention';
 
     const caseOverdraft = playerOverdraft || dealerOverdraft;
+    const caseValuesEquivalent = playerValue === dealerValue;
     
     if ( caseOverdraft ) {
       if ( dealerOverdraft ) outputResult = player;
       if ( playerOverdraft ) outputResult = dealer;
     }
     if ( !caseOverdraft ) {
-      const caseValuesEquivalent = playerValue === dealerValue;
-
       if ( caseValuesEquivalent ) {
         outputResult = tie;
         if ( playerValue === 21 ) {
-          if ( playerCount < dealerCount ) outputResult = player;
-          if ( playerCount > dealerCount ) outputResult = dealer;
+          if ( playerCount < dealerCount ) {
+            outputResult = player;
+          }
+          if ( playerCount > dealerCount ) {
+            outputResult = dealer;
+          }
         }
       }
       if ( !caseValuesEquivalent ){
@@ -273,6 +276,7 @@ export default class Round {
         if ( playerValue < dealerValue ) outputResult = dealer;
       }
     }
+
     return outputResult;
   }
   
@@ -339,7 +343,6 @@ export default class Round {
         
         this.toggleClickPossibilityOfAnElement( findClicker('doubled') );
         this.toggleClickPossibilityOfAnElement( findClicker('hover') );
-        
         break;
       }
       case 2: {
@@ -352,7 +355,6 @@ export default class Round {
           this.toggleClickPossibilityOfAnElement( findClicker('doubled') );
         }
         this.toggleClickPossibilityOfAnElement( findClicker('check') );
-        
         break;
       }
       case 3: {
@@ -472,6 +474,8 @@ export default class Round {
   }
   
   calculateCardValue( card, inputValue ) {
+    let outputValue = 10;
+
     const caseDigitalRank = typeof card.rank === 'number';
     const caseAceRank = card.rank === 'A';
     const caseOverdraftAfterNextAce = inputValue + 11 > 21;
@@ -479,8 +483,6 @@ export default class Round {
     const casePlayerDrawHappend = card.elem.closest('.hand__player');
     const casePlayerDrawWithTopAces = casePlayerDrawHappend && this.drawnCards.player.normal.topaces > 0;
     const caseDealerDrawWithTopAces = card.elem.closest('.hand__dealer') && this.drawnCards.dealer.topaces > 0;
-
-    let outputValue = 10;
     
     if ( caseDigitalRank ) {
       outputValue = card.rank;
