@@ -472,33 +472,46 @@ export default class Round {
   }
   
   calculateCardValue( card, inputValue ) {
+    const caseDigitalRank = typeof card.rank === 'number';
+    const caseAceRank = card.rank === 'A';
+    const caseOverdraftAfterNextAce = inputValue + 11 > 21;
+    const caseOverdraftAfterNextCard = outputValue + inputValue > 21;
+    const casePlayerDrawHappend = card.elem.closest('.hand__player');
+    const casePlayerDrawWithTopAces = casePlayerDrawHappend && this.drawnCards.player.normal.topaces > 0;
+    const caseDealerDrawWithTopAces = card.elem.closest('.hand__dealer') && this.drawnCards.dealer.topaces > 0;
+
     let outputValue = 10;
     
-    if ( typeof card.rank === 'number' ) {
+    if ( caseDigitalRank ) {
       outputValue = card.rank;
     }
-    
-    if ( card.rank === 'A' ) {
-      if ( inputValue + 11 < 22 ) {
-        card.elem.closest('.hand__player')
-          ? ++this.drawnCards.player.normal.topaces
-          : ++this.drawnCards.dealer.topaces;
-        outputValue = 11; 
-      } else {
+
+    if ( caseAceRank ) {
+      if ( caseOverdraftAfterNextAce ) {
         outputValue = 1;
       }
+      if ( !caseOverdraftAfterNextAce ) {
+        if ( casePlayerDrawHappend ) {
+          ++this.drawnCards.player.normal.topaces
+        }
+        if ( !casePlayerDrawHappend ) {
+          ++this.drawnCards.dealer.topaces;
+        }
+        outputValue = 11; 
+      }
     }
-    
-    if ( outputValue + inputValue > 21 ) {
-      if ( card.elem.closest('.hand__player') && this.drawnCards.player.normal.topaces > 0 ) {
+
+    if ( caseOverdraftAfterNextCard ) {
+      if ( casePlayerDrawWithTopAces ) {
         --this.drawnCards.player.normal.topaces;
         outputValue -= 10;
       }
-      if ( card.elem.closest('.hand__dealer') && this.drawnCards.dealer.topaces > 0 ) {
+      if ( caseDealerDrawWithTopAces ) {
         --this.drawnCards.dealer.topaces;
         outputValue -= 10;
       }
     }
+    
     return outputValue;
   }
   
