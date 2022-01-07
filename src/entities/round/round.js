@@ -175,7 +175,6 @@ export default class Round {
         elem.parentNode.removeChild( elem );
       }
     }
-    const enlightedClickers = document.querySelectorAll('.clicker__fake.allow-click');
     const drawnCards = document.querySelectorAll('.card');
     const betChips = document.querySelectorAll('.chip-bet');
     const usedDeck = this.deck.elem;
@@ -185,7 +184,7 @@ export default class Round {
     }
     this.killLastRoundEventListeners();
     
-    enlightedClickers.forEach( clicker => this.toggleClickPossibilityOfAnElement( clicker ) );
+    this.clickers.hover.toggleClickPossibility();
 
     drawnCards.forEach( card => {
       const cardRemove = card.animate(
