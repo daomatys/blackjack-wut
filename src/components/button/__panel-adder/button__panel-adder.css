@@ -1,0 +1,23 @@
+.adder__container {
+  height: 25px;
+  width: 25px;
+}
+
+.adder__container img {
+  position: absolute;
+  height: inherit;
+  width: inherit;
+}
+
+.adder__fake {
+  position: absolute;
+  top: 0px;
+  height: inherit;
+  width: inherit;
+  transition: all 1s;
+}
+
+.adder {
+  height: inherit;
+  width: inherit;
+}

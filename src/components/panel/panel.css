@@ -5,6 +5,16 @@
   height: 100%;
 }
 
+.panel__adders {
+  position: absolute;
+  display: grid;
+  grid-template-columns: repeat(5, 25px);
+  grid-gap: 71px;
+  left: 50%;
+  top: 10px;
+  transform: translateX(-50%);
+}
+
 .panel__clickers {
   position: absolute;
   display: grid;
@@ -14,38 +24,6 @@
   top: 60%;
   transform: translate(-50%, -50%);
 }
-
-.clicker__container {
-  width: 87px;
-  height: 32px;
-}
-
-.clicker__container img {
-  position: absolute;
-  height: inherit;
-  width: inherit;
-}
-
-.clicker__fake {
-  position: absolute;
-  top: 0px;
-  height: inherit;
-  width: inherit;
-  transition: opacity .5s;
-}
-
-.clicker {
-  width: inherit;
-  height: inherit;
-}
-
-.clicker img {
-  position: absolute;
-  top: 0px;
-  width: inherit;
-  height: inherit;
-}
-
 
 .panel__chip-machine {
   position: absolute;
@@ -82,39 +60,4 @@
   position: absolute;
   height: 90px;
   width: 90px;
-}
-
-
-.panel__adders {
-  position: absolute;
-  display: grid;
-  grid-template-columns: repeat(5, 25px);
-  grid-gap: 71px;
-  left: 50%;
-  top: 10px;
-  transform: translateX(-50%);
-}
-
-.adder__container {
-  height: 25px;
-  width: 25px;
-}
-
-.adder__container img {
-  position: absolute;
-  height: inherit;
-  width: inherit;
-}
-
-.adder__fake {
-  position: absolute;
-  top: 0px;
-  height: inherit;
-  width: inherit;
-  transition: all 1s;
-}
-
-.adder {
-  height: inherit;
-  width: inherit;
 }
