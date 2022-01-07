@@ -60,8 +60,7 @@ export default class Panel extends MyComponent {
         name => [ name, new PanelClickerButton( name ) ] 
       )
     );
-
-    console.log(this.clickersCollection)
+    
     this.chipsValues.reverse().forEach( value => new PanelAdderButton( value ) );
   }
   

@@ -34,7 +34,5 @@ export default class PanelAdderButton extends Button {
       wrapref: selector,
       markup: this.markup()
     });
-
-    //this.elem = this.defineElementByItsWrap( selector );
   }
 }
