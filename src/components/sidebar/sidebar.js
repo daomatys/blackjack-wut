@@ -31,7 +31,7 @@ export default class Sidebar extends MyComponent {
 
     return `
       <div class="sidebar">
-        <div class="sidebar__background" id ="sidebar">
+        <div class="sidebar__background" id="sidebar">
           <img src="src/assets/graphics/sidebar.png">
         </div>
         <div class="sidebar__buttons-row">
