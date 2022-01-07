@@ -13,7 +13,7 @@ export default class Button extends MyComponent {
     super.applyStyleSheet( thatComponentStyleSheet );
   }
 
-  changeButtonDisplayState( id ) {
+  switchDisplayState( id ) {
     const button = document.querySelector(`#${ id }`);
     
     const buttonClickIllusion = function switchButtonImagesDisplayState() {
@@ -28,7 +28,7 @@ export default class Button extends MyComponent {
     document.addEventListener('pointerup', buttonClickIllusion, { once: true } );
   }
 
-  toggleClickPossibility( suffix ) {
+  switchClickPossibility( suffix ) {
     const element = document.querySelector(`.clicker-${ suffix }`).lastElementChild;
     
     element.classList.toggle('deny-click');
