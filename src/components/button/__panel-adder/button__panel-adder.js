@@ -4,10 +4,10 @@ import thatComponentStyleSheet from './button__panel-adder.css' assert { type: '
 
 export default class PanelAdderButton extends Button {
 
-  constructor( itemName ) {
+  constructor( itemValue ) {
     super();
 
-    this.itemName = itemName;
+    this.itemValue = itemValue;
     
     this.render();
     this.initElemRef();
@@ -16,8 +16,8 @@ export default class PanelAdderButton extends Button {
 
   markup() {
     return `
-      <div class="adder__container adder-${ this.itemName }">
-        <div class="adder js-tappable" id="adder-${ this.itemName }">
+      <div class="adder__container adder-${ this.itemValue }">
+        <div class="adder js-tappable" id="adder-${ this.itemValue }">
           <img src="src/assets/graphics/buttons/adder_off.png">
           <img src="src/assets/graphics/buttons/adder_on.png" class="js-button-image_hidden">
         </div>
@@ -37,7 +37,7 @@ export default class PanelAdderButton extends Button {
   }
 
   initElemRef() {
-    const selector = `.adder-${this.itemName}`;
+    const selector = `.adder-${ this.itemValue }`;
 
     this.elem = document.querySelector( selector );
   }
