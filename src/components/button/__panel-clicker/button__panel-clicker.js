@@ -14,12 +14,20 @@ export default class PanelClickerButton extends Button {
 
   markup() {
     return `
-
+      <div class="clicker__container clicker-${ this.itemname }">
+        <div class="clicker js-tappable" id="${ this.itemname }">
+          <img src="src/assets/graphics/buttons/button_${ this.itemname }_off.png">
+          <img src="src/assets/graphics/buttons/button_${ this.itemname }_on.png" class="js-button-image_hidden">
+        </div>
+        <div class="clicker__fake deny-click">
+          <img src="src/assets/graphics/buttons/button_inactive.png">
+        </div>
+      </div>
     `;
   }
 
   render() {
-    const selector = '';
+    const selector = '.panel__clickers';
 
     super.initializeComponent({
       stylesheet: thatComponentStyleSheet,

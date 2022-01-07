@@ -11,40 +11,16 @@ export default class Panel extends MyComponent {
     this.chipsValues = [ 1, 5, 10, 25, 100 ];
     
     this.render();
-    this.eventListeners();
+    this.renderInnerElements();
+
+    this.initEventListeners();
   }
 
-  markup() {
-    const layoutPanelButtons = this.clickersNames
-      .map( suffix => `
-        <div class="clicker__container clicker-${ suffix }">
-          <div class="clicker js-tappable" id="${ suffix }">
-            <img src="src/assets/graphics/buttons/button_${ suffix }_off.png">
-            <img src="src/assets/graphics/buttons/button_${ suffix }_on.png" class="js-img-on_hidden">
-          </div>
-          <div class="clicker__fake deny-click">
-            <img src="src/assets/graphics/buttons/button_inactive.png">
-          </div>
-        </div>`)
-      .join('');
-      
+  markup() {      
     const layoutChipMachine = this.chipsValues
       .map( code => `
         <div class="chip chip-armed chip-${ code }">
           <img src="src/assets/graphics/chips/chip_${ code }.png">
-        </div>`)
-      .join('');
-      
-    const layoutAdderBar = this.chipsValues 
-      .map( code => `
-        <div class="adder__container adder-${ code }">
-          <div class="adder js-tappable" id="adder-${ code }">
-            <img src="src/assets/graphics/buttons/adder_off.png">
-            <img src="src/assets/graphics/buttons/adder_on.png" class="js-img-on_hidden">
-          </div>
-          <div class="adder__fake allow-click">
-            <img src="src/assets/graphics/buttons/adder_inactive.png">
-          </div>
         </div>`)
       .join('');
       
@@ -53,16 +29,12 @@ export default class Panel extends MyComponent {
         <div class="panel__background">
           <img src="src/assets/graphics/panel.png">
         </div>
-        <div class="panel__clickers">
-          ${ layoutPanelButtons }
-        </div>
+        <div class="panel__clickers"></div>
         <div class="panel__chip-machine">
           <div class="panel__chips">
             ${ layoutChipMachine }
           </div>
-          <div class="panel__adders">
-            ${ layoutAdderBar }
-          </div>
+          <div class="panel__adders"></div>
         </div>
       </div>
     `;
@@ -85,7 +57,7 @@ export default class Panel extends MyComponent {
     this.firstChipBet = false;
   }
   
-  eventListeners() {
+  initEventListeners() {
     const tappables = this.elem.querySelectorAll('.js-tappable');
     
     tappables.forEach( tappable => tappable.addEventListener('pointerdown', this.actsOfButtons) );

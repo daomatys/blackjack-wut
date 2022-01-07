@@ -16,7 +16,7 @@ export default class SidebarButton extends Button {
     return `
       <div class="sidebar__button" id="sidebar-${ this.itemname }">
         <img src="src/assets/graphics/buttons/sidebar-btn_${ this.itemname }_off.png">
-        <img src="src/assets/graphics/buttons/sidebar-btn_${ this.itemname }_on.png">
+        <img src="src/assets/graphics/buttons/sidebar-btn_${ this.itemname }_on.png" class="js-button-image_hidden">
       </div>
     `;
   }
