@@ -17,10 +17,12 @@ export default class Button extends MyComponent {
     const button = document.querySelector(`#${ id }`);
     
     const buttonClickIllusion = function switchButtonImagesDisplayState() {
-      button
-        .lastElementChild
-        .classList
-        .toggle('js-img-on_hidden');
+      const buttonImages = [
+        button.lastElementChild,
+        button.firstElementChild
+      ];
+
+      buttonImages.forEach( image => image.classList.toggle('js-button-image_hidden') );
     }
 
     buttonClickIllusion();

@@ -8,7 +8,7 @@ export default class SidebarButton extends Button {
     super();
 
     this.itemname = itemname;
-    
+
     this.render();
   }
 
@@ -31,7 +31,5 @@ export default class SidebarButton extends Button {
     });
 
     this.elem = document.querySelector(`#sidebar-${ this.itemname }`);
-
-    console.log(this.elem)
   }
 }
