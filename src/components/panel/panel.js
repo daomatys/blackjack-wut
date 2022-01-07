@@ -31,12 +31,12 @@ export default class Panel extends MyComponent {
         <div class="panel__background">
           <img src="src/assets/graphics/panel.png">
         </div>
-        <div class="panel__clickers"></div>
+        <div class="panel__clickers-row"></div>
         <div class="panel__chip-machine">
-          <div class="panel__chips">
+          <div class="panel__chips-row">
             ${ layoutChipMachine }
           </div>
-          <div class="panel__adders"></div>
+          <div class="panel__adders-row"></div>
         </div>
       </div>
     `;

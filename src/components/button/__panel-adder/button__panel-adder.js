@@ -21,7 +21,7 @@ export default class PanelAdderButton extends Button {
           <img src="src/assets/graphics/buttons/adder_off.png">
           <img src="src/assets/graphics/buttons/adder_on.png" class="js-button-image_hidden">
         </div>
-        <div class="adder__fake allow-click">
+        <div class="adder__thumb allow-click">
           <img src="src/assets/graphics/buttons/adder_inactive.png">
         </div>
       </div>
@@ -31,7 +31,7 @@ export default class PanelAdderButton extends Button {
   render() {
     super.initializeComponent({
       stylesheet: thatComponentStyleSheet,
-      wrapref: '.panel__adders',
+      wrapref: '.panel__adders-row',
       markup: this.markup()
     });
   }

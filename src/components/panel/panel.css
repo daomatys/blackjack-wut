@@ -5,7 +5,7 @@
   height: 100%;
 }
 
-.panel__adders {
+.panel__adders-row {
   position: absolute;
   display: grid;
   grid-template-columns: repeat(5, 25px);
@@ -15,7 +15,7 @@
   transform: translateX(-50%);
 }
 
-.panel__clickers {
+.panel__clickers-row {
   position: absolute;
   display: grid;
   grid-template-columns: repeat(4, 85px);
@@ -25,13 +25,7 @@
   transform: translate(-50%, -50%);
 }
 
-.panel__chip-machine {
-  position: absolute;
-  width: 100%;
-  height: 1px;
-}
-
-.panel__chips {
+.panel__chips-row {
   position: absolute;
   top: -25px;
   left: 50%;
@@ -40,6 +34,12 @@
   grid-template-columns: repeat(5, 90px);
   grid-gap: 6px;
   transform: translateX(-50%);
+}
+
+.panel__chip-machine {
+  position: absolute;
+  width: 100%;
+  height: 1px;
 }
 
 .chip {

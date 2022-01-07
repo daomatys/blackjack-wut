@@ -21,7 +21,7 @@ export default class PanelClickerButton extends Button {
           <img src="src/assets/graphics/buttons/button_${ this.itemName }_off.png">
           <img src="src/assets/graphics/buttons/button_${ this.itemName }_on.png" class="js-button-image_hidden">
         </div>
-        <div class="clicker__fake deny-click">
+        <div class="clicker__thumb deny-click">
           <img src="src/assets/graphics/buttons/button_inactive.png">
         </div>
       </div>
@@ -31,7 +31,7 @@ export default class PanelClickerButton extends Button {
   render() {
     super.initializeComponent({
       stylesheet: thatComponentStyleSheet,
-      wrapref: '.panel__clickers',
+      wrapref: '.panel__clickers-row',
       markup: this.markup()
     });
   }
