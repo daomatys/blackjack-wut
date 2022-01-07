@@ -55,7 +55,13 @@ export default class Panel extends MyComponent {
   }
 
   renderInnerElements() {
-    this.clickersNames.reverse().forEach( name => new PanelClickerButton( name ) );
+    this.clickersCollection = Object.fromEntries(
+      this.clickersNames.reverse().map( 
+        name => [ name, new PanelClickerButton( name ) ] 
+      )
+    );
+
+    console.log(this.clickersCollection)
     this.chipsValues.reverse().forEach( value => new PanelAdderButton( value ) );
   }
   
@@ -70,28 +76,12 @@ export default class Panel extends MyComponent {
     tappables.forEach( tappable => tappable.addEventListener('pointerdown', this.actsOfButtons) );
   }
   
-  changeButtonDisplayState = id => {
-    const btn = this.elem.querySelector(`#${ id }`);
-    
-    const btnClickIllusion = function btnImagesDisplayStateSwitcher() {
-      const imgOn = btn.lastElementChild;
-
-      imgOn.classList.toggle('js-img-on_hidden');
-    }
-
-    btnClickIllusion();
-    
-    document.addEventListener('pointerup', btnClickIllusion, { once: true } );
-  }
-  
   actsOfButtons = event => {
     event.preventDefault();
     
     const aim = event.target;
     
     if ( aim.classList.contains('js-tappable') ) {
-      this.changeButtonDisplayState( aim.id );
-      
       switch ( aim.id ) {
         case 'doubled': {
           this.actDoubled();
@@ -117,7 +107,7 @@ export default class Panel extends MyComponent {
   }
   
   actDoubled = () => {
-    this.toggleClickPossibility('doubled');
+    this.clickersCollection.doubled.toggleClickPossibility();
   }
   
   actCheck = () => {
@@ -126,7 +116,7 @@ export default class Panel extends MyComponent {
     );
     
     if ( this.elem.querySelector('.clicker-split .allow-click') ) {
-      this.toggleClickPossibility('split');
+      this.clickersCollection.split.toggleClickPossibility();
     }
   }
   
@@ -136,7 +126,7 @@ export default class Panel extends MyComponent {
     );
     
     this.toggleSplitEntitiesClasses( true );
-    this.toggleClickPossibility('split');
+    this.clickersCollection.split.toggleClickPossibility();
     
     const hand = document.querySelector('.hand__player');
     const subhandLeft = hand.querySelector('.subhand__left');
@@ -226,11 +216,4 @@ export default class Panel extends MyComponent {
   }
   
   defineRect = elem => elem.getBoundingClientRect();
-  
-  toggleClickPossibility( suffix ) {
-    const element = document.querySelector(`.clicker-${ suffix }`).lastElementChild;
-    
-    element.classList.toggle('deny-click');
-    element.classList.toggle('allow-click');
-  }
 }

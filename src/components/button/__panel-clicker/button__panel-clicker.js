@@ -37,4 +37,8 @@ export default class PanelClickerButton extends Button {
 
     //this.elem = this.defineElementByItsWrap( selector );
   }
+
+  toggleClickPossibility() {
+    this.switchClickPossibility( this.itemname );
+  }
 }
