@@ -19,6 +19,8 @@ export default class Round {
     
     this.initGeneralComponents();
 
+    this.clickers = this.panel.clickersCollection;
+
     this.initNewRound();
     this.initNewRoundEventListeners();
   }
@@ -107,7 +109,7 @@ export default class Round {
   }
   
   initStageDealerDraw = () => {
-    this.panel.toggleClickPossibility('check');
+    this.clickers.check.toggleClickPossibility();
     this.dealerDrawInterval = setInterval( this.launchDealerCardTransition, 700 );
   }
   
@@ -335,31 +337,29 @@ export default class Round {
   }
   
   initFirstPairOfCardsClickerReaction = ( count, card ) => {
-    const findClicker = suffix => document.querySelector(`.clicker-${ suffix }`).lastElementChild;
-    
     switch( count ) {
       case 1: {
         this.firstPairOfCards[0] = card.rank; 
         
-        this.toggleClickPossibilityOfAnElement( findClicker('doubled') );
-        this.toggleClickPossibilityOfAnElement( findClicker('hover') );
+        this.clickers.doubled.toggleClickPossibility();
+        this.clickers.hover.toggleClickPossibility();
         break;
       }
       case 2: {
         this.firstPairOfCards[1] = card.rank;
         
         if ( this.firstPairOfCards[0] === this.firstPairOfCards[1] ) {
-          this.toggleClickPossibilityOfAnElement( findClicker('split') );
+          this.clickers.split.toggleClickPossibility();
         }
         if ( document.querySelector('.clicker-doubled .allow-click') ) {
-          this.toggleClickPossibilityOfAnElement( findClicker('doubled') );
+          this.clickers.doubled.toggleClickPossibility();
         }
-        this.toggleClickPossibilityOfAnElement( findClicker('check') );
+        this.clickers.check.toggleClickPossibility();
         break;
       }
       case 3: {
         if ( document.querySelector('.clicker-split .allow-click') ) {
-          this.toggleClickPossibilityOfAnElement( findClicker('split') );
+          this.clickers.split.toggleClickPossibility();
         }
         break;
       }
