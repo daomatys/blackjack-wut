@@ -27,7 +27,6 @@ export default class Button extends MyComponent {
   }
 
   switchClickPossibility( elem ) {
-    console.log(elem)
     const thumb = elem.lastElementChild;
     
     thumb.classList.toggle('deny-click');

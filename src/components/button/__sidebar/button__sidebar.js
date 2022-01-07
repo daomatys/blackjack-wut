@@ -4,32 +4,35 @@ import thatComponentStyleSheet from './button__sidebar.css' assert { type: 'css'
 
 export default class SidebarButton extends Button {
 
-  constructor( itemname ) {
+  constructor( itemName ) {
     super();
 
-    this.itemname = itemname;
+    this.itemName = itemName;
 
     this.render();
+    this.initElemRef();
   }
 
   markup() {
     return `
-      <div class="sidebar__button" id="sidebar-${ this.itemname }">
-        <img src="src/assets/graphics/buttons/sidebar-btn_${ this.itemname }_off.png">
-        <img src="src/assets/graphics/buttons/sidebar-btn_${ this.itemname }_on.png" class="js-button-image_hidden">
+      <div class="sidebar__button" id="sidebar-${ this.itemName }">
+        <img src="src/assets/graphics/buttons/sidebar-btn_${ this.itemName }_off.png">
+        <img src="src/assets/graphics/buttons/sidebar-btn_${ this.itemName }_on.png" class="js-button-image_hidden">
       </div>
     `;
   }
 
   render() {
-    const selector = '.sidebar__buttons-row';
-
     super.initializeComponent({
       stylesheet: thatComponentStyleSheet,
-      wrapref: selector,
+      wrapref: '.sidebar__buttons-row',
       markup: this.markup()
     });
+  }
 
-    this.elem = document.querySelector(`#sidebar-${ this.itemname }`);
+  initElemRef() {
+    const selector = `#sidebar-${ this.itemName }`;
+
+    this.elem = document.querySelector( selector );
   }
 }
