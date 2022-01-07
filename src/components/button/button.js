@@ -21,10 +21,9 @@ export default class Button extends MyComponent {
         button.lastElementChild,
         button.firstElementChild
       ];
-
       buttonImages.forEach( image => image.classList.toggle('js-button-image_hidden') );
     }
-
+    
     buttonClickIllusion();
     
     document.addEventListener('pointerup', buttonClickIllusion, { once: true } );
