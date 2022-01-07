@@ -1,5 +1,7 @@
 import MyComponent from '../components.js';
 import thatComponentStyleSheet from './panel.css' assert { type: 'css' };
+import PanelAdderButton from '../button/__panel-adder/button__panel-adder.js';
+import PanelClickerButton from '../button/__panel-clicker/button__panel-clicker.js';
 
 
 export default class Panel extends MyComponent {
@@ -50,6 +52,11 @@ export default class Panel extends MyComponent {
     });
 
     this.elem = this.defineElementByItsWrap( selector );
+  }
+
+  renderInnerElements() {
+    this.clickersNames.forEach( name => new PanelClickerButton( name ) );
+    this.chipsValues.forEach( value => new PanelAdderButton( value ) );
   }
   
   defineAdditionalValues() {

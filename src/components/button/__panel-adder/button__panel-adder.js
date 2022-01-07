@@ -27,7 +27,7 @@ export default class PanelAdderButton extends Button {
   }
 
   render() {
-    const selector = '';
+    const selector = '.panel__adders';
 
     super.initializeComponent({
       stylesheet: thatComponentStyleSheet,
