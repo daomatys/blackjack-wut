@@ -4,18 +4,18 @@ import thatComponentStyleSheet from './button__panel-adder.css' assert { type: '
 
 export default class PanelAdderButton extends Button {
 
-  constructor( itemname ) {
+  constructor( itemName ) {
     super();
 
-    this.itemname = itemname;
+    this.itemName = itemName;
     
     this.render();
   }
 
   markup() {
     return `
-      <div class="adder__container adder-${ this.itemname }">
-        <div class="adder js-tappable" id="adder-${ this.itemname }">
+      <div class="adder__container adder-${ this.itemName }">
+        <div class="adder js-tappable" id="adder-${ this.itemName }">
           <img src="src/assets/graphics/buttons/adder_off.png">
           <img src="src/assets/graphics/buttons/adder_on.png" class="js-button-image_hidden">
         </div>
@@ -37,7 +37,8 @@ export default class PanelAdderButton extends Button {
   }
 
   toggleClickPossibility() {
-    const selector = '.adder-' + this.itemname;
+    const selector = '.adder-' + this.itemName;
+
     this.switchClickPossibility( selector );
   }
 }

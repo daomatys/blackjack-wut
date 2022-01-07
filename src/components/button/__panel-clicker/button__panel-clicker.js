@@ -4,20 +4,20 @@ import thatComponentStyleSheet from './button__panel-clicker.css' assert { type:
 
 export default class PanelClickerButton extends Button {
 
-  constructor( itemname ) {
+  constructor( itemValue ) {
     super();
 
-    this.itemname = itemname;
+    this.itemValue = itemValue;
     
     this.render();
   }
 
   markup() {
     return `
-      <div class="clicker__container clicker-${ this.itemname }">
-        <div class="clicker js-tappable" id="${ this.itemname }">
-          <img src="src/assets/graphics/buttons/button_${ this.itemname }_off.png">
-          <img src="src/assets/graphics/buttons/button_${ this.itemname }_on.png" class="js-button-image_hidden">
+      <div class="clicker__container clicker-${ this.itemValue }">
+        <div class="clicker js-tappable" id="${ this.itemValue }">
+          <img src="src/assets/graphics/buttons/button_${ this.itemValue }_off.png">
+          <img src="src/assets/graphics/buttons/button_${ this.itemValue }_on.png" class="js-button-image_hidden">
         </div>
         <div class="clicker__fake deny-click">
           <img src="src/assets/graphics/buttons/button_inactive.png">
@@ -37,7 +37,8 @@ export default class PanelClickerButton extends Button {
   }
 
   toggleClickPossibility() {
-    const selector = '.clicker-' + this.itemname;
+    const selector = '.clicker-' + this.itemValue;
+
     this.switchClickPossibility( selector );
   }
 }
