@@ -1,0 +1,12 @@
+.deny-click {
+  opacity: 1;
+}
+
+.allow-click {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.js-img-on_hidden {
+  display: none;
+}

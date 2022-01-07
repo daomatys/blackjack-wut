@@ -66,13 +66,3 @@ img {
   bottom: 40%;
   right: 50px;
 }
-
-
-.deny-click {
-  opacity: 1;
-}
-
-.allow-click {
-  opacity: 0;
-  pointer-events: none;
-}
