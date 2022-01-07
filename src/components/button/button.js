@@ -13,9 +13,7 @@ export default class Button extends MyComponent {
     super.applyStyleSheet( thatComponentStyleSheet );
   }
 
-  switchDisplayState( id ) {
-    const button = document.querySelector(`#${ id }`);
-    
+  switchDisplayState( button ) {
     const buttonClickIllusion = function switchButtonImagesDisplayState() {
       const buttonImages = [
         button.lastElementChild,
@@ -25,14 +23,14 @@ export default class Button extends MyComponent {
     }
     
     buttonClickIllusion();
-    
-    document.addEventListener('pointerup', buttonClickIllusion, { once: true } );
+    document.addEventListener('pointerup', buttonClickIllusion, { once: true });
   }
 
-  switchClickPossibility( selector ) {
-    const element = document.querySelector( selector ).lastElementChild;
+  switchClickPossibility( elem ) {
+    console.log(elem)
+    const thumb = elem.lastElementChild;
     
-    element.classList.toggle('deny-click');
-    element.classList.toggle('allow-click');
+    thumb.classList.toggle('deny-click');
+    thumb.classList.toggle('allow-click');
   }
 }

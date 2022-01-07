@@ -10,6 +10,8 @@ export default class PanelAdderButton extends Button {
     this.itemName = itemName;
     
     this.render();
+    this.initElemRef();
+    this.initEventHook();
   }
 
   markup() {
@@ -27,18 +29,26 @@ export default class PanelAdderButton extends Button {
   }
 
   render() {
-    const selector = '.panel__adders';
-
     super.initializeComponent({
       stylesheet: thatComponentStyleSheet,
-      wrapref: selector,
+      wrapref: '.panel__adders',
       markup: this.markup()
     });
   }
 
-  toggleClickPossibility() {
-    const selector = '.adder-' + this.itemName;
+  initElemRef() {
+    const selector = `.adder-${this.itemName}`;
 
-    this.switchClickPossibility( selector );
+    this.elem = document.querySelector( selector );
+  }
+
+  initEventHook() {
+    const button = this.elem.firstElementChild;
+
+    this.elem.onpointerdown = () => this.switchDisplayState( button );
+  }
+
+  toggleClickPossibility() {
+    this.switchClickPossibility( this.elem );
   }
 }
