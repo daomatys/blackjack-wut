@@ -38,8 +38,7 @@ export default class Sidebar extends MyComponent {
   }
 
   renderInnerElements() {
-    const buttonNames = [ 'next', 'menu', 'help' ];
-
+    const buttonNames = [ 'help', 'menu', 'next' ];
     buttonNames.forEach( name => new SidebarButton( name ) );
   }
   

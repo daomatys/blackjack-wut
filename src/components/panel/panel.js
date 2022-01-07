@@ -55,8 +55,8 @@ export default class Panel extends MyComponent {
   }
 
   renderInnerElements() {
-    this.clickersNames.forEach( name => new PanelClickerButton( name ) );
-    this.chipsValues.forEach( value => new PanelAdderButton( value ) );
+    this.clickersNames.reverse().forEach( name => new PanelClickerButton( name ) );
+    this.chipsValues.reverse().forEach( value => new PanelAdderButton( value ) );
   }
   
   defineAdditionalValues() {
