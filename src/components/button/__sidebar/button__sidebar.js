@@ -11,6 +11,7 @@ export default class SidebarButton extends Button {
 
     this.render();
     this.initElemRef();
+    this.initEventHook();
   }
 
   markup() {
@@ -34,5 +35,9 @@ export default class SidebarButton extends Button {
     const selector = `#sidebar-${ this.itemName }`;
 
     this.elem = document.querySelector( selector );
+  }
+
+  initEventHook() {
+    this.elem.onpointerdown = () => this.switchDisplayState( this.elem );
   }
 }
