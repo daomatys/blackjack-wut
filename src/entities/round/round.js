@@ -18,8 +18,7 @@ export default class Round {
     this.animations = animations;
     
     this.initGeneralComponents();
-
-    this.clickers = this.panel.clickersCollection;
+    this.initControllableComponentsCollections();
 
     this.initNewRound();
     this.initNewRoundEventListeners();
@@ -33,6 +32,11 @@ export default class Round {
     this.panel = new Panel();
     this.bank = new Bank();
     this.menu = new Menu();
+  }
+
+  initControllableComponentsCollections() {
+    this.clickers = this.panel.clickersCollection;
+    this.adders = this.panel.addersCollection;
   }
   
   initNewRound = () => {
@@ -63,6 +67,8 @@ export default class Round {
     this.deck.elem.removeEventListener('card-placed', ({ detail }) => this.choosePlayerDrawMode( detail ));
     
     document.removeEventListener('split', this.activateSplitDrawMode, { once: true });
+
+    this.deck.killEventListeners();
   }
   
   //round stages section
@@ -78,10 +84,9 @@ export default class Round {
   }
   
   initStagePlayerDraw = () => {
-    const fakeAdders = document.querySelectorAll('.adder__fake');
     const starter = document.querySelector('.deck-unit__game-starter');
     
-    fakeAdders.forEach( fake => this.toggleClickPossibilityOfAnElement( fake ) );
+    this.switchAddersClickability();
     
     this.deckFalls = document.querySelector('.deck').animate( 
       this.animations.deck.fall.action,
@@ -170,10 +175,8 @@ export default class Round {
         elem.parentNode.removeChild( elem );
       }
     }
-
     const enlightedClickers = document.querySelectorAll('.clicker__fake.allow-click');
     const drawnCards = document.querySelectorAll('.card');
-    const fakeAdders = document.querySelectorAll('.adder__fake');
     const betChips = document.querySelectorAll('.chip-bet');
     const usedDeck = this.deck.elem;
     
@@ -181,7 +184,6 @@ export default class Round {
       this.panel.toggleSplitEntitiesClasses( true );
     }
     this.killLastRoundEventListeners();
-    this.deck.killEventListeners();
     
     enlightedClickers.forEach( clicker => this.toggleClickPossibilityOfAnElement( clicker ) );
 
@@ -194,7 +196,7 @@ export default class Round {
     });
 
     betChips.forEach( chip => killElement( chip ) );
-    fakeAdders.forEach( adder => this.toggleClickPossibilityOfAnElement( adder ) );
+    this.switchAddersClickability();
     
     const deckRemove = usedDeck.animate(
       this.animations.deck.remove.action,
@@ -209,6 +211,10 @@ export default class Round {
     
     this.initNewRound();
     this.initNewRoundEventListeners();
+  }
+
+  switchAddersClickability() {
+    this.adders.forEach( adder => adder.toggleClickPossibility() );
   }
   
   //round stage side methods
@@ -521,10 +527,5 @@ export default class Round {
   
   defineRectBySelector( selector ) {
     return document.querySelector( selector ).getBoundingClientRect();
-  }
-  
-  toggleClickPossibilityOfAnElement( element ) {
-    element.classList.toggle('deny-click');
-    element.classList.toggle('allow-click');
   }
 }

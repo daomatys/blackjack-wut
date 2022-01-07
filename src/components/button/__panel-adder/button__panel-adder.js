@@ -35,4 +35,9 @@ export default class PanelAdderButton extends Button {
       markup: this.markup()
     });
   }
+
+  toggleClickPossibility() {
+    const selector = '.adder-' + this.itemname;
+    this.switchClickPossibility( selector );
+  }
 }

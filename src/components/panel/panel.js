@@ -43,7 +43,7 @@ export default class Panel extends MyComponent {
   }
 
   render() {
-    const selector = '[data-panel]'
+    const selector = '[data-panel]';
 
     super.initializeComponent({
       stylesheet: thatComponentStyleSheet,
@@ -60,8 +60,10 @@ export default class Panel extends MyComponent {
         name => [ name, new PanelClickerButton( name ) ] 
       )
     );
-    
-    this.chipsValues.reverse().forEach( value => new PanelAdderButton( value ) );
+
+    this.addersCollection = this.chipsValues.reverse().map( 
+      value => new PanelAdderButton( value )
+    );
   }
   
   defineAdditionalValues() {

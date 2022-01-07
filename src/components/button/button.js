@@ -30,8 +30,8 @@ export default class Button extends MyComponent {
     document.addEventListener('pointerup', buttonClickIllusion, { once: true } );
   }
 
-  switchClickPossibility( suffix ) {
-    const element = document.querySelector(`.clicker-${ suffix }`).lastElementChild;
+  switchClickPossibility( selector ) {
+    const element = document.querySelector( selector ).lastElementChild;
     
     element.classList.toggle('deny-click');
     element.classList.toggle('allow-click');

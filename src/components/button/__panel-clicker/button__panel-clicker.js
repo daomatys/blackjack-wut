@@ -37,6 +37,7 @@ export default class PanelClickerButton extends Button {
   }
 
   toggleClickPossibility() {
-    this.switchClickPossibility( this.itemname );
+    const selector = '.clicker-' + this.itemname;
+    this.switchClickPossibility( selector );
   }
 }
