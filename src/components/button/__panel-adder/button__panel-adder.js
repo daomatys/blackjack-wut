@@ -6,7 +6,10 @@ export default class PanelAdderButton extends Button {
 
   constructor( itemname ) {
     super();
+
     this.itemname = itemname;
+    
+    this.render();
   }
 
   markup() {

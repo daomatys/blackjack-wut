@@ -1,5 +1,6 @@
 import MyComponent from '../components.js';
 import thatComponentStyleSheet from './sidebar.css' assert { type: 'css' };
+import SidebarButton from '../button/__sidebar/button__sidebar.js';
 
 
 export default class Sidebar extends MyComponent {
@@ -8,35 +9,18 @@ export default class Sidebar extends MyComponent {
     super();
     
     this.render();
-    this.eventListeners();
+    this.renderInnerElements();
+
+    this.initEventListeners();
   }
   
   markup() {
-    const defineButtonByTypeName = typename => `
-      <div class="sidebar__button" id="sidebar-${ typename }">
-        <img src="src/assets/graphics/buttons/sidebar-btn_${ typename }_off.png" style="display: inline">
-        <img src="src/assets/graphics/buttons/sidebar-btn_${ typename }_on.png" style="display: none">
-      </div>
-    `;
-
-    const buttonTypeNames = [
-      'next',
-      'menu',
-      'help'
-    ];
-
-    const buttonsRow = buttonTypeNames
-      .map( typename => defineButtonByTypeName( typename ) )
-      .join('');
-
     return `
       <div class="sidebar">
         <div class="sidebar__background" id="sidebar">
           <img src="src/assets/graphics/sidebar.png">
         </div>
-        <div class="sidebar__buttons-row">
-          ${ buttonsRow }
-        </div>
+        <div class="sidebar__buttons-row"></div>
       </div>
     `;
   }
@@ -52,30 +36,15 @@ export default class Sidebar extends MyComponent {
 
     this.elem = this.defineElementByItsWrap( selector );
   }
-  
-  eventListeners() {
-    this.elem.addEventListener('click', this.actsOfButtons);
-    this.elem.addEventListener('pointerdown', this.changeButtonDisplayState);
+
+  renderInnerElements() {
+    const buttonNames = [ 'next', 'menu', 'help' ];
+
+    buttonNames.forEach( name => new SidebarButton( name ) );
   }
   
-  changeButtonDisplayState = event => {
-    const btn = this.elem.querySelector(`#${ event.target.id }`);
-    
-    const btnClickIllusion = () => {
-      const imgOff = btn.firstElementChild;
-      const imgOn = btn.lastElementChild;
-      
-      if ( imgOn.style.display === 'none' ) {
-        imgOn.style.display = 'inline';
-        imgOff.style.display = 'none';
-      } else {
-        imgOn.style.display = 'none';
-        imgOff.style.display = 'inline';
-      }
-    }
-    btnClickIllusion();
-    
-    document.addEventListener('pointerup', btnClickIllusion, { once: true } );
+  initEventListeners() {
+    this.elem.addEventListener('click', this.actsOfButtons);
   }
   
   actsOfButtons = event => {

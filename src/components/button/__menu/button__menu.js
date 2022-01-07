@@ -6,7 +6,10 @@ export default class MenuButton extends Button {
 
   constructor( itemname ) {
     super();
+
     this.itemname = itemname;
+    
+    this.render();
   }
 
   markup() {

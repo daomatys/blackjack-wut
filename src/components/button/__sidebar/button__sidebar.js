@@ -6,14 +6,17 @@ export default class SidebarButton extends Button {
 
   constructor( itemname ) {
     super();
+
     this.itemname = itemname;
+    
+    this.render();
   }
 
   markup() {
     return `
       <div class="sidebar__button" id="sidebar-${ this.itemname }">
-        <img src="src/assets/graphics/buttons/sidebar-btn_${ this.itemname }_off.png" style="display: inline">
-        <img src="src/assets/graphics/buttons/sidebar-btn_${ this.itemname }_on.png" style="display: none">
+        <img src="src/assets/graphics/buttons/sidebar-btn_${ this.itemname }_off.png">
+        <img src="src/assets/graphics/buttons/sidebar-btn_${ this.itemname }_on.png">
       </div>
     `;
   }
@@ -27,6 +30,8 @@ export default class SidebarButton extends Button {
       markup: this.markup()
     });
 
-    //this.elem = this.defineElementByItsWrap( selector );
+    this.elem = document.querySelector(`#sidebar-${ this.itemname }`);
+
+    console.log(this.elem)
   }
 }
