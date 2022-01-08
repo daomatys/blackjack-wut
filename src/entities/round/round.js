@@ -224,18 +224,28 @@ export default class Round {
   }
   
   activateSplitDrawMode = () => {
-    this.splitModeState = !this.splitModeState;
+    this.splitModeState = true;
+
+    const caseFirstPairOfAces = this.drawnCards.player.normal.topaces > 0;
+    const standardSplitZoneValue = this.drawnCards.player.normal.value / 2;
+    const acesSplitZoneValue = 11;
     
-    const dividedNormalValue = this.drawnCards.player.normal.topaces === 0
-      ? this.drawnCards.player.normal.value / 2
-      : 11 ;
+    const splitZones = [
+      this.drawnCards.player.splitleft,
+      this.drawnCards.player.splitright
+    ];
     
-    this.drawnCards.player.splitleft.value = dividedNormalValue;
-    this.drawnCards.player.splitright.value = dividedNormalValue;
+    const eachSplitZoneValue = !caseFirstPairOfAces ? standardSplitZoneValue : acesSplitZoneValue ;
+    
+    splitZones.forEach( zone => zone.value = eachSplitZoneValue )
+
+    if( caseFirstPairOfAces ) {
+      splitZones.forEach( zone => zone.topaces = 1 )
+    }
   }
   
   defineRoundResults( playerCards ) {
-    const defineWinner = function( playerWon, dealerWon, nobodyWon ) {
+    const defineWinner = function defineWinner( playerWon, dealerWon, nobodyWon ) {
       this.player = playerWon;
       this.dealer = dealerWon;
       this.tie = nobodyWon;
@@ -370,12 +380,14 @@ export default class Round {
   initPlayerDrawSplit( cardProps ) {
     const subhand = cardProps.below.closest('.subhand');
     const subhandRect = subhand.getBoundingClientRect();
-    
-    const subhandCards = subhand.classList.contains('subhand__left') 
+
+    const caseSubhandLeft = subhand.classList.contains('subhand__left');
+
+    const subhandCards = caseSubhandLeft
       ? this.drawnCards.player.splitleft
       : this.drawnCards.player.splitright;
-    
-    const subsideCards = subhand.classList.contains('subhand__right') 
+      
+    const anotherSubhandCards = !caseSubhandLeft
       ? this.drawnCards.player.splitleft
       : this.drawnCards.player.splitright;
       
@@ -395,7 +407,7 @@ export default class Round {
       subhandCards.value += this.calculateCardValue( cardProps.card, subhandCards.value );
     }
     if ( !this.drawnCards.dealer.forbiddraw ) {
-      if ( subhandCards.value > 20 && subsideCards.value > 20 ) {
+      if ( subhandCards.value > 20 && anotherSubhandCards.value > 20 ) {
         this.initStageDealerDraw();
         this.deck.killEventListeners();
       }
