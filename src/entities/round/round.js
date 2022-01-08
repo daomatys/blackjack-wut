@@ -407,14 +407,17 @@ export default class Round {
         break;
       }
     }
+    const subhandSuffix = caseSubhandLeft ? '-left:' : '-right:' ;
+    const suffix = label === 'player-split' ? subhandSuffix : ':' ;
+    const text = label + suffix;
+
+    console.log( text, handCards.value );
   }
   
   checkDealerHandCondition( handCards ) {
     const player = this.drawnCards.player;
-  
-    const casePlayerOverdraft = this.splitModeState
-      ? player.splitleft.overdraft && player.splitright.overdraft 
-      : player.normal.overdraft ;
+    const casePlayerSplitOverdraft = player.splitleft.overdraft && player.splitright.overdraft;
+    const casePlayerOverdraft = this.splitModeState ? casePlayerSplitOverdraft : player.normal.overdraft ;
   
     if ( handCards.value > 19 || casePlayerOverdraft ) {
       clearInterval( this.dealerDrawInterval );
@@ -422,7 +425,6 @@ export default class Round {
       
       this.initStageRoundResults();
     }
-    console.log( 'dealer:', handCards.value );
   }
   
   checkPlayerHandConditionOnNormalDraw( handCards, card ) {
@@ -433,23 +435,17 @@ export default class Round {
       this.deck.killEventListeners();
       this.initStageDealerDraw();
     }
-    console.log( 'playa:', handCards.value );
   }
   
   checkPlayerHandConditionOnSplitDraw( subhandCards, card, caseSubhandLeft ) {
     const player = this.drawnCards.player;
-    const text = caseSubhandLeft ? 'playaleft:' : 'playaright:' ;
     const anotherSubhandCards = !caseSubhandLeft ? player.splitleft : player.splitright ;
   
     if ( !this.drawnCards.dealer.forbiddraw ) {
       if ( subhandCards.value > 20 && anotherSubhandCards.value > 20 ) {
         this.initStageDealerDraw();
       }
-      if ( subhandCards.value > 21 ) {
-        subhand.classList.remove('allow-drop');
-      }
     }
-    console.log( text, subhandCards.value );
   }
   
   initFirstPairOfCardsClickerReaction = ( count, card ) => {
