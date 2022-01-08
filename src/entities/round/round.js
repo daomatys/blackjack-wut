@@ -21,7 +21,6 @@ export default class Round {
     this.initControllableComponentsCollections();
 
     this.initNewRound();
-    this.initNewRoundEventListeners();
   }
   
   initGeneralComponents() {
@@ -42,7 +41,8 @@ export default class Round {
   initNewRound = () => {
     this.deck = new Deck();
 
-    this.defineAdditionalValues();
+    this.initAdditionalValues();
+    this.initNewRoundEventListeners();
   }
   
   initNewRoundEventListeners() {
@@ -83,7 +83,7 @@ export default class Round {
   initStagePlayerDraw = () => {
     this.switchAddersClickability();
     
-    this.deckFalls = document.querySelector('.deck').animate( 
+    this.deckFalls = this.deck.elem.animate( 
       this.animations.deck.fall.action,
       this.animations.deck.fall.props 
     );
@@ -204,7 +204,6 @@ export default class Round {
     this.defineIndicatorsVisibilityByIndex( this.indicatorsIndexes, 0 );
     
     this.initNewRound();
-    this.initNewRoundEventListeners();
   }
 
   switchAddersClickability() {
@@ -213,13 +212,15 @@ export default class Round {
   
   //round stage side methods
   
-  defineAdditionalValues() {
+  initAdditionalValues() {
     this.results = this.defaults.results();
     this.drawnCards = this.defaults.hands();
     this.indicatorsIndexes = this.defaults.indicators();
     
     this.firstPairOfCards = []; 
     this.splitModeState = false;
+
+    this.panel.initAdditionalValues();
   }
   
   activateSplitDrawMode = () => {

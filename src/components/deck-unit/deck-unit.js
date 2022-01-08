@@ -46,6 +46,6 @@ export default class DeckUnit extends MyComponent {
   switchStarterDisplayState() {
     const starter = document.querySelector('.deck-unit__game-starter');
 
-    starter.classList.toggle('game-starter_hidden')
+    starter.classList.toggle('game-starter_hidden');
   }
 }
