@@ -3,7 +3,7 @@
   left: -142px;
   top: 90px;
   transition: transform .5s ease;
-  cursor: grab;
+  cursor: col-resize;
 }
 
 .sidebar__buttons-row {
