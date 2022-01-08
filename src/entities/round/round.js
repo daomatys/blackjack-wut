@@ -100,7 +100,6 @@ export default class Round {
       this.animations.bank.shift.action,
       this.animations.bank.shift.props
     );
-
     this.deckFalls.persist();
     this.deckFalls.onfinish = () => {
       this.initDealerDraw();
@@ -131,7 +130,6 @@ export default class Round {
 
       this.panel.switchSplitModeState( false );
     }
-
     this.indicatorsIndexes = this.defineIndicatorsIndexes( this.results.normal );
     
     this.defineIndicatorsVisibilityByIndex( this.indicatorsIndexes, 1 );
@@ -169,7 +167,6 @@ export default class Round {
       );
       cardRemove.onfinish = () => killElement( card );
     });
-
     betChips.forEach( chip => killElement( chip ) );
     this.switchAddersClickability();
     
@@ -216,7 +213,6 @@ export default class Round {
       this.drawnCards.player.splitleft,
       this.drawnCards.player.splitright
     ];
-    
     const eachSplitZoneValue = !caseFirstPairOfAces ? standardSplitZoneValue : acesSplitZoneValue ;
     
     splitZones.forEach( zone => zone.value = eachSplitZoneValue )
@@ -232,7 +228,6 @@ export default class Round {
       this.dealer = dealerWon;
       this.tie = nobodyWon;
     }
-
     const dealerOverdraft = this.drawnCards.dealer.overdraft;
     const dealerValue = this.drawnCards.dealer.value;
     const dealerCount = this.drawnCards.dealer.count;
@@ -445,11 +440,10 @@ export default class Round {
   checkPlayerHandConditionOnSplitDraw( subhandCards, card, caseSubhandLeft ) {
     const player = this.drawnCards.player;
     const anotherSubhandCards = !caseSubhandLeft ? player.splitleft : player.splitright ;
+    const caseSubhandsOverdraftEdge = subhandCards.value > 20 && anotherSubhandCards.value > 20;
   
-    if ( !this.drawnCards.dealer.forbiddraw ) {
-      if ( subhandCards.value > 20 && anotherSubhandCards.value > 20 ) {
-        this.initStageDealerDraw();
-      }
+    if ( !this.drawnCards.dealer.forbiddraw && caseSubhandsOverdraftEdge ) {
+      this.initStageDealerDraw();
     }
   }
   
@@ -482,6 +476,9 @@ export default class Round {
       }
     }
   }
+
+
+  //card transition methods
   
   initPlayerCardTransition( animationContext ) {
     const card = animationContext.card;
@@ -508,6 +505,9 @@ export default class Round {
     );
     flight.persist();
   }
+
+
+  //card value calculator
   
   calculateCardValue( card, inputValue ) {
     let outputValue = 10;
@@ -523,7 +523,6 @@ export default class Round {
     if ( caseDigitalRank ) {
       outputValue = card.rank;
     }
-
     if ( caseAceRank ) {
       if ( caseOverdraftAfterNextAce ) {
         outputValue = 1;
@@ -538,7 +537,6 @@ export default class Round {
         outputValue = 11; 
       }
     }
-
     if ( caseOverdraftAfterNextCard ) {
       if ( casePlayerDrawWithTopAces ) {
         --this.drawnCards.player.normal.topaces;
@@ -549,7 +547,6 @@ export default class Round {
         outputValue -= 10;
       }
     }
-    
     return outputValue;
   }
   
