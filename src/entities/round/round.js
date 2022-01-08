@@ -331,7 +331,7 @@ export default class Round {
     };
     this.initPlayerCardTransition( animationContext );
     
-    this.checkHandCondition( handCards, cardProps.card, 'player-draw' );
+    this.checkHandCondition( handCards, cardProps.card, 'player-normal' );
   }
 
   initPlayerDrawSplit( cardProps ) {
@@ -383,7 +383,7 @@ export default class Round {
     
     const handCards = this.drawnCards.dealer;
     
-    this.checkHandCondition( card, handCards, 'dealer' );
+    this.checkHandCondition( handCards, card, 'dealer' );
   }
 
   checkHandCondition( handCards, card, label, caseSubhandLeft ) {
@@ -403,13 +403,13 @@ export default class Round {
         break;
       }
       case 'dealer': {
-        this.checkDealerHandCondition( handCards, card );
+        this.checkDealerHandCondition( handCards );
         break;
       }
     }
   }
   
-  checkDealerHandCondition( handCards, card ) {
+  checkDealerHandCondition( handCards ) {
     const player = this.drawnCards.player;
   
     const casePlayerOverdraft = this.splitModeState
