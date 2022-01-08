@@ -214,8 +214,6 @@ export default class Round {
   //round stage side methods
   
   defineAdditionalValues() {
-    this.panel.defineAdditionalValues();
-
     this.results = this.defaults.results();
     this.drawnCards = this.defaults.hands();
     this.indicatorsIndexes = this.defaults.indicators();
@@ -237,9 +235,9 @@ export default class Round {
   
   defineRoundResults( playerCards ) {
     const defineWinner = function( playerWon, dealerWon, nobodyWon ) {
-      this.player = playerWon,
-      this.dealer = dealerWon,
-      this.tie = nobodyWon
+      this.player = playerWon;
+      this.dealer = dealerWon;
+      this.tie = nobodyWon;
     }
 
     const dealerOverdraft = this.drawnCards.dealer.overdraft;
@@ -318,7 +316,7 @@ export default class Round {
         props: cardProps,
         margin: 60
       }
-    }
+    };
     this.initPlayerCardTransition( animationContext );
     
     if ( handCards.count < 4 ) {
@@ -389,7 +387,7 @@ export default class Round {
         props: cardProps,
         margin: 18
       }
-    }
+    };
     this.initPlayerCardTransition( animationContext );
     
     if ( subhandCards.count < 8 ) {
@@ -495,7 +493,7 @@ export default class Round {
       }
       if ( !caseOverdraftAfterNextAce ) {
         if ( casePlayerDrawHappend ) {
-          ++this.drawnCards.player.normal.topaces
+          ++this.drawnCards.player.normal.topaces;
         }
         if ( !casePlayerDrawHappend ) {
           ++this.drawnCards.dealer.topaces;

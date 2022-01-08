@@ -16,6 +16,7 @@ export default class Panel extends MyComponent {
     this.renderInnerElements();
 
     this.initEventListeners();
+    this.initAdditionalValues();
   }
 
   markup() {      
@@ -66,18 +67,18 @@ export default class Panel extends MyComponent {
     );
   }
   
-  defineAdditionalValues() {
+  initEventListeners() {
+    const tappables = this.elem.querySelectorAll('.js-tappable');
+    
+    tappables.forEach( tappable => tappable.addEventListener('pointerdown', this.defineActsOfButtons) );
+  }
+
+  initAdditionalValues() {
     this.chipsValuesCounters = [ 0, 0, 0, 0, 0 ];
     this.firstChipBet = false;
   }
   
-  initEventListeners() {
-    const tappables = this.elem.querySelectorAll('.js-tappable');
-    
-    tappables.forEach( tappable => tappable.addEventListener('pointerdown', this.actsOfButtons) );
-  }
-  
-  actsOfButtons = event => {
+  defineActsOfButtons = event => {
     event.preventDefault();
     
     const aim = event.target;
@@ -126,7 +127,7 @@ export default class Panel extends MyComponent {
       new CustomEvent('split', { bubbles: true })
     );
     
-    this.toggleSplitEntitiesClasses( true );
+    this.switchSplitModeState( true );
     this.clickersCollection.split.toggleClickPossibility();
     
     const hand = document.querySelector('.hand__player');
@@ -151,8 +152,8 @@ export default class Panel extends MyComponent {
     splitting.persist();
   }
   
-  toggleSplitEntitiesClasses( includedHandClass ) {
-    if ( includedHandClass ) {
+  switchSplitModeState( includesHandClass ) {
+    if ( includesHandClass ) {
       document.querySelector('.hand__player').classList.toggle('allow-drop');
     }
     document.querySelector('.subhand__left').classList.toggle('allow-drop');
