@@ -9,6 +9,10 @@
   cursor: pointer;
 }
 
+.deck-unit__deck-socket {
+  height: 200px;
+}
+
 .deck-unit__game-starter img {
   width: inherit;
   height: inherit;

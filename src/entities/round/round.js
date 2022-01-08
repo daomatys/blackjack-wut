@@ -127,7 +127,7 @@ export default class Round {
         tie: this.results.left.tie && this.results.right.tie
       });
 
-      this.panel.toggleSplitEntitiesClasses( false );
+      this.panel.switchSplitModeState( false );
     }
 
     this.indicatorsIndexes = this.defineRoundResultsIndication( this.results.normal );
@@ -175,7 +175,7 @@ export default class Round {
     const usedDeck = this.deck.elem;
     
     if ( this.splitModeState ) {
-      this.panel.toggleSplitEntitiesClasses( true );
+      this.panel.switchSplitModeState( true );
     }
     this.killLastRoundEventListeners();
     
