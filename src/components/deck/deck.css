@@ -24,6 +24,7 @@
   width: 120px;
   height: 184px;
   opacity: 0;
+  cursor: pointer;
 }
 
 .deck__top img {
