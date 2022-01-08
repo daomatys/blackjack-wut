@@ -14,7 +14,7 @@ export default class DeckUnit extends MyComponent {
     return `
       <div class="indicator indicator__dealer"></div>
 
-      <div class="deck-unit__game-starter">
+      <div class="deck-unit__game-starter game-starter_hidden">
         <img src="src/assets/graphics/buttons/caller-bank.png">
       </div>
       <div class="deck-unit__deck-socket" data-deck-socket>
@@ -41,5 +41,11 @@ export default class DeckUnit extends MyComponent {
 
   initInnerComponents() {
     this.indicator = new Indicator();
+  }
+
+  switchStarterDisplayState() {
+    const starter = document.querySelector('.deck-unit__game-starter');
+
+    starter.classList.toggle('game-starter_hidden')
   }
 }

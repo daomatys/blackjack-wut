@@ -41,8 +41,7 @@ export default class Round {
   
   initNewRound = () => {
     this.deck = new Deck();
-    
-    this.panel.defineAdditionalValues();
+
     this.defineAdditionalValues();
   }
   
@@ -74,18 +73,14 @@ export default class Round {
   //round stages section
   
   initStageDeckReadyToLand = () => {
-    const starter = document.querySelector('.deck-unit__game-starter');
-    
-    this.starterAutoDimmer = starter.animate(
+    this.starterAutoDimmer = document.querySelector('.deck-unit__game-starter').animate(
       this.animations.starter.autodim.action,
       this.animations.starter.autodim.props
     );
-    starter.style.display = 'inline';
+    this.deckUnit.switchStarterDisplayState();
   }
   
   initStagePlayerDraw = () => {
-    const starter = document.querySelector('.deck-unit__game-starter');
-    
     this.switchAddersClickability();
     
     this.deckFalls = document.querySelector('.deck').animate( 
@@ -110,7 +105,7 @@ export default class Round {
       this.launchDealerCardTransition();
       this.deck.initEventListeners();
     }
-    this.starterDims.onfinish = () => starter.style.display = 'none';
+    this.starterDims.onfinish = () => this.deckUnit.switchStarterDisplayState();
   }
   
   initStageDealerDraw = () => {
@@ -219,6 +214,8 @@ export default class Round {
   //round stage side methods
   
   defineAdditionalValues() {
+    this.panel.defineAdditionalValues();
+
     this.results = this.defaults.results();
     this.drawnCards = this.defaults.hands();
     this.indicatorsIndexes = this.defaults.indicators();
@@ -456,7 +453,6 @@ export default class Round {
     if ( handCards.count < 8 ) {
       handCards.value += this.calculateCardValue( card, handCards.value );
     }
-
     if ( handCards.value > 19 || this.drawnCards.player.normal.overdraft ) {
       clearInterval( this.dealerDrawInterval );
       

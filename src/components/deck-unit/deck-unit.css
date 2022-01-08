@@ -13,3 +13,7 @@
   width: inherit;
   height: inherit;
 }
+
+.game-starter_hidden {
+  display: none;
+}
