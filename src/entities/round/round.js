@@ -330,11 +330,15 @@ export default class Round {
     };
     this.initPlayerCardTransition( animationContext );
     
+    this.checkPlayerHandConditionOnNormalDraw( handCards, cardProps.card );
+  }
+
+  checkPlayerHandConditionOnNormalDraw( handCards, card ) {
     if ( handCards.count < 4 ) {
-      this.initFirstPairOfCardsClickerReaction( handCards.count, cardProps.card );
+      this.initFirstPairOfCardsClickerReaction( handCards.count, card );
     }
     if ( handCards.count < 8 ) {
-      handCards.value += this.calculateCardValue( cardProps.card, handCards.value );
+      handCards.value += this.calculateCardValue( card, handCards.value );
     }
     if ( handCards.value > 20 && !this.drawnCards.dealer.forbiddraw ) {
       this.deck.killEventListeners();
@@ -387,10 +391,6 @@ export default class Round {
       ? this.drawnCards.player.splitleft
       : this.drawnCards.player.splitright;
       
-    const anotherSubhandCards = !caseSubhandLeft
-      ? this.drawnCards.player.splitleft
-      : this.drawnCards.player.splitright;
-      
     const animationContext = {
       parent: subhand,
       holder: subhandRect,
@@ -402,9 +402,18 @@ export default class Round {
       }
     };
     this.initPlayerCardTransition( animationContext );
-    
+
+    this.checkPlayerHandConditionOnSplitDraw( subhandCards, cardProps.card, caseSubhandLeft );
+  }
+
+  checkPlayerHandConditionOnSplitDraw( subhandCards, card, caseSubhandLeft ) {
+    const text = caseSubhandLeft ? 'playaleft:' : 'playaright:' ;
+    const anotherSubhandCards = !caseSubhandLeft
+      ? this.drawnCards.player.splitleft
+      : this.drawnCards.player.splitright;
+
     if ( subhandCards.count < 8 ) {
-      subhandCards.value += this.calculateCardValue( cardProps.card, subhandCards.value );
+      subhandCards.value += this.calculateCardValue( card, subhandCards.value );
     }
     if ( !this.drawnCards.dealer.forbiddraw ) {
       if ( subhandCards.value > 20 && anotherSubhandCards.value > 20 ) {
@@ -416,7 +425,7 @@ export default class Round {
         subhand.classList.remove('allow-drop');
       }
     }
-    console.log('playa:', subhandCards.value);
+    console.log(text, subhandCards.value);
   }
   
   initPlayerCardTransition( animationContext ) {
@@ -461,12 +470,19 @@ export default class Round {
     
     const handCards = this.drawnCards.dealer;
     
+    this.checkDealerHandCondition( card, handCards );
+  }
+
+  checkDealerHandCondition( card, handCards ) {
+    const casePlayerOverdraft = this.splitModeState
+      ? this.drawnCards.player.splitleft.overdraft && this.drawnCards.player.splitright.overdraft 
+      : this.drawnCards.player.normal.overdraft ;
+
     if ( handCards.count < 8 ) {
       handCards.value += this.calculateCardValue( card, handCards.value );
     }
-    if ( handCards.value > 19 || this.drawnCards.player.normal.overdraft ) {
+    if ( handCards.value > 19 || casePlayerOverdraft ) {
       clearInterval( this.dealerDrawInterval );
-      
       handCards.forbiddraw = true;
       
       if ( handCards.value > 21 ) {
