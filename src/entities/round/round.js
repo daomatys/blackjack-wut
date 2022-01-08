@@ -70,7 +70,8 @@ export default class Round {
     this.deck.killEventListeners();
   }
   
-  //round stages section
+
+  //round stages
   
   initStageDeckReadyToLand = () => {
     this.starterAutoDimmer = document.querySelector('.deck-unit__game-starter').animate(
@@ -131,7 +132,7 @@ export default class Round {
       this.panel.switchSplitModeState( false );
     }
 
-    this.indicatorsIndexes = this.defineRoundResultsIndication( this.results.normal );
+    this.indicatorsIndexes = this.defineIndicatorsIndexes( this.results.normal );
     
     this.defineIndicatorsVisibilityByIndex( this.indicatorsIndexes, 1 );
     
@@ -141,27 +142,6 @@ export default class Round {
 
     if ( !this.sidebar.elem.classList.contains('sidebar_ejected') ) {
       this.sidebar.shiftSidebar();
-    }
-  }
-
-  defineRoundResultsIndication( resultsState ) {
-    if ( resultsState.player ) {
-      return {
-        player: 1,
-        dealer: 2
-      };
-    }
-    if ( resultsState.dealer ) {
-      return {
-        player: 2,
-        dealer: 1
-      };
-    }
-    if ( resultsState.tie ) {
-      return {
-        player: 0,
-        dealer: 0
-      };
     }
   }
   
@@ -211,7 +191,8 @@ export default class Round {
     this.adders.forEach( adder => adder.toggleClickPossibility() );
   }
   
-  //round stage side methods
+
+  //round stages side methods
   
   initAdditionalValues() {
     this.results = this.defaults.results();
@@ -290,8 +271,28 @@ export default class Round {
         if ( playerValue < dealerValue ) outputResult = dealer;
       }
     }
-
     return outputResult;
+  }
+
+  defineIndicatorsIndexes( resultsState ) {
+    if ( resultsState.player ) {
+      return {
+        player: 1,
+        dealer: 2
+      };
+    }
+    if ( resultsState.dealer ) {
+      return {
+        player: 2,
+        dealer: 1
+      };
+    }
+    if ( resultsState.tie ) {
+      return {
+        player: 0,
+        dealer: 0
+      };
+    }
   }
   
   defineIndicatorsVisibilityByIndex = ( indexes, opacity ) => {
@@ -302,7 +303,8 @@ export default class Round {
     dealerIndicators[ indexes.dealer ].style.opacity = opacity;
   }
   
-  //card animation methods
+
+  //card draw methods
   
   choosePlayerDrawMode( cardProps ) {
     if ( !this.splitModeState ) {
@@ -385,6 +387,9 @@ export default class Round {
     
     this.checkHandCondition( handCards, card, 'dealer' );
   }
+
+
+  //hand condition checkers
 
   checkHandCondition( handCards, card, label, caseSubhandLeft ) {
     if ( handCards.count < 8 ) {
@@ -548,6 +553,7 @@ export default class Round {
     return outputValue;
   }
   
+
   //utilities
   
   defineRectBySelector( selector ) {
