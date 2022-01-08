@@ -10,3 +10,7 @@
 .js-button-image_hidden {
   display: none;
 }
+
+.js-tappable {
+  cursor: pointer;
+}
