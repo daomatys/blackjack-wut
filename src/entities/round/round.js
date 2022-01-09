@@ -57,6 +57,9 @@ export default class Round {
     
     document
       .addEventListener('end-of-player-draw', this.initStageDealerDraw, { once: true });
+
+    document
+      .addEventListener('end-of-round', this.initStageRoundReset, { once: true });
     
     document.querySelector('.deck-unit__game-starter')
       .addEventListener('click', this.initStagePlayerDraw, { once: true });
@@ -131,12 +134,9 @@ export default class Round {
       this.panel.switchSplitModeState( false );
     }
     this.indicatorsIndexes = this.defineIndicatorsIndexes( this.results.normal );
-    
     this.defineIndicatorsVisibilityByIndex( this.indicatorsIndexes, 1 );
     
     this.deck.initEventListeners();
-
-    document.addEventListener('end-of-round', this.initStageRoundReset, { once: true });
 
     if ( !this.sidebar.elem.classList.contains('sidebar_ejected') ) {
       this.sidebar.shiftSidebar();
@@ -459,7 +459,6 @@ export default class Round {
       this.initFirstPairOfCardsClickerReaction( handCards.count, card );
     }
     if ( handCards.value > 20 && !this.drawnCards.dealer.forbiddraw ) {
-      this.deck.killEventListeners();
       this.initStageDealerDraw();
     }
   }
