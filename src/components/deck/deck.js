@@ -41,19 +41,19 @@ export default class Deck extends MyComponent {
   }
   
   deckGenerate() {
-    this.cards = [];
-    
-    const ranks = [ 'A', 2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K' ];
     const suits = [ 'C', 'D', 'H', 'S' ];
-    
-    for ( let suit of suits ) {
-      for ( let rank of ranks ) {
-        this.cards.push({
+    const ranks = [ 'A', 2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K' ];
+
+    this.cards = [];
+
+    suits.forEach(
+      suit => ranks.forEach(
+        rank => this.cards.push({
           rank: rank,
           suit: suit,
-        });
-      }
-    }
+        })
+      )
+    );
   }
   
   applyInitialPosition() {
