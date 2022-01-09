@@ -51,7 +51,6 @@ export default class Panel extends MyComponent {
       wrapref: selector,
       markup: this.markup()
     });
-
     this.elem = this.defineElementByItsWrap( selector );
   }
 
@@ -61,7 +60,6 @@ export default class Panel extends MyComponent {
         name => [ name, new PanelClickerButton( name ) ] 
       )
     );
-
     this.addersCollection = this.chipsValues.reverse().map( 
       value => new PanelAdderButton( value )
     );
