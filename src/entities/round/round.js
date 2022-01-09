@@ -385,7 +385,7 @@ export default class Round {
     
     this.launchCardAnimation( card.elem, shiftX, shiftY );
 
-    ++this.drawnCards.player.count;
+    ++this.drawnCards.player.normal.count;
     
     const handCards = this.drawnCards.player.normal;
     
