@@ -23,7 +23,6 @@
   width: 120px;
   height: 184px;
   opacity: 0;
-  cursor: grab;
 }
 
 .deck__top img {
@@ -42,4 +41,13 @@
 
 .subhand__right {
   right: 0px;
+}
+
+.js-allow-drag {
+  cursor: grab;
+}
+
+.js-deny-drag {
+  cursor: no-drop;
+  pointer-events: none;
 }

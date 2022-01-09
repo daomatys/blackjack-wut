@@ -9,9 +9,12 @@ export default class Deck extends MyComponent {
     super();
 
     this.render();
-    this.deckGenerate();
-    this.applyInitialPosition();
 
+    this.topCard = document.querySelector('.deck__top');
+
+    this.createFreshDeckCards();
+    this.defineDeckInitialPosition();
+    
     this.elem.ondragstart = () => false;
   }
 
@@ -40,7 +43,7 @@ export default class Deck extends MyComponent {
     this.elem = this.defineElementByItsWrap( selector );
   }
   
-  deckGenerate() {
+  createFreshDeckCards() {
     const suits = [ 'C', 'D', 'H', 'S' ];
     const ranks = [ 'A', 2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K' ];
 
@@ -56,78 +59,78 @@ export default class Deck extends MyComponent {
     );
   }
   
-  applyInitialPosition() {
+  defineDeckInitialPosition() {
     this.elem.style.transform = 'translate( -280px, -600px )';
   }
   
   initEventListeners() {
-    this.sub('top').addEventListener('pointerdown', this.onPointerDown);
+    this.topCard.addEventListener('pointerdown', this.initOnPointerDownEvent);
   }
   
   killEventListeners() {
-    this.sub('top').removeEventListener('pointerdown', this.onPointerDown);
+    this.topCard.removeEventListener('pointerdown', this.initOnPointerDownEvent);
   }
   
-  onPointerDown = event => {
+  initOnPointerDownEvent = event => {
     event.preventDefault();
     
-    this.shiftX = event.clientX - this.sub('top').getBoundingClientRect().left;
-    this.shiftY = event.clientY - this.sub('top').getBoundingClientRect().top;
+    this.shiftX = event.clientX - this.topCard.getBoundingClientRect().left;
+    this.shiftY = event.clientY - this.topCard.getBoundingClientRect().top;
     
-    document.getElementById('blackjack-table').append( this.sub('top') );
+    document.getElementById('blackjack-table').append( this.topCard );
     
-    this.sub('top').style.opacity = 1;
+    this.topCard.style.opacity = 1;
     
-    this.topCardScaleOnPick( 1.05 );
+    this.scaleTopCardOnPick( 1.05 );
     
-    Object.assign( this.sub('top').style, {
+    Object.assign( this.topCard.style, {
       top: event.pageY - this.shiftY + 'px',
       left: event.pageX - this.shiftX + 'px',
     });
     
-    document.addEventListener('pointermove', this.onPointerMove);
-    document.addEventListener('pointerup', this.onPointerUp);
+    document.addEventListener('pointermove', this.initOnPointerMoveEvent);
+    document.addEventListener('pointerup', this.initOnPointerUpEvent);
   }
   
-  onPointerMove = event => {
+  initOnPointerMoveEvent = event => {
     event.preventDefault();
     
-    Object.assign( this.sub('top').style, {
+    Object.assign( this.topCard.style, {
       top: event.pageY - this.shiftY + 'px',
       left: event.pageX - this.shiftX + 'px',
     });
   }
   
-  onPointerUp = event => {
-    document.removeEventListener('pointermove', this.onPointerMove);
-    document.removeEventListener('pointerup', this.onPointerUp);
+  initOnPointerUpEvent = event => {
+    document.removeEventListener('pointermove', this.initOnPointerMoveEvent);
+    document.removeEventListener('pointerup', this.initOnPointerUpEvent);
     
-    this.topCardScaleOnPick( 1 );
+    this.scaleTopCardOnPick( 1 );
     
-    this.sub('top').hidden = true;
+    this.topCard.hidden = true;
     const elementBelow = document.elementFromPoint( event.clientX, event.clientY );
-    this.sub('top').hidden = false;
+    this.topCard.hidden = false;
     
-    if ( elementBelow.closest('.allow-drop') ) this.topCardPlaced( elementBelow );
+    if ( elementBelow.closest('.allow-drop') ) this.placeTopCard( elementBelow );
   }
   
-  topCardPlaced( elementBelow ) {
+  placeTopCard( elementBelow ) {
     this.elem.dispatchEvent( new CustomEvent('card-placed', {
       detail: {
-        left: this.sub('top').style.left,
-        top: this.sub('top').style.top,
-        card: this.topCardData(),
+        left: this.topCard.style.left,
+        top: this.topCard.style.top,
+        card: this.defineTopCardData(),
         below: elementBelow
       },
       bubbles: true
     }));
     
-    this.elem.append( this.sub('top') );
+    this.elem.append( this.topCard );
     
-    this.sub('top').style = 'opacity: 0';
+    this.topCard.style = 'opacity: 0';
   }
   
-  topCardData() {
+  defineTopCardData() {
     const i = Math.floor( Math.random() * this.cards.length );
     
     const card = new Card( this.cards[i] );
@@ -137,13 +140,15 @@ export default class Deck extends MyComponent {
     return card;
   }
   
-  topCardScaleOnPick( num ) {
-    const zoom = this.sub('top').animate(
+  scaleTopCardOnPick( num ) {
+    const zoom = this.topCard.animate(
       this.animations.card.scale.action( num ),
       this.animations.card.scale.props,
     );
     zoom.persist();
   }
-  
-  sub = suffix => document.querySelector(`.deck__${ suffix }`);
+
+  toggleTopCardDragPossibility() {
+
+  }
 }
