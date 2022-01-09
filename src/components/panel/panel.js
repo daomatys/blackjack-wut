@@ -110,21 +110,20 @@ export default class Panel extends MyComponent {
     document.body.dispatchEvent( 
       new CustomEvent('bank-doubled', { bubbles: true })
     );
-    this.clickersCollection.doubled.toggleClickPossibility();
     this.actCheck();
   }
   
   actCheck = () => {
-    const checkAndSwitchClickPossibility = function( suffix, element ) {
-      if ( document.querySelector(`.clicker-${ suffix } .allow-click`) ) {
+    const checkAndSwitchClickPossibility = function( element ) {
+      if ( element.thumb.classList.contains('allow-click') ) {
         element.toggleClickPossibility();
       }
     }
     document.body.dispatchEvent( 
       new CustomEvent('end-of-player-draw', { bubbles: true })
     );
-    checkAndSwitchClickPossibility( 'split', this.clickersCollection.split );
-    checkAndSwitchClickPossibility( 'check', this.clickersCollection.check );
+    checkAndSwitchClickPossibility( this.clickersCollection.split );
+    checkAndSwitchClickPossibility( this.clickersCollection.check );
   }
   
   actSplit = () => {

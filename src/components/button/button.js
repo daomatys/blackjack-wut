@@ -26,9 +26,7 @@ export default class Button extends MyComponent {
     document.addEventListener('pointerup', buttonClickIllusion, { once: true });
   }
 
-  switchClickPossibility( elem ) {
-    const thumb = elem.lastElementChild;
-    
+  switchClickPossibility( thumb ) {
     thumb.classList.toggle('deny-click');
     thumb.classList.toggle('allow-click');
   }

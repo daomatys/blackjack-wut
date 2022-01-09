@@ -35,9 +35,10 @@ export default class SidebarButton extends Button {
     const selector = `#sidebar-${ this.itemName }`;
 
     this.elem = document.querySelector( selector );
+    this.thumb = this.elem.lastElementChild;
   }
 
   initEventHook() {
-    this.elem.onpointerdown = () => this.switchDisplayState( this.elem );
+    this.elem.onpointerdown = () => this.switchDisplayState( this.thumb );
   }
 }

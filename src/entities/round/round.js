@@ -206,8 +206,8 @@ export default class Round {
     this.panel.initAdditionalValues();
   }
 
-  activateBankDoubling() {
-    
+  activateBankDoubling = () => {
+    this.initPlayerAutoDraw();
   }
   
   activateSplitDrawMode = () => {
@@ -363,6 +363,33 @@ export default class Round {
     this.initPlayerCardTransition( animationContext );
 
     this.checkHandCondition( subhandCards, cardProps.card, 'player-split', caseSubhandLeft );
+  }
+
+  initPlayerAutoDraw = () => {
+    const card = this.deck.defineTopCardData();
+    const handPlayerRect = this.defineRectBySelector('.hand__player');
+    const deckLandingZoneRect = this.defineRectBySelector('[data-deck-socket]');
+    
+    document.querySelector('.hand__player').insertAdjacentElement('beforeend', card.elem );
+    
+    const cardStyle = card.elem.style;
+    const cardStyleRight = handPlayerRect.left - deckLandingZoneRect.left + 'px';
+    const cardStyleTop = handPlayerRect.top - deckLandingZoneRect.top + 'px';
+    
+    Object.assign( cardStyle, {
+      left: cardStyleRight,
+      top: cardStyleTop
+    });
+    const shiftX = -parseInt( cardStyleRight, 10 ) + this.drawnCards.player.normal.count * 60 + 'px';
+    const shiftY = -parseInt( cardStyleTop, 10 ) + 'px';
+    
+    this.launchCardAnimation( card.elem, shiftX, shiftY );
+
+    ++this.drawnCards.player.count;
+    
+    const handCards = this.drawnCards.player.normal;
+    
+    this.checkHandCondition( handCards, card, 'player-normal' );
   }
 
   initDealerDraw = () => {

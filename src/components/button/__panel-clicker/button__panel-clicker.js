@@ -40,6 +40,7 @@ export default class PanelClickerButton extends Button {
     const selector = `.clicker-${ this.itemName }`;
 
     this.elem = document.querySelector( selector );
+    this.thumb = this.elem.lastElementChild;
   }
 
   initEventHook() {
@@ -49,6 +50,6 @@ export default class PanelClickerButton extends Button {
   }
 
   toggleClickPossibility() {
-    this.switchClickPossibility( this.elem );
+    this.switchClickPossibility( this.thumb );
   }
 }
