@@ -108,7 +108,7 @@ export default class Round {
     this.deckFalls.persist();
     this.deckFalls.onfinish = () => {
       this.deck.toggleTopCardDragPossibility();
-      this.initDealerDraw();
+      this.initDealerAutoDraw();
     }
     this.starterDims.onfinish = () => this.deckUnit.switchStarterDisplayState();
   }
@@ -116,7 +116,7 @@ export default class Round {
   initStageDealerDraw = () => {
     this.deck.toggleTopCardDragPossibility();
     this.clickers.check.toggleClickPossibility();
-    this.dealerDrawInterval = setInterval( this.initDealerDraw, 700 );
+    this.dealerDrawInterval = setInterval( this.initDealerAutoDraw, 700 );
   }
   
   initStageRoundResults() {
@@ -373,8 +373,8 @@ export default class Round {
     document.querySelector('.hand__player').insertAdjacentElement('beforeend', card.elem );
     
     const cardStyle = card.elem.style;
-    const cardStyleRight = handPlayerRect.left - deckLandingZoneRect.left + 'px';
-    const cardStyleTop = handPlayerRect.top - deckLandingZoneRect.top + 'px';
+    const cardStyleRight = -handPlayerRect.left + deckLandingZoneRect.left + 'px';
+    const cardStyleTop = -handPlayerRect.top + deckLandingZoneRect.top + 'px';
     
     Object.assign( cardStyle, {
       left: cardStyleRight,
@@ -392,7 +392,7 @@ export default class Round {
     this.checkHandCondition( handCards, card, 'player-normal' );
   }
 
-  initDealerDraw = () => {
+  initDealerAutoDraw = () => {
     const card = this.deck.defineTopCardData();
     const handDealerRect = this.defineRectBySelector('.hand__dealer');
     const deckLandingZoneRect = this.defineRectBySelector('[data-deck-socket]');
