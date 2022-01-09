@@ -385,7 +385,36 @@ export default class Round {
   }
 
 
-  //hand condition checkers
+  //hand condition control methods
+
+  calculateCardValue( card, handCards ) {
+    const inputValue = handCards.value;
+    let outputValue = 10;
+
+    const caseDigitalRank = typeof card.rank === 'number';
+    const caseAceRank = card.rank === 'A';
+    const caseTopAceInHand = handCards.topaces;
+    const caseOverdraftAfterNextAce = inputValue + 11 > 21;
+    const caseOverdraftAfterNextCard = outputValue + inputValue > 21;
+    
+    if ( caseDigitalRank ) {
+      outputValue = card.rank;
+    }
+    if ( caseAceRank ) {
+      if ( caseOverdraftAfterNextAce ) {
+        outputValue = 1;
+      }
+      if ( !caseOverdraftAfterNextAce ) {
+        ++handCards.topaces;
+        outputValue = 11;
+      }
+    }
+    if ( caseOverdraftAfterNextCard && caseTopAceInHand ) {
+      --handCards.topaces;
+      outputValue -= 10;
+    }
+    return outputValue;
+  }
 
   checkHandCondition( handCards, card, label, caseSubhandLeft ) {
     if ( handCards.count < 8 ) {
@@ -507,39 +536,7 @@ export default class Round {
     flight.persist();
   }
 
-
-  //card value calculator
   
-  calculateCardValue( card, handCards ) {
-    const inputValue = handCards.value;
-    let outputValue = 10;
-
-    const caseDigitalRank = typeof card.rank === 'number';
-    const caseAceRank = card.rank === 'A';
-    const caseTopAceInHand = handCards.topaces;
-    const caseOverdraftAfterNextAce = inputValue + 11 > 21;
-    const caseOverdraftAfterNextCard = outputValue + inputValue > 21;
-    
-    if ( caseDigitalRank ) {
-      outputValue = card.rank;
-    }
-    if ( caseAceRank ) {
-      if ( caseOverdraftAfterNextAce ) {
-        outputValue = 1;
-      }
-      if ( !caseOverdraftAfterNextAce ) {
-        ++handCards.topaces;
-        outputValue = 11;
-      }
-    }
-    if ( caseOverdraftAfterNextCard && caseTopAceInHand ) {
-      --handCards.topaces;
-      outputValue -= 10;
-    }
-    return outputValue;
-  }
-  
-
   //utilities
   
   defineRectBySelector( selector ) {
