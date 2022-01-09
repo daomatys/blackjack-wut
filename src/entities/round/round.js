@@ -205,7 +205,7 @@ export default class Round {
   activateSplitDrawMode = () => {
     this.splitModeState = true;
 
-    const caseFirstPairOfAces = this.drawnCards.player.normal.topaces > 0;
+    const caseFirstPairOfAces = this.drawnCards.player.normal.topaces;
     const standardSplitZoneValue = this.drawnCards.player.normal.value / 2;
     const acesSplitZoneValue = 11;
     
@@ -218,8 +218,8 @@ export default class Round {
     splitZones.forEach( zone => zone.value = eachSplitZoneValue )
 
     if( caseFirstPairOfAces ) {
-      splitZones.forEach( zone => zone.topaces = 1 );
-      this.drawnCards.player.normal.topaces = 0;
+      splitZones.forEach( zone => zone.topaces = true );
+      this.drawnCards.player.normal.topaces = false;
     }
   }
   
@@ -395,19 +395,19 @@ export default class Round {
     const caseAceRank = card.rank === 'A';
     const caseTopAceInHand = handCards.topaces;
     const caseOverdraftAfterNextAce = inputValue + 11 > 21;
-    const caseOverdraftAfterNextCard = outputValue + inputValue > 21;
+    const caseOverdraftAfterNextCard = inputValue + outputValue > 21;
     
     if ( caseDigitalRank ) {
       outputValue = card.rank;
     }
     if ( caseAceRank ) {
       if ( !caseOverdraftAfterNextAce ) {
-        ++handCards.topaces;
+        handCards.topaces = true;
       }
       outputValue = caseOverdraftAfterNextAce ? 1 : 11 ;
     }
     if ( caseOverdraftAfterNextCard && caseTopAceInHand ) {
-      --handCards.topaces;
+      handCards.topaces = false;
       outputValue -= 10;
     }
     return outputValue;

@@ -3,7 +3,7 @@ export default {
     dealer: {
       count: 0,
       value: 0,
-      topaces: 0,
+      topaces: false,
       overdraft: false,
       forbiddraw: false
     },
@@ -11,19 +11,19 @@ export default {
       normal: {
         count: 0,
         value: 0,
-        topaces: 0,
+        topaces: false,
         overdraft: false
       },
       splitleft: {
         count: 1,
         value: 0,
-        topaces: 0,
+        topaces: false,
         overdraft: false
       },
       splitright: {
         count: 1,
         value: 0,
-        topaces: 0,
+        topaces: false,
         overdraft: false
       }
     }
