@@ -18,7 +18,7 @@ export default class Round {
     this.animations = animations;
     
     this.initGeneralComponents();
-    this.initControllableComponentsCollections();
+    this.initCollectionsOfControllableComponents();
 
     this.initNewRound();
   }
@@ -33,7 +33,7 @@ export default class Round {
     this.menu = new Menu();
   }
 
-  initControllableComponentsCollections() {
+  initCollectionsOfControllableComponents() {
     this.clickers = this.panel.clickersCollection;
     this.adders = this.panel.addersCollection;
   }
@@ -132,7 +132,6 @@ export default class Round {
         dealer: this.results.left.dealer && this.results.right.dealer,
         tie: this.results.left.tie && this.results.right.tie
       });
-
       this.panel.switchSplitModeState( false );
     }
     this.indicatorsIndexes = this.defineIndicatorsIndexes( this.results.normal );
