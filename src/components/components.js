@@ -26,7 +26,7 @@ export default class MyComponent {
 
   initializeComponent( item ) {
     this.applyStyleSheet( item.stylesheet );
-    this.applyMarkup( item.wrapref, item.markup )
+    this.applyMarkup( item.wrapref, item.markup );
   }
 
   defineElementByItsWrap( wrapref ) {
