@@ -218,7 +218,8 @@ export default class Round {
     splitZones.forEach( zone => zone.value = eachSplitZoneValue )
 
     if( caseFirstPairOfAces ) {
-      splitZones.forEach( zone => zone.topaces = 1 )
+      splitZones.forEach( zone => zone.topaces = 1 );
+      this.drawnCards.player.normal.topaces = 0;
     }
   }
   
@@ -388,7 +389,7 @@ export default class Round {
 
   checkHandCondition( handCards, card, label, caseSubhandLeft ) {
     if ( handCards.count < 8 ) {
-      handCards.value += this.calculateCardValue( card, handCards.value );
+      handCards.value += this.calculateCardValue( card, handCards );
     }
     if ( handCards.value > 21 ) {
       handCards.overdraft = true;
@@ -509,16 +510,15 @@ export default class Round {
 
   //card value calculator
   
-  calculateCardValue( card, inputValue ) {
+  calculateCardValue( card, handCards ) {
+    const inputValue = handCards.value;
     let outputValue = 10;
 
     const caseDigitalRank = typeof card.rank === 'number';
     const caseAceRank = card.rank === 'A';
+    const caseTopAceInHand = handCards.topaces;
     const caseOverdraftAfterNextAce = inputValue + 11 > 21;
     const caseOverdraftAfterNextCard = outputValue + inputValue > 21;
-    const casePlayerDrawHappend = card.elem.closest('.hand__player');
-    const casePlayerDrawWithTopAces = casePlayerDrawHappend && this.drawnCards.player.normal.topaces > 0;
-    const caseDealerDrawWithTopAces = card.elem.closest('.hand__dealer') && this.drawnCards.dealer.topaces > 0;
     
     if ( caseDigitalRank ) {
       outputValue = card.rank;
@@ -528,24 +528,13 @@ export default class Round {
         outputValue = 1;
       }
       if ( !caseOverdraftAfterNextAce ) {
-        if ( casePlayerDrawHappend ) {
-          ++this.drawnCards.player.normal.topaces;
-        }
-        if ( !casePlayerDrawHappend ) {
-          ++this.drawnCards.dealer.topaces;
-        }
-        outputValue = 11; 
+        ++handCards.topaces;
+        outputValue = 11;
       }
     }
-    if ( caseOverdraftAfterNextCard ) {
-      if ( casePlayerDrawWithTopAces ) {
-        --this.drawnCards.player.normal.topaces;
-        outputValue -= 10;
-      }
-      if ( caseDealerDrawWithTopAces ) {
-        --this.drawnCards.dealer.topaces;
-        outputValue -= 10;
-      }
+    if ( caseOverdraftAfterNextCard && caseTopAceInHand ) {
+      --handCards.topaces;
+      outputValue -= 10;
     }
     return outputValue;
   }
