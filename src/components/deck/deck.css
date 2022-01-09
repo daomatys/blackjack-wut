@@ -48,6 +48,5 @@
 }
 
 .js-deny-drag {
-  cursor: no-drop;
   pointer-events: none;
 }

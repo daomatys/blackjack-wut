@@ -24,7 +24,7 @@ export default class Deck extends MyComponent {
         <div class="deck__veiled">
           <img src="src/assets/graphics/cards/back_red_deck.png">
         </div>
-        <div class="deck__top">
+        <div class="deck__top js-allow-drag">
           <img src="src/assets/graphics/cards/back_red.png">
         </div>
       </div>
@@ -149,6 +149,7 @@ export default class Deck extends MyComponent {
   }
 
   toggleTopCardDragPossibility() {
-
+    this.topCard.classList.toggle('js-allow-drag');
+    this.topCard.classList.toggle('js-deny-drag');
   }
 }

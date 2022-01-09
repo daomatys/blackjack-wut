@@ -66,9 +66,11 @@ export default class Round {
   }
   
   killLastRoundEventListeners() {
-    this.deck.elem.removeEventListener('card-placed', ({ detail }) => this.choosePlayerDrawMode( detail ));
-    
-    document.removeEventListener('split', this.activateSplitDrawMode, { once: true });
+    this.deck.elem
+      .removeEventListener('card-placed', ({ detail }) => this.choosePlayerDrawMode( detail ));
+      
+    document
+      .removeEventListener('split', this.activateSplitDrawMode, { once: true });
 
     this.deck.killEventListeners();
   }
@@ -112,7 +114,7 @@ export default class Round {
   }
   
   initStageDealerDraw = () => {
-    this.deck.killEventListeners();
+    this.deck.toggleTopCardDragPossibility();
     this.clickers.check.toggleClickPossibility();
     this.dealerDrawInterval = setInterval( this.initDealerDraw, 700 );
   }
@@ -136,7 +138,7 @@ export default class Round {
     this.indicatorsIndexes = this.defineIndicatorsIndexes( this.results.normal );
     this.defineIndicatorsVisibilityByIndex( this.indicatorsIndexes, 1 );
     
-    this.deck.initEventListeners();
+    this.deck.toggleTopCardDragPossibility();
 
     if ( !this.sidebar.elem.classList.contains('sidebar_ejected') ) {
       this.sidebar.shiftSidebar();
@@ -358,7 +360,7 @@ export default class Round {
   }
 
   initDealerDraw = () => {
-    const card = this.deck.topCardData();
+    const card = this.deck.defineTopCardData();
     const handDealerRect = this.defineRectBySelector('.hand__dealer');
     const deckLandingZoneRect = this.defineRectBySelector('[data-deck-socket]');
     
