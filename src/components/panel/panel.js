@@ -110,16 +110,20 @@ export default class Panel extends MyComponent {
   
   actDoubled = () => {
     this.clickersCollection.doubled.toggleClickPossibility();
+    this.actCheck();
   }
   
   actCheck = () => {
+    const checkClickPossibility = function( suffix, element ) {
+      if ( document.querySelector(`.clicker-${ suffix } .allow-click`) ) {
+        element.toggleClickPossibility();
+      }
+    }
     document.body.dispatchEvent( 
       new CustomEvent('end-of-player-draw', { bubbles: true })
     );
-    
-    if ( this.elem.querySelector('.clicker-split .allow-click') ) {
-      this.clickersCollection.split.toggleClickPossibility();
-    }
+    checkClickPossibility( 'split', this.clickersCollection.split );
+    checkClickPossibility( 'check', this.clickersCollection.check );
   }
   
   actSplit = () => {
