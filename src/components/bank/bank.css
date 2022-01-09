@@ -1,18 +1,6 @@
-.bank {
-  width: 526px;
-  background-image: url('/src/assets/graphics/bank.png');
-  background-repeat: no-repeat;
-  background-position: top center;
-}
-
-.bank__slot-row {
-
-}
-
 .bank__slot {
   display: inline-block;
   position: relative;
   width: 92px;
   height: 100px;
-  top: -30px;
 }

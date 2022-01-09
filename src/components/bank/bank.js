@@ -12,6 +12,9 @@ export default class Bank extends MyComponent {
   markup() {
     return `
       <div class="bank">
+        <div class="bank__background">
+          <img src="/src/assets/graphics/bank.png">
+        </div>
         <div class="bank__slot-row">
           <div class="bank__slot" id="slot-1"></div>
           <div class="bank__slot" id="slot-5"></div>
