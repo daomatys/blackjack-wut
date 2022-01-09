@@ -48,9 +48,12 @@ export default class Round {
   initNewRoundEventListeners() {
     this.deck.elem
       .addEventListener('card-placed', ({ detail }) => this.choosePlayerDrawMode( detail ));
+
+    document
+      .addEventListener('bank-doubled', this.activateBankDoubling, { once: true });
     
     document
-      .addEventListener('split', this.activateSplitDrawMode, { once: true });
+      .addEventListener('split-mode-activated', this.activateSplitDrawMode, { once: true });
     
     document
       .addEventListener('first-chip-bet', this.initStageDeckReadyToLand, { once: true });
@@ -67,7 +70,7 @@ export default class Round {
       .removeEventListener('card-placed', ({ detail }) => this.choosePlayerDrawMode( detail ));
 
     document
-      .removeEventListener('split', this.activateSplitDrawMode, { once: true });
+      .removeEventListener('split-mode-activated', this.activateSplitDrawMode, { once: true });
 
     this.deck.killEventListeners();
   }
@@ -201,6 +204,10 @@ export default class Round {
     this.splitModeState = false;
 
     this.panel.initAdditionalValues();
+  }
+
+  activateBankDoubling() {
+    
   }
   
   activateSplitDrawMode = () => {

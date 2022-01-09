@@ -109,6 +109,9 @@ export default class Panel extends MyComponent {
   }
   
   actDoubled = () => {
+    document.body.dispatchEvent( 
+      new CustomEvent('bank-doubled', { bubbles: true })
+    );
     this.clickersCollection.doubled.toggleClickPossibility();
     this.actCheck();
   }
@@ -128,7 +131,7 @@ export default class Panel extends MyComponent {
   
   actSplit = () => {
     document.body.dispatchEvent(
-      new CustomEvent('split', { bubbles: true })
+      new CustomEvent('split-mode-activated', { bubbles: true })
     );
     
     this.switchSplitModeState( true );
