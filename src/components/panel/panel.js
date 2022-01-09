@@ -131,7 +131,6 @@ export default class Panel extends MyComponent {
     document.body.dispatchEvent(
       new CustomEvent('split-mode-activated', { bubbles: true })
     );
-    
     this.switchSplitModeState( true );
     this.clickersCollection.split.toggleClickPossibility();
     
