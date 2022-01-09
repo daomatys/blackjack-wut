@@ -115,7 +115,7 @@ export default class Panel extends MyComponent {
   }
   
   actCheck = () => {
-    const checkClickPossibility = function( suffix, element ) {
+    const checkAndSwitchClickPossibility = function( suffix, element ) {
       if ( document.querySelector(`.clicker-${ suffix } .allow-click`) ) {
         element.toggleClickPossibility();
       }
@@ -123,8 +123,8 @@ export default class Panel extends MyComponent {
     document.body.dispatchEvent( 
       new CustomEvent('end-of-player-draw', { bubbles: true })
     );
-    checkClickPossibility( 'split', this.clickersCollection.split );
-    checkClickPossibility( 'check', this.clickersCollection.check );
+    checkAndSwitchClickPossibility( 'split', this.clickersCollection.split );
+    checkAndSwitchClickPossibility( 'check', this.clickersCollection.check );
   }
   
   actSplit = () => {
