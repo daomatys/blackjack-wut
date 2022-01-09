@@ -180,36 +180,32 @@ export default class Panel extends MyComponent {
     const slot = document.getElementById(`slot-${ id }`);
     const chipBet = document.querySelector(`.chip-${ id }`).cloneNode( true );
     const chipArmed = document.querySelector(`.chip-armed.chip-${ id }`);
+    const chipArmedPic = chipArmed.firstElementChild;
     
     chipBet.classList.replace('chip-armed', 'chip-bet');
     
-    Object.assign( chipBet.style, {
-      left: this.defineRect( chipBet ).left + 'px',
-      top: this.defineRect( chipBet ).top + 'px',
-    });
-    
     slot.append( chipBet );
-    
+
     Object.assign( chipBet.style, {
-      left: parseInt( this.defineRect( chipArmed ).left, 10 ) - parseInt( this.defineRect( chipBet ).left, 10 ) + 'px',
-      top: parseInt( this.defineRect( chipArmed ).top, 10 ) - parseInt( this.defineRect( chipBet ).top, 10 ) + 'px',
+      left: 0.25 * ++this.chipsValuesCounters[ num ] + 'px',
+      top: - 1 * this.chipsValuesCounters[ num ] + 'px'
     });
-    
-    const shiftX = 0.5 * ++this.chipsValuesCounters[ num ] - parseInt( chipBet.style.left, 10 ) + 'px';
-    const shiftY = - 2 * this.chipsValuesCounters[ num ] - parseInt( chipBet.style.top, 10 ) + 'px';
+    const shiftX = -this.defineRect( chipArmed ).left
+    const shiftY = -this.defineRect( chipArmed ).top;
+
+    console.log(shiftX, shiftY)
     
     const chipBetJump = chipBet.animate(
       this.animations.chip.jump.action( shiftX, shiftY ),
       this.animations.chip.jump.props
     );
+    chipBetJump.persist();
     
-    const chipArmedEject = chipArmed.animate(
+    const chipArmedEjection = chipArmedPic.animate(
       this.animations.chip.eject.action,
       this.animations.chip.eject.props
     );
-    
-    chipBetJump.persist();
-    chipArmedEject.persist();
+    chipArmedEjection.persist();
     
     if ( !this.firstChipBet ) {
       this.elem.dispatchEvent( new CustomEvent('first-chip-bet', { bubbles: true }) );
