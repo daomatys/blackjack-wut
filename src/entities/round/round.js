@@ -68,7 +68,7 @@ export default class Round {
   killLastRoundEventListeners() {
     this.deck.elem
       .removeEventListener('card-placed', ({ detail }) => this.choosePlayerDrawMode( detail ));
-      
+
     document
       .removeEventListener('split', this.activateSplitDrawMode, { once: true });
 
@@ -107,8 +107,8 @@ export default class Round {
     );
     this.deckFalls.persist();
     this.deckFalls.onfinish = () => {
+      this.deck.toggleTopCardDragPossibility();
       this.initDealerDraw();
-      this.deck.initEventListeners();
     }
     this.starterDims.onfinish = () => this.deckUnit.switchStarterDisplayState();
   }

@@ -14,6 +14,7 @@ export default class Deck extends MyComponent {
 
     this.createFreshDeckCards();
     this.defineDeckInitialPosition();
+    this.initEventListeners();
     
     this.elem.ondragstart = () => false;
   }
@@ -24,7 +25,7 @@ export default class Deck extends MyComponent {
         <div class="deck__veiled">
           <img src="src/assets/graphics/cards/back_red_deck.png">
         </div>
-        <div class="deck__top js-allow-drag">
+        <div class="deck__top js-deny-drag">
           <img src="src/assets/graphics/cards/back_red.png">
         </div>
       </div>
