@@ -183,17 +183,14 @@ export default class Panel extends MyComponent {
     const chipArmedPic = chipArmed.firstElementChild;
     
     chipBet.classList.replace('chip-armed', 'chip-bet');
-    
     slot.append( chipBet );
 
     Object.assign( chipBet.style, {
       left: 0.25 * ++this.chipsValuesCounters[ num ] + 'px',
       top: - 1 * this.chipsValuesCounters[ num ] + 'px'
     });
-    const shiftX = -this.defineRect( chipArmed ).left
-    const shiftY = -this.defineRect( chipArmed ).top;
-
-    console.log(shiftX, shiftY)
+    const shiftX = - this.defineRect( chipBet ).left + this.defineRect( chipArmed ).left + 'px';
+    const shiftY = - this.defineRect( chipBet ).top + this.defineRect( chipArmed ).top + 'px';
     
     const chipBetJump = chipBet.animate(
       this.animations.chip.jump.action( shiftX, shiftY ),

@@ -154,9 +154,9 @@ export default {
     jump: {
       action: ( shiftX, shiftY ) => ({
         transform: [
-          'scale( 1 )',
-          'perspective( 500px ) translate( 10px, -80px ) rotate3d( -1, -0.33, 0, 190deg ) scale( 1.26 )',
-          `translate( ${ shiftX }, ${ shiftY } )`
+          `scale( 1 ) translate( ${ shiftX }, ${ shiftY } )`,
+          'perspective( 500px ) translate( -10px, -10px ) rotate3d( -1, -0.33, 0, 190deg ) scale( 1.26 )',
+          'translate( 0px, 0px )'
         ]
       }),
       props: {
