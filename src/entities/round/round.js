@@ -207,6 +207,16 @@ export default class Round {
   }
 
   activateBankDoubling = () => {
+    const bankWrap = document.querySelector('.bank');
+    const secondBank = bankWrap.querySelector('.bank__slot-row').cloneNode( true );
+
+    Object.assign( secondBank.style, {
+      position: 'absolute',
+      bottom: '25px',
+      left: '45px'
+    });
+    bankWrap.insertAdjacentElement('beforeend', secondBank);
+
     this.initPlayerAutoDraw();
   }
   
