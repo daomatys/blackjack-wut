@@ -401,13 +401,10 @@ export default class Round {
       outputValue = card.rank;
     }
     if ( caseAceRank ) {
-      if ( caseOverdraftAfterNextAce ) {
-        outputValue = 1;
-      }
       if ( !caseOverdraftAfterNextAce ) {
         ++handCards.topaces;
-        outputValue = 11;
       }
+      outputValue = caseOverdraftAfterNextAce ? 1 : 11 ;
     }
     if ( caseOverdraftAfterNextCard && caseTopAceInHand ) {
       --handCards.topaces;
