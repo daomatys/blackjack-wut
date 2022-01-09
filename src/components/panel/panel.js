@@ -187,10 +187,10 @@ export default class Panel extends MyComponent {
 
     Object.assign( chipBet.style, {
       left: 0.25 * ++this.chipsValuesCounters[ num ] + 'px',
-      top: - 1 * this.chipsValuesCounters[ num ] + 'px'
+      top: - 2 * this.chipsValuesCounters[ num ] + 'px'
     });
-    const shiftX = - this.defineRect( chipBet ).left + this.defineRect( chipArmed ).left + 'px';
-    const shiftY = - this.defineRect( chipBet ).top + this.defineRect( chipArmed ).top + 'px';
+    const shiftX = this.defineRect( chipArmed ).left - this.defineRect( chipBet ).left + 'px';
+    const shiftY = this.defineRect( chipArmed ).top - this.defineRect( chipBet ).top + 'px';
     
     const chipBetJump = chipBet.animate(
       this.animations.chip.jump.action( shiftX, shiftY ),
