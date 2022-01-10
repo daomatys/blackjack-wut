@@ -4,9 +4,10 @@ import thatComponentStyleSheet from './modal-window.css' assert { type: 'css' };
 
 export default class ModalWindow extends MyComponent {
   
-  constructor( text ) {
+  constructor( text, wrapref ) {
     super();
 
+    this.wrapref = wrapref;
     this.text = text;
 
     this.render();
@@ -26,7 +27,7 @@ export default class ModalWindow extends MyComponent {
   render() {
     super.initializeComponent({
       stylesheet: thatComponentStyleSheet,
-      wrapref: '.indicator',
+      wrapref: this.wrapref,
       markup: this.markup()
     });
   }
