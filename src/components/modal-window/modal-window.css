@@ -2,6 +2,11 @@
   position: fixed;
   width: 70%;
   height: 70%;
-  opacity: .85;
+  opacity: .66;
   background-color: #030303;
+  color: azure;
+}
+
+.modal-window_hidden {
+  display: none;
 }

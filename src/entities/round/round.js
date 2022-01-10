@@ -1,3 +1,6 @@
+import animations from '/src/assets/lib/animations.js';
+import defaults from '/src/assets/lib/defaults.js';
+
 import Bank from '/src/components/bank/bank.js';
 import Deck from '/src/components/deck/deck.js';
 import Menu from '/src/components/menu/menu.js';
@@ -6,9 +9,7 @@ import Sidebar from '/src/components/sidebar/sidebar.js';
 import DeckUnit from '/src/components/deck-unit/deck-unit.js';
 import HandDealer from '/src/components/hand/__dealer/hand__dealer.js';
 import HandPlayer from '/src/components/hand/__player/hand__player.js';
-
-import animations from '/src/assets/lib/animations.js';
-import defaults from '/src/assets/lib/defaults.js';
+import ModalWindow from '../../components/modal-window/modal-window.js';
 
 
 export default class Round {
@@ -31,6 +32,9 @@ export default class Round {
     this.panel = new Panel();
     this.bank = new Bank();
     this.menu = new Menu();
+
+    this.modalAbout = new ModalWindow( '1', '#modal-about');
+    this.modalHelp = new ModalWindow( '1', '#modal-help');
   }
 
   initCollectionsOfControllableComponents() {
