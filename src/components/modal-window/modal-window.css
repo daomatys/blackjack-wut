@@ -16,17 +16,19 @@
   position: absolute;
   right: 40px;
   top: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   height: 40px;
   width: 40px;
   border-radius: 50%;
   border-style: solid;
   border-width: 2px;
-  border-color: #ff000071;
+  border-color: #ff000070;
   cursor: pointer;
 }
-
 .modal-window__escape-button:hover {
-  border-color: #ff000091;
+  border-color: #ff000090;
 }
 
 .modal-window_hidden {

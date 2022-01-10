@@ -12,6 +12,7 @@ export default class ModalWindow extends MyComponent {
 
     this.render();
     this.initElemRef();
+    this.initEventListeners();
   }
   
   markup() {
