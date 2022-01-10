@@ -217,7 +217,7 @@ export default class Round {
     });
     bankWrap.insertAdjacentElement('beforeend', secondBank);
 
-    this.initAutoDraw( 'player-normal', this.drawnCards.player.normal );
+    this.initAutoDraw( 'player', this.drawnCards.player.normal );
   }
   
   activateSplitDrawMode = () => {
@@ -383,23 +383,24 @@ export default class Round {
     const handRectSide = suffix === 'dealer' ? handRect.right : handRect.left ;
     const deckLandingZoneRect = this.defineRectBySelector('[data-deck-socket]');
     const deckLandingZoneRectSide = suffix === 'dealer' ? deckLandingZoneRect.right : deckLandingZoneRect.left ;
-    const sign = suffix === 'dealer' ? '' : '-' ;
+    const multiplier = suffix === 'dealer' ? 1 : -1 ;
+    const note = suffix === 'dealer' ? '' : '-normal' ;
   
     hand.insertAdjacentElement('beforeend', card.elem );
   
-    const cardStyleSide = handRectSide - deckLandingZoneRectSide + 'px';
-    const cardStyleTop = handRect.top - deckLandingZoneRect.top + 'px';
+    const cardStyleSide = multiplier * (handRectSide - deckLandingZoneRectSide) + 'px';
+    const cardStyleTop = multiplier * (handRect.top - deckLandingZoneRect.top) + 'px';
   
     Object.assign( cardStyle, {
-      left: sign + cardStyleSide,
-      top: sign + cardStyleTop
+      left: cardStyleSide,
+      top: cardStyleTop
     });
     const shiftX = -parseInt( cardStyleSide, 10 ) + handCards.count++ * 60 + 'px';
     const shiftY = -parseInt( cardStyleTop, 10 ) + 'px';
     
     this.launchCardAnimation( card.elem, shiftX, shiftY );
     
-    this.checkHandCondition( handCards, card, suffix );
+    this.checkHandCondition( handCards, card, suffix + note );
   }
 
 
