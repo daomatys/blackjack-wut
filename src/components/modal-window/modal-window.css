@@ -5,6 +5,9 @@
   opacity: .66;
   background-color: #030303;
   color: azure;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .modal-window_hidden {
