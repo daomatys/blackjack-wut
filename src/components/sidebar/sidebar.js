@@ -50,10 +50,6 @@ export default class Sidebar extends MyComponent {
     event.preventDefault();
     
     switch ( event.target.id ) {
-      case 'sidebar': {
-        this.shiftSidebar();
-        break;
-      }
       case 'sidebar-next': {
         this.actNext();
         break;
@@ -66,11 +62,17 @@ export default class Sidebar extends MyComponent {
         this.actHelp();
         break;
       }
+      case 'sidebar': {
+        this.shiftSidebar();
+        break;
+      }
     }
   }
   
   actNext() {
-    this.elem.dispatchEvent( new CustomEvent('end-of-round', {bubbles: true}));
+    this.elem.dispatchEvent(
+      new CustomEvent('end-of-round', {bubbles: true})
+    );
   }
   
   actMenu() {
