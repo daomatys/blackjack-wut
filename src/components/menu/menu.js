@@ -1,5 +1,6 @@
 import MyComponent from '../components.js';
 import thatComponentStyleSheet from './menu.css' assert { type: 'css' };
+import ModalWindow from '/src/components/modal-window/modal-window.js';
 
 
 export default class Menu extends MyComponent {
@@ -8,6 +9,8 @@ export default class Menu extends MyComponent {
     super();
 
     this.render();
+    this.renderSideComponents();
+
     this.initEventListeners();
   }
   
@@ -37,6 +40,10 @@ export default class Menu extends MyComponent {
 
     this.elem = this.defineElementByItsWrap( selector );
   }
+
+  renderSideComponents() {
+    this.modalAbout = new ModalWindow( this.defaults.texts.about, '#modal-about');
+  }
   
   initEventListeners() {
     const selectButton = name => this.elem.querySelector(`#menu-${ name }`)
@@ -50,5 +57,7 @@ export default class Menu extends MyComponent {
     document.querySelector('#blackjack-table').style.display = 'flex';
   }
   
-  about() {}
+  about() {
+    this.modalAbout.switchWindowVisibilityState();
+  }
 }

@@ -31,4 +31,12 @@ export default class ModalWindow extends MyComponent {
       markup: this.markup()
     });
   }
+
+  initElemRef() {
+    this.elem = this.defineElementByItsWrap( this.wrapref );
+  }
+
+  switchWindowVisibilityState() {
+    this.elem.classList.toggle('modal-window_hidden');
+  }
 }

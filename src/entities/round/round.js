@@ -9,7 +9,6 @@ import Sidebar from '/src/components/sidebar/sidebar.js';
 import DeckUnit from '/src/components/deck-unit/deck-unit.js';
 import HandDealer from '/src/components/hand/__dealer/hand__dealer.js';
 import HandPlayer from '/src/components/hand/__player/hand__player.js';
-import ModalWindow from '/src/components/modal-window/modal-window.js';
 
 
 export default class Round {
@@ -32,9 +31,6 @@ export default class Round {
     this.panel = new Panel();
     this.bank = new Bank();
     this.menu = new Menu();
-
-    this.modalAbout = new ModalWindow( '1', '#modal-about');
-    this.modalHelp = new ModalWindow( '1', '#modal-help');
   }
 
   initCollectionsOfControllableComponents() {

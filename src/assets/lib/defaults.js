@@ -50,5 +50,14 @@ export default {
       dealer: 0,
       tie: 0
     }
-  })
+  }),
+
+  texts: {
+    about: `
+      About test text.
+    `,
+    help: `
+      I can't help you, buddy.
+    `
+  }
 }

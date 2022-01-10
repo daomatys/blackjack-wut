@@ -1,6 +1,7 @@
 import MyComponent from '../components.js';
 import thatComponentStyleSheet from './sidebar.css' assert { type: 'css' };
 import SidebarButton from '../button/__sidebar/button__sidebar.js';
+import ModalWindow from '/src/components/modal-window/modal-window.js';
 
 
 export default class Sidebar extends MyComponent {
@@ -9,7 +10,8 @@ export default class Sidebar extends MyComponent {
     super();
     
     this.render();
-    this.renderInnerElements();
+    this.renderInnerComponents();
+    this.renderSideComponents();
 
     this.initEventListeners();
   }
@@ -37,9 +39,13 @@ export default class Sidebar extends MyComponent {
     this.elem = this.defineElementByItsWrap( selector );
   }
 
-  renderInnerElements() {
+  renderInnerComponents() {
     const buttonNames = [ 'help', 'menu', 'next' ];
     buttonNames.forEach( name => new SidebarButton( name ) );
+  }
+  
+  renderSideComponents() {
+    this.modalHelp = new ModalWindow( this.defaults.texts.help, '#modal-help');
   }
   
   initEventListeners() {
@@ -81,7 +87,7 @@ export default class Sidebar extends MyComponent {
   }
   
   actHelp() {
-    
+    this.modalHelp.switchWindowVisibilityState();
   }
   
   shiftSidebar() {
