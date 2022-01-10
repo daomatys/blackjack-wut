@@ -2,11 +2,15 @@ import MyComponent from '../components.js';
 import thatComponentStyleSheet from './menu.css' assert { type: 'css' };
 import ModalWindow from '/src/components/modal-window/modal-window.js';
 
+import defaults from '/src/assets/lib/defaults.js';
+
 
 export default class Menu extends MyComponent {
 
   constructor() {
     super();
+
+    this.text = defaults.texts.about;
 
     this.render();
     this.renderSideComponents();
@@ -42,7 +46,7 @@ export default class Menu extends MyComponent {
   }
 
   renderSideComponents() {
-    this.modalAbout = new ModalWindow( this.defaults.texts.about, '#modal-about');
+    this.modalAbout = new ModalWindow( this.text, '#modal-about');
   }
   
   initEventListeners() {

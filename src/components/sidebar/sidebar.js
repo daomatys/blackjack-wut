@@ -3,11 +3,15 @@ import thatComponentStyleSheet from './sidebar.css' assert { type: 'css' };
 import SidebarButton from '../button/__sidebar/button__sidebar.js';
 import ModalWindow from '/src/components/modal-window/modal-window.js';
 
+import defaults from '/src/assets/lib/defaults.js';
+
 
 export default class Sidebar extends MyComponent {
   
   constructor() {
     super();
+
+    this.text = defaults.texts.help;
     
     this.render();
     this.renderInnerComponents();
@@ -45,7 +49,7 @@ export default class Sidebar extends MyComponent {
   }
   
   renderSideComponents() {
-    this.modalHelp = new ModalWindow( this.defaults.texts.help, '#modal-help');
+    this.modalHelp = new ModalWindow( this.text, '#modal-help');
   }
   
   initEventListeners() {
