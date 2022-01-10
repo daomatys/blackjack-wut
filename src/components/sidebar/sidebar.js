@@ -1,6 +1,6 @@
 import MyComponent from '../components.js';
 import thatComponentStyleSheet from './sidebar.css' assert { type: 'css' };
-import SidebarButton from '../button/__sidebar/button__sidebar.js';
+import SidebarButton from '/src/components/button/__sidebar/button__sidebar.js';
 import ModalWindow from '/src/components/modal-window/modal-window.js';
 
 import defaults from '/src/assets/lib/defaults.js';

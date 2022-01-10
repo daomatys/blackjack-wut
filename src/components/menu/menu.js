@@ -61,7 +61,7 @@ export default class Menu extends MyComponent {
     document.querySelector('#blackjack-table').style.display = 'flex';
   }
   
-  about() {
+  about = () => {
     this.modalAbout.switchWindowVisibilityState();
   }
 }

@@ -11,6 +11,7 @@ export default class ModalWindow extends MyComponent {
     this.text = text;
 
     this.render();
+    this.initElemRef();
   }
   
   markup() {
