@@ -376,17 +376,17 @@ export default class Round {
   }
 
   initAutoDraw = ( suffix, handCards ) => {
+    const caseDealerDraw = suffix === 'dealer';
     const card = this.deck.defineTopCardData();
     const cardStyle = card.elem.style;
-    const hand = document.querySelector('.hand__' + suffix);
     const handRect = this.defineRectBySelector('.hand__' + suffix);
-    const handRectSide = suffix === 'dealer' ? handRect.right : handRect.left ;
+    const handRectSide = caseDealerDraw ? handRect.right : handRect.left ;
     const deckLandingZoneRect = this.defineRectBySelector('[data-deck-socket]');
-    const deckLandingZoneRectSide = suffix === 'dealer' ? deckLandingZoneRect.right : deckLandingZoneRect.left ;
-    const multiplier = suffix === 'dealer' ? 1 : -1 ;
-    const note = suffix === 'dealer' ? '' : '-normal' ;
+    const deckLandingZoneRectSide = caseDealerDraw ? deckLandingZoneRect.right : deckLandingZoneRect.left ;
+    const multiplier = caseDealerDraw ? 1 : -1 ;
+    const note = caseDealerDraw ? '' : '-normal' ;
   
-    hand.insertAdjacentElement('beforeend', card.elem );
+    document.querySelector('.hand__' + suffix).insertAdjacentElement('beforeend', card.elem );
   
     const cardStyleSide = multiplier * (handRectSide - deckLandingZoneRectSide) + 'px';
     const cardStyleTop = multiplier * (handRect.top - deckLandingZoneRect.top) + 'px';
@@ -399,7 +399,6 @@ export default class Round {
     const shiftY = -parseInt( cardStyleTop, 10 ) + 'px';
     
     this.launchCardAnimation( card.elem, shiftX, shiftY );
-    
     this.checkHandCondition( handCards, card, suffix + note );
   }
 
