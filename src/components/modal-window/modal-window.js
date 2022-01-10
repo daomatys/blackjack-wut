@@ -20,7 +20,7 @@ export default class ModalWindow extends MyComponent {
         <div class="modal-window__text-window">
           ${ this.text }
         </div>
-        <div class="modal-window__close-button"></div>
+        <div class="modal-window__escape-button">X</div>
       </div>
     `;
   }
@@ -35,6 +35,10 @@ export default class ModalWindow extends MyComponent {
 
   initElemRef() {
     this.elem = this.defineElementByItsWrap( this.wrapref );
+  }
+
+  initEventListeners() {
+    this.elem.lastElementChild.onclick = () => this.switchWindowVisibilityState();
   }
 
   switchWindowVisibilityState() {

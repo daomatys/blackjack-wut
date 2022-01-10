@@ -2,12 +2,31 @@
   position: fixed;
   width: 70%;
   height: 70%;
-  opacity: .66;
+  opacity: .75;
   background-color: #030303;
   color: azure;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
+  border-radius: 40px;
+  padding: 40px;
+}
+
+.modal-window__escape-button {
+  position: absolute;
+  right: 40px;
+  top: 40px;
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  border-style: solid;
+  border-width: 2px;
+  border-color: #ff000071;
+  cursor: pointer;
+}
+
+.modal-window__escape-button:hover {
+  border-color: #ff000091;
 }
 
 .modal-window_hidden {
