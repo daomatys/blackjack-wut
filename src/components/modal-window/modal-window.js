@@ -18,9 +18,7 @@ export default class ModalWindow extends MyComponent {
         <div class="modal-window__text-window">
           ${ this.text }
         </div>
-        <div class="modal-window__close-button">
-        
-        </div>
+        <div class="modal-window__close-button"></div>
       </div>
     `;
   }
