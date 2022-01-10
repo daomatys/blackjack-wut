@@ -108,7 +108,7 @@ export default class Round {
     this.deckFalls.persist();
     this.deckFalls.onfinish = () => {
       this.deck.toggleTopCardDragPossibility();
-      this.initDealerAutoDraw();
+      this.initAutoDraw( 'dealer', this.drawnCards.dealer );
     }
     this.starterDims.onfinish = () => this.deckUnit.switchStarterDisplayState();
   }
@@ -116,7 +116,7 @@ export default class Round {
   initStageDealerDraw = () => {
     this.deck.toggleTopCardDragPossibility();
     this.clickers.check.toggleClickPossibility();
-    this.dealerDrawInterval = setInterval( this.initDealerAutoDraw, 700 );
+    this.dealerDrawInterval = setInterval( () => this.initAutoDraw( 'dealer', this.drawnCards.dealer ), 700 );
   }
   
   initStageRoundResults() {
@@ -217,7 +217,7 @@ export default class Round {
     });
     bankWrap.insertAdjacentElement('beforeend', secondBank);
 
-    this.initPlayerAutoDraw();
+    this.initAutoDraw( 'player-normal', this.drawnCards.player.normal );
   }
   
   activateSplitDrawMode = () => {
@@ -375,58 +375,31 @@ export default class Round {
     this.checkHandCondition( subhandCards, cardProps.card, 'player-split', caseSubhandLeft );
   }
 
-  initPlayerAutoDraw = () => {
+  initAutoDraw = ( suffix, handCards ) => {
     const card = this.deck.defineTopCardData();
-    const handPlayerRect = this.defineRectBySelector('.hand__player');
-    const deckLandingZoneRect = this.defineRectBySelector('[data-deck-socket]');
-    
-    document.querySelector('.hand__player').insertAdjacentElement('beforeend', card.elem );
-    
     const cardStyle = card.elem.style;
-    const cardStyleRight = -handPlayerRect.left + deckLandingZoneRect.left + 'px';
-    const cardStyleTop = -handPlayerRect.top + deckLandingZoneRect.top + 'px';
-    
+    const hand = document.querySelector('.hand__' + suffix);
+    const handRect = this.defineRectBySelector('.hand__' + suffix);
+    const handRectSide = suffix === 'dealer' ? handRect.right : handRect.left ;
+    const deckLandingZoneRect = this.defineRectBySelector('[data-deck-socket]');
+    const deckLandingZoneRectSide = suffix === 'dealer' ? deckLandingZoneRect.right : deckLandingZoneRect.left ;
+    const sign = suffix === 'dealer' ? '' : '-' ;
+  
+    hand.insertAdjacentElement('beforeend', card.elem );
+  
+    const cardStyleSide = handRectSide - deckLandingZoneRectSide + 'px';
+    const cardStyleTop = handRect.top - deckLandingZoneRect.top + 'px';
+  
     Object.assign( cardStyle, {
-      left: cardStyleRight,
-      top: cardStyleTop
+      left: sign + cardStyleSide,
+      top: sign + cardStyleTop
     });
-    const shiftX = -parseInt( cardStyleRight, 10 ) + this.drawnCards.player.normal.count * 60 + 'px';
+    const shiftX = -parseInt( cardStyleSide, 10 ) + handCards.count++ * 60 + 'px';
     const shiftY = -parseInt( cardStyleTop, 10 ) + 'px';
     
     this.launchCardAnimation( card.elem, shiftX, shiftY );
-
-    ++this.drawnCards.player.normal.count;
     
-    const handCards = this.drawnCards.player.normal;
-    
-    this.checkHandCondition( handCards, card, 'player-normal' );
-  }
-
-  initDealerAutoDraw = () => {
-    const card = this.deck.defineTopCardData();
-    const handDealerRect = this.defineRectBySelector('.hand__dealer');
-    const deckLandingZoneRect = this.defineRectBySelector('[data-deck-socket]');
-    
-    document.querySelector('.hand__dealer').insertAdjacentElement('afterbegin', card.elem );
-    
-    const cardStyle = card.elem.style;
-    const cardStyleRight = handDealerRect.right - deckLandingZoneRect.right + 'px';
-    const cardStyleTop = handDealerRect.top - deckLandingZoneRect.top + 'px';
-    
-    Object.assign( cardStyle, {
-      left: cardStyleRight,
-      top: cardStyleTop
-    });
-    const shiftX = -parseInt( cardStyleRight, 10 ) + this.drawnCards.dealer.count * 60 + 'px';
-    const shiftY = -parseInt( cardStyleTop, 10 ) + 'px';
-    
-    this.launchCardAnimation( card.elem, shiftX, shiftY );
-
-    ++this.drawnCards.dealer.count;
-    
-    const handCards = this.drawnCards.dealer;
-    
-    this.checkHandCondition( handCards, card, 'dealer' );
+    this.checkHandCondition( handCards, card, suffix );
   }
 
 
