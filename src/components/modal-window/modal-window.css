@@ -2,7 +2,7 @@
   position: fixed;
   width: 70%;
   height: 70%;
-  opacity: .75;
+  opacity: .85;
   background-color: #030303;
   color: azure;
   left: 50%;
@@ -12,20 +12,24 @@
   padding: 40px;
 }
 
-.modal-window__text-window {
-  scrollbar-width: thin;
-  height: 100%;
+.modal-window__top-section {
+  height: 10%;
+}
+
+.modal-window__text-section {
+  height: 90%;
   white-space: pre;
   overflow-y: scroll;
 }
 
-.modal-window__text-window::-webkit-scrollbar {
+.modal-window__text-section::-webkit-scrollbar {
   width: 15px;
   background-color: rgb(31, 28, 28);
   border-radius: 7px;
+  height: 200px;
 }
 
-.modal-window__text-window::-webkit-scrollbar-thumb {
+.modal-window__text-section::-webkit-scrollbar-thumb {
   background-color: rgb(112, 26, 26);
   border-radius: 7px;
 }

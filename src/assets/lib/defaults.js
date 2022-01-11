@@ -54,7 +54,8 @@ export default {
 
   texts: {
     about: `
-      That's my first own pet-project ever.
+      That's my first own non-commercial pet-project ever.
+
 
       Used fonts:
 

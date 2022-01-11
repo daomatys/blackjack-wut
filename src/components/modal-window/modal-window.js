@@ -18,10 +18,13 @@ export default class ModalWindow extends MyComponent {
   markup() {
     return `
       <div class="modal-window modal-window_hidden">
-        <div class="modal-window__text-window">
+        <div class="modal-window__top-section">
+          <div class="modal-window__title"></div>
+          <div class="modal-window__escape-button">X</div>
+        </div>
+        <div class="modal-window__text-section">
           ${ this.text }
         </div>
-        <div class="modal-window__escape-button">X</div>
       </div>
     `;
   }
