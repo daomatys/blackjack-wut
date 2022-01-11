@@ -2,22 +2,29 @@
   position: fixed;
   width: 70%;
   height: 70%;
-  opacity: .85;
-  background-color: #030303;
+  background-color: #030303d9;
   color: azure;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
   border-radius: 40px;
   padding: 40px;
+  backdrop-filter: blur(4px) grayscale(50%);
+}
+
+.modal-window__top-section,
+.modal-window__escape-button {
+  display: flex;
+  align-items: center;
 }
 
 .modal-window__top-section {
-  height: 10%;
+  justify-content: space-between;
+  height: 15%;
 }
 
 .modal-window__text-section {
-  height: 90%;
+  height: 85%;
   white-space: pre;
   overflow-y: scroll;
 }
@@ -35,12 +42,7 @@
 }
 
 .modal-window__escape-button {
-  position: absolute;
-  right: 40px;
-  top: 40px;
-  display: flex;
   justify-content: center;
-  align-items: center;
   height: 40px;
   width: 40px;
   border-radius: 50%;
