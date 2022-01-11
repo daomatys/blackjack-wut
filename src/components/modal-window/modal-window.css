@@ -1,3 +1,5 @@
+@import "/src/assets/fonts/neonize/fonts.css";
+
 .modal-window {
   position: fixed;
   width: 70%;
@@ -19,39 +21,40 @@
 }
 
 .modal-window__top-section {
+  font-family: Neonize;
+  font-size: 2rem;
   justify-content: space-between;
-  height: 15%;
+  height: 10%;
 }
 
 .modal-window__text-section {
-  height: 85%;
-  white-space: pre;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1 rem;
+  height: 90%;
+  white-space: pre-line;
   overflow-y: scroll;
 }
 
 .modal-window__text-section::-webkit-scrollbar {
   width: 15px;
-  background-color: rgb(31, 28, 28);
+  background-color: #1f1c1c;
   border-radius: 7px;
   height: 200px;
 }
 
 .modal-window__text-section::-webkit-scrollbar-thumb {
-  background-color: rgb(112, 26, 26);
+  background-color: #701a1a;
   border-radius: 7px;
 }
 
 .modal-window__escape-button {
   justify-content: center;
-  height: 40px;
-  width: 40px;
-  border-radius: 50%;
-  border-style: solid;
-  border-width: 2px;
+  color: #ff000070;
   border-color: #ff000070;
   cursor: pointer;
 }
 .modal-window__escape-button:hover {
+  color: #ff000090;
   border-color: #ff000090;
 }
 
