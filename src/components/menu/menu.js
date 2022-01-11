@@ -2,7 +2,7 @@ import MyComponent from '../components.js';
 import thatComponentStyleSheet from './menu.css' assert { type: 'css' };
 import ModalWindow from '/src/components/modal-window/modal-window.js';
 
-import defaults from '/src/assets/lib/defaults.js';
+import ModalWindowsTexts from '/src/assets/lib/ModalWindowsTexts.js';
 
 
 export default class Menu extends MyComponent {
@@ -10,7 +10,7 @@ export default class Menu extends MyComponent {
   constructor() {
     super();
 
-    this.text = defaults.texts.about;
+    this.text = ModalWindowsTexts.about;
 
     this.render();
     this.renderSideComponents();
