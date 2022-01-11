@@ -1,4 +1,4 @@
-import Round from '/src/entities/round/round.js';
+import Round from './src/entities/round/round.js';
 
 
 (function() {

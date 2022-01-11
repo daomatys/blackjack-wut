@@ -1,4 +1,4 @@
-import MyComponent from '/src/components/components.js';
+import MyComponent from '../../components.js';
 import thatComponentStyleSheet from './hand__player.css' assert { type: 'css' };
 
 

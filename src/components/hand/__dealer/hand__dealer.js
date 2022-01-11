@@ -1,4 +1,4 @@
-import MyComponent from '/src/components/components.js';
+import MyComponent from '../../components.js';
 import thatComponentStyleSheet from './hand__dealer.css' assert { type: 'css' };
 
 
