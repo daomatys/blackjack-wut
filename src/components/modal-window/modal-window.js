@@ -3,7 +3,7 @@ import thatComponentStyleSheet from './modal-window.css' assert { type: 'css' };
 
 
 export default class ModalWindow extends MyComponent {
-  
+
   constructor( text, wrapref ) {
     super();
 
@@ -12,9 +12,9 @@ export default class ModalWindow extends MyComponent {
 
     this.render();
     this.initElemRef();
-    this.initEventListeners();
+    this.initEventHooks();
   }
-  
+
   markup() {
     return `
       <div class="modal-window modal-window_hidden">
@@ -38,7 +38,7 @@ export default class ModalWindow extends MyComponent {
     this.elem = this.defineElementByItsWrap( this.wrapref );
   }
 
-  initEventListeners() {
+  initEventHooks() {
     this.elem.lastElementChild.onclick = () => this.switchWindowVisibilityState();
   }
 
