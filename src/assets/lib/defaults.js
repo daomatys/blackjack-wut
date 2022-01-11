@@ -95,8 +95,9 @@ export default {
         Then you can draw a card using your mouse cursor. Just drag the card and drop it to your hand zone.
         Your hand zone is nearby the control panel with chip dispensers.
 
-        Continue drawing cards. Character cards have 10 value each.
-        Cards with non-literal ranks, like 2 or 5, have the same numeric values.
+        Continue drawing cards.
+        Character-related cards, like J or K, has a fixed value, equals 10.
+        Cards with numeric ranks, like 2 or 5, has the same numeric values.
         Ace's value can be either 1 or 11. As you wish.
 
         If you don't associate yourself with a 8-bit calculator, you can smash F12 button and open a browser's console.
