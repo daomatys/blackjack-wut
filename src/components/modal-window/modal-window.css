@@ -12,6 +12,24 @@
   padding: 40px;
 }
 
+.modal-window__text-window {
+  scrollbar-width: thin;
+  height: 100%;
+  white-space: pre;
+  overflow-y: scroll;
+}
+
+.modal-window__text-window::-webkit-scrollbar {
+  width: 15px;
+  background-color: rgb(31, 28, 28);
+  border-radius: 7px;
+}
+
+.modal-window__text-window::-webkit-scrollbar-thumb {
+  background-color: rgb(112, 26, 26);
+  border-radius: 7px;
+}
+
 .modal-window__escape-button {
   position: absolute;
   right: 40px;
