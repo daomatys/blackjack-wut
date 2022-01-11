@@ -83,26 +83,26 @@ export default {
     help: {
       title: "I DUNNO WUT 2 DO HALP",
       text:`
-        You'd better to look at the bottom control panel.
+        You'd better look at the bottom control panel.
 
-        See it? There's a green buttons upon the chip dispensers. Hit one of them, and - yikes - you just bet a random chip!
+        See it? There are green buttons upon the chip dispensers. Hit one of them, and - yikes - you've just bet a random chip!
         Amazing, innit?
         
         There we go.
-        After that, something gonna blinks smoothly, right at the center of the screen. Thats a game starter, just preess it.
+        After that, something gonna blink smoothly, right at the center of the screen. That's a game starter, just press it.
 
         Voila! A deck just landed.
-        Then you can draw a card using your mouse cursor. Just drag the card, and drop it into your hand zone.
-        Your hand zone is nearby to the control panel with chips.
+        Then you can draw a card using your mouse cursor. Just drag the card and drop it to your hand zone.
+        Your hand zone is nearby the control panel with chip dispensers.
 
-        Continue drawing a cards. Character cards have 10 value each. 
-        Cards with digital rank have a rank value.
+        Continue drawing cards. Character cards have 10 value each.
+        Cards with non-literal ranks, like 2 or 5, have the same numeric values.
         Ace's value can be either 1 or 11. As you wish.
 
-        If you're not associating yourself with a 8-bit calculator, you can smash F12 button and open a browser's console.
-        There will be some logged info about each hand's value after each drawn card.
+        If you don't associate yourself with a 8-bit calculator, you can smash F12 button and open a browser's console.
+        There will be some log info about each hand's value after each card drawn.
         
-        Your summary value of hand cards shouldn't be greater than 21, thats the one thing you need to control.
+        Your summary value of hand cards shouldn't be greater than 21, that's' the one thing you need to control.
         Closer to 21 - closer to big non-existent cash! More than 21 - you're dead. Simple, huh?
 
         That is. Enjoy your stay, comrade.
