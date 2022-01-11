@@ -4,11 +4,12 @@ import thatComponentStyleSheet from './modal-window.css' assert { type: 'css' };
 
 export default class ModalWindow extends MyComponent {
 
-  constructor( text, wrapref ) {
+  constructor( item, wrapref ) {
     super();
 
+    this.title = item.title;
+    this.text = item.text;
     this.wrapref = wrapref;
-    this.text = text;
 
     this.render();
     this.initElemRef();
@@ -19,7 +20,9 @@ export default class ModalWindow extends MyComponent {
     return `
       <div class="modal-window modal-window_hidden">
         <div class="modal-window__top-section">
-          <div class="modal-window__title"></div>
+          <div class="modal-window__title">
+            ${ this.title }
+          </div>
           <div class="modal-window__escape-button">X</div>
         </div>
         <div class="modal-window__text-section">
@@ -42,7 +45,7 @@ export default class ModalWindow extends MyComponent {
   }
 
   initEventHooks() {
-    this.elem.lastElementChild.onclick = () => this.switchWindowVisibilityState();
+    this.elem.querySelector('.modal-window__escape-button').onclick = () => this.switchWindowVisibilityState();
   }
 
   switchWindowVisibilityState() {
