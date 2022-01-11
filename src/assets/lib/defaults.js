@@ -81,9 +81,31 @@ export default {
       `
     },
     help: {
-      title: "So you've no idea",
+      title: "I DUNNO WUT 2 DO HALP",
       text:`
-        I can't help you, buddy.
+        You'd better to look at the bottom control panel.
+
+        See it? There's a green buttons upon the chip dispensers. Hit one of them, and - yikes - you just bet a random chip!
+        Amazing, innit?
+        
+        There we go.
+        After that, something gonna blinks smoothly, right at the center of the screen. Thats a game starter, just preess it.
+
+        Voila! A deck just landed.
+        Then you can draw a card using your mouse cursor. Just drag the card, and drop it into your hand zone.
+        Your hand zone is nearby to the control panel with chips.
+
+        Continue drawing a cards. Character cards have 10 value each. 
+        Cards with digital rank have a rank value.
+        Ace's value can be either 1 or 11. As you wish.
+
+        If you're not associate yourself with a 8-bit calculator, then you can smash F12 button and open a browser console.
+        There will be logged info about each hand's value after each drawn card.
+        
+        Your cards summary value shouldn't be greater than 21, thats the one thing you need to control.
+        Closer to 21 - closer to big non-existent cash! More than 21 - you're dead. Simple, huh?
+
+        That is. Enjoy your stay, comrade.
       `
     }
   }
