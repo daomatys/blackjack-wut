@@ -99,10 +99,10 @@ export default {
         Cards with digital rank have a rank value.
         Ace's value can be either 1 or 11. As you wish.
 
-        If you're not associate yourself with a 8-bit calculator, then you can smash F12 button and open a browser console.
-        There will be logged info about each hand's value after each drawn card.
+        If you're not associating yourself with a 8-bit calculator, you can smash F12 button and open a browser's console.
+        There will be some logged info about each hand's value after each drawn card.
         
-        Your cards summary value shouldn't be greater than 21, thats the one thing you need to control.
+        Your summary value of hand cards shouldn't be greater than 21, thats the one thing you need to control.
         Closer to 21 - closer to big non-existent cash! More than 21 - you're dead. Simple, huh?
 
         That is. Enjoy your stay, comrade.
