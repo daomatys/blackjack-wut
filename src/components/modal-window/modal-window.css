@@ -28,7 +28,7 @@
 }
 
 .modal-window__text-section {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif ;
   font-size: 1 rem;
   height: 90%;
   white-space: pre-line;
@@ -56,6 +56,13 @@
 .modal-window__escape-button:hover {
   color: #ff000090;
   border-color: #ff000090;
+}
+
+.modal-window__link:link {
+  color:#7d7dfa;
+}
+.modal-window__link:visited {
+  color:#715091;
 }
 
 .modal-window_hidden {

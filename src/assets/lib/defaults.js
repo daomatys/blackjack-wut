@@ -61,33 +61,23 @@ export default {
 
         Used fonts:
 
-        ANTIQUE CHERRY BY TYPHOON TYPE (TM)
+        ANTIQUE CHERRY BY TYPHOON TYPE
 
-        Hello, please contact me before any commercial use.
         My fonts for free use allowed only in personal project , non-profit and charity use.
-        If you make money from using my fonts, Please purchase a commercial license
-        here: http://www.typhoontype.net/fonts/antique-cherry/
-
-        Typhoon Type - Suthi Srisopha
-        
-        typhoontype@gmail.com
-        http://www.typhoontype.net
+        If you make money from using my fonts, Please purchase a commercial license <a class="modal-window__link" target="_blank" href="http://www.typhoontype.net/fonts/antique-cherry/">here</a>.
 
         ——————————————
 
         NEONIZE BY RAYHAN
 
-        This font is free for commercial use, but if you want to use it for commercial, contact me first :)
+        This font is free for commercial use.
 
         ——————————————
 
         POKER FONT BY VLADIMIR NICOLIC
 
-        Poker is a cool and interesting outlined display font. 
-        No matter the topic, this font will be an incredibly asset to your font's library, as it has the potential to elevate any creation.
-
         Free for personal use. 
-        For commercial use, please order a license here: https://www.creativefabrica.com/product/poker-41/ref/144265/
+        For commercial use, please order a license <a class="modal-window__link" target="_blank" href="https://www.creativefabrica.com/product/poker-41/ref/144265/">here</a>.
       `
     },
     help: {
