@@ -56,7 +56,9 @@ export default {
     about: {
       title: 'About project',
       text: `
-        That's my first own non-commercial pet-project ever.
+        That's my first own non-commercial open-source pet-project ever.
+        Written in pure HTML, CSS and JS.
+        Don't steal my graphic assets, please.
 
 
         Used fonts:
@@ -66,13 +68,11 @@ export default {
         My fonts for free use allowed only in personal project , non-profit and charity use.
         If you make money from using my fonts, Please purchase a commercial license <a class="modal-window__link" target="_blank" href="http://www.typhoontype.net/fonts/antique-cherry/">here</a>.
 
-        ——————————————
 
         NEONIZE BY RAYHAN
 
         This font is free for commercial use.
 
-        ——————————————
 
         POKER FONT BY VLADIMIR NICOLIC
 
