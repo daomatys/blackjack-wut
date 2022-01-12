@@ -1,0 +1,24 @@
+{
+  "name": "blackjack-wut",
+  "version": "1.0.0",
+  "description": "web-casino",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/daomatys/blackjack-wut.git"
+  },
+  "keywords": [
+    "javascript",
+    "html",
+    "css"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/daomatys/blackjack-wut/issues"
+  },
+  "homepage": "https://github.com/daomatys/blackjack-wut#readme"
+}
