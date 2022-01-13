@@ -13,7 +13,7 @@ export default class Bank extends MyComponent {
     return `
       <div class="bank">
         <div class="bank__background">
-          <img src="/src/assets/graphics/bank.png">
+          <img src="src/assets/graphics/bank.png">
         </div>
         <div class="bank__slot-row">
           <div class="bank__slot" id="slot-1"></div>
