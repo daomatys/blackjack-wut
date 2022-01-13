@@ -24,6 +24,7 @@ export default class Round {
   }
   
   initGeneralComponents() {
+    console.log('round comps init began');
     this.handPlayer = new HandPlayer();
     this.handDealer = new HandDealer();
     this.deckUnit = new DeckUnit();
@@ -31,6 +32,7 @@ export default class Round {
     this.panel = new Panel();
     this.bank = new Bank();
     this.menu = new Menu();
+    console.log('round comps init done');
   }
 
   initCollectionsOfControllableComponents() {
