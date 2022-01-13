@@ -3,7 +3,7 @@ import thatComponentStyleSheet from './sidebar.css' assert { type: 'css' };
 import SidebarButton from '../button/__sidebar/button__sidebar.js';
 import ModalWindow from '../modal-window/modal-window.js';
 
-import ModalWindowsTexts from '../../assets/lib/ModalWindowsTexts.js';
+import modalWindowsTexts from '../../assets/lib/modalWindowsTexts.js';
 
 
 export default class Sidebar extends MyComponent {
@@ -11,7 +11,7 @@ export default class Sidebar extends MyComponent {
   constructor() {
     super();
 
-    this.text = ModalWindowsTexts.help;
+    this.text = modalWindowsTexts.help;
     
     this.render();
     this.renderInnerComponents();
