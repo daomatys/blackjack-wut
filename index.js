@@ -1,6 +1,6 @@
 import Round from './src/entities/round/round.js';
 
 
-(function() {
+(function () {
   new Round();
 })();
