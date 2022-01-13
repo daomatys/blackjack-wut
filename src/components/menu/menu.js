@@ -50,7 +50,7 @@ export default class Menu extends MyComponent {
   }
   
   initEventListeners() {
-    const selectButton = name => this.elem.querySelector(`#menu-${ name }`)
+    const selectButton = name => this.elem.querySelector(`#menu-${ name }`);
     
     selectButton('start').addEventListener('pointerdown', this.start);
     selectButton('about').addEventListener('pointerdown', this.about);
