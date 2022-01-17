@@ -2,27 +2,27 @@ export default {
   about: {
     title: 'About project',
     text: `
-      That's my first own non-commercial open-source pet-project ever.
+      That's my first non-commercial open-source pet-project ever.
       Written in pure HTML, CSS and JS.
       Don't steal my graphic assets, please.
+
+
+      Used images:
+
+      American Contract Bridge League's playing <a class="modal-window__link" target="_blank" href="https://acbl.mybigcommerce.com/52-playing-cards/">cards</a> and <a class="modal-window__link" target="_blank" href="https://acbl.mybigcommerce.com/back-of-cards/">backs</a>.
 
 
       Used fonts:
 
       ANTIQUE CHERRY BY TYPHOON TYPE
-
-      My fonts for free use allowed only in personal project , non-profit and charity use.
+      Author: My fonts for free use allowed only in personal project, non-profit and charity use.
       If you make money from using my fonts, Please purchase a commercial license <a class="modal-window__link" target="_blank" href="http://www.typhoontype.net/fonts/antique-cherry/">here</a>.
 
-
       NEONIZE BY RAYHAN
-
-      This font is free for commercial use.
-
+      Author: This font is free for commercial use.
 
       POKER FONT BY VLADIMIR NICOLIC
-
-      Free for personal use. 
+      Author: Free for personal use. 
       For commercial use, please order a license <a class="modal-window__link" target="_blank" href="https://www.creativefabrica.com/product/poker-41/ref/144265/">here</a>.
     `
   },
