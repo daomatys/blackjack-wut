@@ -377,16 +377,19 @@ export default class Round {
 
   initAutoDraw = ( suffix, handCards ) => {
     const caseDealerDraw = suffix === 'dealer';
+    
     const card = this.deck.defineTopCardData();
     const cardStyle = card.elem.style;
     const handRect = this.defineRectBySelector('.hand__' + suffix);
     const handRectSide = caseDealerDraw ? handRect.right : handRect.left ;
     const deckLandingZoneRect = this.defineRectBySelector('[data-deck-socket]');
     const deckLandingZoneRectSide = caseDealerDraw ? deckLandingZoneRect.right : deckLandingZoneRect.left ;
+
     const multiplier = caseDealerDraw ? 1 : -1 ;
     const note = caseDealerDraw ? '' : '-normal' ;
+    const insertionType = caseDealerDraw ? 'afterbegin' : 'beforeend' ;
   
-    document.querySelector('.hand__' + suffix).insertAdjacentElement('beforeend', card.elem );
+    document.querySelector('.hand__' + suffix).insertAdjacentElement( insertionType, card.elem );
   
     const cardStyleSide = multiplier * (handRectSide - deckLandingZoneRectSide) + 'px';
     const cardStyleTop = multiplier * (handRect.top - deckLandingZoneRect.top) + 'px';
